@@ -1,0 +1,1 @@
+{"join":{"src":"/drawings/ui/join.json","x":0.5,"y":0.5,"states":{"idle":{"start":0,"end":0}},"state":"idle","scenes":["splash"]}}

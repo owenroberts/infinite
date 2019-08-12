@@ -1,0 +1,1 @@
+{"skully":{"src":"/drawings/sprites/skully.json","x":319.5,"y":100.5,"states":{"default":{"start":0,"end":0}},"state":"default","scenes":["game"]},"fire":{"src":"/drawings/sprites/fire.json","x":88,"y":160,"states":{"default":{"start":0,"end":0}},"state":"default","scenes":["game"]}}
