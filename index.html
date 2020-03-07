@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<title>infinite hell</title>
-	<link href="style.css" rel="stylesheet" type="text/css">
+	<link href="hell.css" rel="stylesheet" type="text/css">
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<link rel="icon" href="favicon.ico">
@@ -13,18 +13,59 @@
 	</canvas>
 
 	<script src="lines/lib/cool/cool.js"></script>
+	<script src="lines/classes/animation.js"></script>
 
+	<script src="lines/game/classes/anim.js"></script>
 	<script src="lines/game/classes/sprite.js"></script>
-	<script src="lines/game/classes/animation.js"></script>
-	<script src="lines/game/events.js"></script>
-	<script src="lines/game/game.js"></script>
+	<script src="lines/game/classes/item.js"></script>
+	<script src="lines/game/classes/texture.js"></script>
 
 	<script src="lines/game/classes/text.js"></script>
 	<script src="lines/game/classes/ui.js"></script>
 	<script src="lines/game/classes/button.js"></script>
 	<script src="lines/game/classes/toggle.js"></script>
 
+	<script src="lines/game/events.js"></script>
+	<script src="lines/game/game.js"></script>
+
+	<script src="hellmaps/area.js"></script>
+	<script src="hellmaps/node.js"></script>
+	<script src="room.js"></script>
+	<script src="path.js"></script>
+	<script src="wall.js"></script>
+	<script src="map.js"></script>
+	<script src="player.js"></script>
 	<script src="hell.js"></script>
 	
 </body>
 </html>
+
+<!-- 
+
+3.5.2020
+- fuck this takes forever
+- game updates
+	- drawSprites type list of sprites
+	- Game.sprites and Game.ui defaults
+	- Game.scenes default?
+	- test performance of game with array vs object for ui/scenes
+	- loading may just have to be handled by individual games ....
+	- load animations first then make classes ... 
+	- what purpose do items have? why not just sprites?
+		- update function not in sprite for map
+	- generally heading towards objects not automatically adding stuff
+	- player/map relationship is super confusing ... 
+	- p5 play style camera?
+	- make a debug draw function
+	- really need to wait for sprites to actually load!
+	- just load json to make different animations ...
+		- too many anim objects?
+	- texture is really annoying, need to separate functions better
+- rename animation class ... fuck
+- lines problems
+	- title needs to be blur, enter saves the file ...
+	- drawing is undefined at some point, maybe after save?
+	- collapsed panels start with - instead of +
+	- layers css fucked up
+
+ -->
