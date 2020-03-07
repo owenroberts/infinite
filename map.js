@@ -38,7 +38,7 @@ class Map {
 						if (path.isInside(x, y)) inRoom = true;
 					});
 				})
-				if (!inRoom) this.walls.push(new Wall(x, y)); 
+				if (!inRoom) this.walls.push(new Wall(x, y, 'green')); 
 			}
 		}
 	}

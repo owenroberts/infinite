@@ -1,8 +1,9 @@
 class Player extends Sprite {
 	constructor(src, x, y, debug) {
 		super(x, y);
-		this.x = x;
-		this.y = y;
+		this._x = x;
+		this._y = y;
+		this.prevXY = { x: x, y: y };
 		this.center = true; /* need better name */
 		
 		// this.position.x += Game.width/2;
@@ -22,7 +23,37 @@ class Player extends Sprite {
 		this.input[key] = state;
 	}
 
+	set x(value) {
+		this._x = Math.round(value);
+	}
+
+	get x() {
+		return this._x;
+	}
+
+	set y(value) {
+		this._y = Math.round(value);
+	}
+
+	get y() {
+		return this._y;
+	}
+
+	collide(other) {
+		// console.log(other);
+		if (player.x < other.x + other.w &&
+			player.x + player.width > other.x &&
+			player.y < other.y + other.h &&
+			player.y + player.height > other.y) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	update() {
+		this.prevXY = { x: this.x, y: this.y };
+
 		let state = this.animation.state.includes('idle') ?
 			this.animation.state :
 			Cool.random(['idle']);
@@ -48,6 +79,10 @@ class Player extends Sprite {
 			state = 'left';
 		}
 		this.animation.state = state;
+	}
 
+	back() {
+		this.x = this.prevXY.x;
+		this.y = this.prevXY.y;
 	}
 }

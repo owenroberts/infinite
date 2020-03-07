@@ -22,9 +22,10 @@ Game.load(
 
 let player;
 let map, cols = 20, rows = 20, min = 10, cell = { w: 256, h: 256 };
+let wall;
 
 /* debugging */
-let mapAlpha = 0.5;
+let mapAlpha = 0;
 document.addEventListener('keydown', ev => {
 	if (ev.which == 187) mapAlpha = Math.min(1, mapAlpha + 0.25);
 	else if (ev.which == 189) mapAlpha = Math.max(0, mapAlpha - 0.25);
@@ -35,33 +36,52 @@ function start() {
 
 	Game.setBounds('top', -cell.h/2);
 	Game.setBounds('left', -cell.w/2);
-	Game.setBounds('right', cols * cell.w - Game.width - cell.w/2);
-	Game.setBounds('bottom', rows * cell.h - Game.height - cell.h/2);
+	Game.setBounds('right', cols * cell.w - cell.w/2);
+	Game.setBounds('bottom', rows * cell.h - cell.h/2);
 
 	map = new Map(cols, rows);
 	
-	player = new Player('/drawings/sprites/skully_2.json', Game.width/2, Game.height/2);
+	player = new Player('/drawings/sprites/skully_3.json', Game.width/2, Game.height/2);
+	// player.debug = true;
 
+	/* place player in random room */
 	const pos = Cool.random(map.nodes.filter(node => node.room)).room;
-	console.log(pos);
 	const _x = Cool.random(pos.x + 1, pos.x + pos.w - 2);
 	const _y = Cool.random(pos.y + 1, pos.y + pos.h - 2);
-	console.log(_x, _y);
-	player.x = _x * cell.w;
-	player.y = _y * cell.h;
+	player.x = _x * cell.w; //- Game.width/2 - cell.w/2;
+	player.y = _y * cell.h; // - Game.height/2 - cell.h/2;
 	
+	// wall = new Wall(4, 2);
+
 }
 
 function update() {
 	// if (Game.scene == 'map')
-		player.update();
+	
+	player.update();
+	/* detect wall collisions */
+	let wallCollision = false;
+	for (let i = 0; i < map.walls.length; i++) {
+		const wall = map.walls[i];
+		if (player.collide(wall.scaled())) wallCollision = true;
+	}
+
+	// wallCollision = player.collide(wall.scaled());
+	console.log('wall', wallCollision);
+
+	if (wallCollision) player.back();
+	
 
 	const offset = {
-		x: -player.x,
-		y: -player.y
+		x: -player.x + Game.width/2,
+		y: -player.y + Game.height/2
 	};
 	// console.log(offset);
 	map.update(offset);
+	// wall.update(offset);
+
+
+
 	// for (const type in Game.sprites) {
 	// 	for (const key in Game.sprites[type]) {
 	// 		if (Game.sprites[type][key].scenes.includes(Game.scene))
@@ -75,6 +95,7 @@ function update() {
 
 function draw() {
 	map.display();
+	// wall.display();
 	player.display();
 	
 	
