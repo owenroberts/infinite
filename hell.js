@@ -1,13 +1,13 @@
 window.random = Cool.random; /* for p5 based map */
 
-
 Game.init({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	lps: 10,
 	mixedColors: true,
 	checkRetina: true,
-	debug: true
+	debug: true,
+	stats: true
 });
 
 // Game.lettering('drawings/letters.json');
@@ -53,13 +53,13 @@ function start() {
 	player.y = _y * cell.h; // - Game.height/2 - cell.h/2;
 	
 	// wall = new Wall(4, 2);
-
 }
 
 function update() {
 	// if (Game.scene == 'map')
 	
 	player.update();
+	
 	/* detect wall collisions */
 	let wallCollision = false;
 	for (let i = 0; i < map.walls.length; i++) {
@@ -67,15 +67,13 @@ function update() {
 		if (player.collide(wall.scaled())) wallCollision = true;
 	}
 
-	// wallCollision = player.collide(wall.scaled());
-	// console.log('wall', wallCollision);
 
 	if (wallCollision) player.back();
 	
 
 	const offset = {
-		x: -player.x + Game.width/2,
-		y: -player.y + Game.height/2
+		x: -player.x + Game.width/2 + player.width/2,
+		y: -player.y + Game.height/2 + player.height/2
 	};
 	// console.log(offset);
 	map.update(offset);

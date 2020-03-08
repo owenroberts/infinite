@@ -1,4 +1,5 @@
 class Wall extends Area {
+
 	constructor(x, y, debug) {
 		super(x, y, 1, 1, 'lightgreen');
 
@@ -22,9 +23,9 @@ class Wall extends Area {
 		}, false);
 		
 		this.addTexture();
-		this.debug = debug;
+		this.debug = Game.debug ? debug : undefined;
 	}
-	
+
 	addTexture() {
 		this.texture.addJSON(Game.textures.walls, true);
 	}
@@ -44,8 +45,8 @@ class Wall extends Area {
 		if (this.debug) {
 			Game.ctx.strokeStyle = this.debug;
 			Game.ctx.strokeRect(
-				this.x * cell.w - player.x + Game.width/2 - cell.w/2, 
-				this.y * cell.h - player.y + Game.height/2 - cell.h/2, 
+				this.x * cell.w - player.x + Game.width/2 - cell.w/2 + player.width/2, 
+				this.y * cell.h - player.y + Game.height/2 - cell.h/2 + player.height/2, 
 				this.w * cell.w, 
 				this.h * cell.h
 			);
@@ -64,7 +65,6 @@ class Wall extends Area {
 			Game.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
 			Game.ctx.globalAlpha = 1.0;
 		}
-		
 	}
 
 	update(offset) {

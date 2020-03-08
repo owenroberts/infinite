@@ -20,7 +20,7 @@ class Room extends Area {
 		}, false);
 		
 		this.addTexture();
-		this.debug = debug;
+		this.debug = Game.debug ? debug : undefined;
 	}
 
 	addTexture() {
