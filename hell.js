@@ -7,7 +7,7 @@ Game.init({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: true
+	stats: false
 });
 
 // Game.lettering('drawings/letters.json');
