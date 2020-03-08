@@ -2,5 +2,5 @@
 	path = lines
 	url = https://github.com/owenroberts/lines
 [submodule "hellmaps"]
-	path = hellmaps
+	path = map
 	url = https://github.com/owenroberts/hellmaps

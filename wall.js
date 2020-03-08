@@ -42,7 +42,7 @@ class Wall extends Area {
 	display() {
 		this.texture.display();
 
-		if (this.debug) {
+		if (this.debug && false) {
 			Game.ctx.strokeStyle = this.debug;
 			Game.ctx.strokeRect(
 				this.x * cell.w - player.x + Game.width/2 - cell.w/2 + player.width/2, 

@@ -11,7 +11,7 @@ Game.init({
 });
 
 // Game.lettering('drawings/letters.json');
-
+console.time('load');
 Game.load(
 	{ 
 		ui: '/data/ui.json', 
@@ -33,6 +33,7 @@ document.addEventListener('keydown', ev => {
 })
 
 function start() {
+	console.timeEnd('load');
 	Game.scene = 'map';
 
 	Game.setBounds('top', -cell.h/2);
@@ -40,10 +41,11 @@ function start() {
 	Game.setBounds('right', cols * cell.w - cell.w/2);
 	Game.setBounds('bottom', rows * cell.h - cell.h/2);
 
+	console.time('map');
 	map = new Map(cols, rows);
+	console.timeEnd('map');
 	
 	player = new Player('/drawings/sprites/skully_3f.json', Game.width/2, Game.height/2);
-	player.debug = true;
 
 	/* place player in random room */
 	const pos = Cool.random(map.nodes.filter(node => node.room)).room;

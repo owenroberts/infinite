@@ -15,6 +15,8 @@ class Map {
 
 		this.nodes = [new Node(buf.w, buf.h, this.cols - buf.w*2, this.rows - buf.h*2)]; 
 
+		console.group('load map');
+		console.time('nodes');
 		let didSplit = true;
 		while (didSplit) {
 			didSplit = false;
@@ -30,23 +32,30 @@ class Map {
 				}
 			});
 		}
+		console.timeEnd('nodes');
 
+		console.time('rooms');
 		this.nodes[0].createRooms(cols, rows);
+		console.timeEnd('rooms');
 
+		console.time('walls');
 		for (let x = 0; x < this.cols; x++) {
 			for (let y = 0; y < this.rows; y++) {
 				let inRoom = false;
-				this.nodes.forEach(node => {
-					if (node.room) {
-						if (node.room.isInside(x,y)) inRoom = true;
+				for (let i = 0; i < this.nodes.length; i++) {
+					if (this.nodes[i].room) {
+						if (this.nodes[i].room.isInside(x,y)) inRoom = true;
 					}
-					node.paths.forEach(path => {
-						if (path.isInside(x, y)) inRoom = true;
-					});
-				})
+					for (let j = 0; j < this.nodes[i].paths.length; j++) {
+						if (this.nodes[i].paths[j].isInside(x, y)) inRoom = true;
+					}
+				}
 				if (!inRoom) this.walls.push(new Wall(x, y, 'green')); 
 			}
 		}
+		console.timeEnd('walls');
+		/* walls takes 1500ms ... needs work */
+		console.groupEnd();
 	}
 
 	display() {
