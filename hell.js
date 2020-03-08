@@ -6,7 +6,8 @@ Game.init({
 	height: window.innerHeight,
 	lps: 10,
 	mixedColors: true,
-	checkRetina: true
+	checkRetina: true,
+	debug: true
 });
 
 // Game.lettering('drawings/letters.json');
@@ -21,7 +22,7 @@ Game.load(
 );
 
 let player;
-let map, cols = 20, rows = 20, min = 10, cell = { w: 256, h: 256 };
+let map, cols = 50, rows = 50, min = 12, cell = { w: 256, h: 256 };
 let wall;
 
 /* debugging */
@@ -41,8 +42,8 @@ function start() {
 
 	map = new Map(cols, rows);
 	
-	player = new Player('/drawings/sprites/skully_3.json', Game.width/2, Game.height/2);
-	// player.debug = true;
+	player = new Player('/drawings/sprites/skully_3f.json', Game.width/2, Game.height/2);
+	player.debug = true;
 
 	/* place player in random room */
 	const pos = Cool.random(map.nodes.filter(node => node.room)).room;
@@ -67,7 +68,7 @@ function update() {
 	}
 
 	// wallCollision = player.collide(wall.scaled());
-	console.log('wall', wallCollision);
+	// console.log('wall', wallCollision);
 
 	if (wallCollision) player.back();
 	

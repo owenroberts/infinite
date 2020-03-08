@@ -40,8 +40,18 @@ class Wall extends Area {
 
 	display() {
 		this.texture.display();
-		
+
 		if (this.debug) {
+			Game.ctx.strokeStyle = this.debug;
+			Game.ctx.strokeRect(
+				this.x * cell.w - player.x + Game.width/2 - cell.w/2, 
+				this.y * cell.h - player.y + Game.height/2 - cell.h/2, 
+				this.w * cell.w, 
+				this.h * cell.h
+			);
+		}
+		
+		if (Game.debug) {
 			Game.ctx.globalAlpha = mapAlpha;
 			const sz = 20;
 			Game.ctx.fillStyle = this.debug;

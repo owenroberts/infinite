@@ -41,6 +41,9 @@ class Player extends Sprite {
 
 	collide(other) {
 		// console.log(other);
+		/*
+			everything is centered ... this would be easier using vectors ...
+		*/
 		if (player.x < other.x + other.w &&
 			player.x + player.width > other.x &&
 			player.y < other.y + other.h &&

@@ -6,8 +6,14 @@ class Map {
 		this.walls = [];
 		
 		// root node
-		// 1 cell buffer
-		this.nodes = [new Node(1, 1, this.cols - 2, this.rows - 2)]; 
+		
+		// cell buffer
+		const buf = {
+			w: Math.ceil(Game.width/2/cell.w),
+			h: Math.ceil(Game.height/2/cell.h)
+		}; 
+
+		this.nodes = [new Node(buf.w, buf.h, this.cols - buf.w*2, this.rows - buf.h*2)]; 
 
 		let didSplit = true;
 		while (didSplit) {
