@@ -12,6 +12,8 @@
 		How old is your dang computer???
 	</canvas>
 
+	<script src="csv-process.js"></script>
+
 	<script src="lines/lib/cool/cool.js"></script>
 	<script src="lines/classes/animation.js"></script>
 
@@ -28,13 +30,15 @@
 	<script src="lines/game/events.js"></script>
 	<script src="lines/game/game.js"></script>
 
-	<script src="map/area.js"></script>
-	<script src="map/node.js"></script>
-	<script src="room.js"></script>
-	<script src="path.js"></script>
-	<script src="wall.js"></script>
-	<script src="map.js"></script>
-	<script src="player.js"></script>
+	<script src="map/Area.js"></script>
+	<script src="map/Node.js"></script>
+	<script src="classes/Room.js"></script>
+	<script src="classes/Path.js"></script>
+	<script src="classes/Wall.js"></script>
+	<script src="map/Map.js"></script>
+	<script src="classes/HellMap.js"></script>
+	<script src="classes/Food.js"></script>
+	<script src="classes/Player.js"></script>
 	<script src="hell.js"></script>
 	
 </body>
@@ -68,16 +72,17 @@
 	- stat class
 	- sprite use w h instead of width and height
 	- why does fps cap at 9?
+	- item vs sprite, params vs xy inconsistent
 
 - rename animation class ... fuck
 - lines problems
-	- title needs to be blur, enter saves the file ...
-	- drawing is undefined at some point, maybe after save?
-	- collapsed panels start with - instead of +
+
 	- layers css fucked up
-	- dont save points outside of canvas ... 
-	- zoom fucks up canvas
-	- single frame capture bg always there
+		- first try completely new layers thing "timeline"
+	- lines on sidecar dont take on mobile stuff ...
+	- zoom ui and canvas separately ...
+	- cant draw on top part zoomed in after reset ....
+	
 
 3.7.2020
 - fix starting point

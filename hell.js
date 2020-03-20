@@ -11,19 +11,21 @@ Game.init({
 });
 
 // Game.lettering('drawings/letters.json');
-console.time('load');
+console.time('load game');
 Game.load(
 	{ 
-		ui: '/data/ui.json', 
+		// ui: '/data/ui.json', 
 		sprites: '/data/sprites.json', 
-		textures: '/data/textures.json' 
+		textures: '/data/textures.json',
+		food: '/data/food.csv'
 	},
 	Game.start
 );
 
 let player;
-let map, cols = 50, rows = 50, min = 12, cell = { w: 256, h: 256 };
+let map, cols = 20, rows = 20, min = 6, cell = { w: 256, h: 256 };
 let wall;
+Game.lvl = 0;
 
 /* debugging */
 let mapAlpha = 0;
@@ -33,7 +35,7 @@ document.addEventListener('keydown', ev => {
 })
 
 function start() {
-	console.timeEnd('load');
+	console.timeEnd('load game');
 	Game.scene = 'map';
 
 	Game.setBounds('top', -cell.h/2);
@@ -42,7 +44,9 @@ function start() {
 	Game.setBounds('bottom', rows * cell.h - cell.h/2);
 
 	console.time('map');
-	map = new Map(cols, rows);
+	map = new HellMap(cols, rows);
+	map.setup();
+	map.addFood();
 	console.timeEnd('map');
 	
 	player = new Player('/drawings/sprites/skully_3f.json', Game.width/2, Game.height/2);
