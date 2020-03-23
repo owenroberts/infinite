@@ -1,8 +1,8 @@
 class Player extends Sprite {
 	constructor(src, x, y, debug) {
-		super(x, y);
-		this._x = x;
-		this._y = y;
+		super(Math.round(x), Math.round(y));
+		this._x = Math.round(x);
+		this._y = Math.round(y);
 		this.prevXY = { x: x, y: y };
 		this.center = true; /* need better name */
 		
@@ -17,6 +17,10 @@ class Player extends Sprite {
 		});
 
 		this.input = { right: false, up: false, left: false, down: false };
+
+		this.health = 100;
+		this.morality = 0;
+		this.hunger = 0;
 	}
 
 	inputKey(key, state) {
@@ -39,20 +43,20 @@ class Player extends Sprite {
 		return this._y;
 	}
 
-	collide(other) {
-		// console.log(other);
-		/*
-			everything is centered ... this would be easier using vectors ...
-		*/
-		if (player.x < other.x + other.w &&
-			player.x + player.width > other.x &&
-			player.y < other.y + other.h &&
-			player.y + player.height > other.y) {
-			return true;
-		} else {
-			return false;
-		}
-	}
+	// collide(other) {
+	// 	// console.log(other);
+	// 	/*
+	// 		everything is centered ... this would be easier using vectors ...
+	// 	*/
+	// 	if (player.x < other.x + other.w &&
+	// 		player.x + player.width > other.x &&
+	// 		player.y < other.y + other.h &&
+	// 		player.y + player.height > other.y) {
+	// 		return true;
+	// 	} else {
+	// 		return false;
+	// 	}
+	// }
 
 	update() {
 		this.prevXY = { x: this.x, y: this.y };

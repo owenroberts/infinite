@@ -9,9 +9,8 @@ class HellMap extends Map {
 	}
 
 	prob(f) {
-		const p = Cool.map(Game.lvl, 0, 28, 0, 1);
-		// console.log(Game.lvl, p, eval(f), f);
-		return eval(f).clamp(0, 1);
+		f = f.replace(/p(?![a-z])/g, Cool.map(Game.lvl, 0, 28, 0, 1));
+		return  Function('return ' + f)().clamp(0, 1);
 	}
 
 	addFood() {
@@ -41,16 +40,12 @@ class HellMap extends Map {
 			if (node.room) {
 				const index = choices.pop();
 				const data = Game.food.data[index];
-				console.log(data[0])
 				const x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w;
 				const y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h;
 				const food = new Food(x, y, Game.food[data[0]], data);
 				this.food.push(food);
 			}
 		}
-
-		console.log(this.food);
-
 	}
 
 	display() {

@@ -1,1 +1,5 @@
-{}
+{
+	"cursor": {
+		"src": "/drawings/ui/cursor.json"
+	}
+}
