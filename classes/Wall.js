@@ -1,18 +1,19 @@
-class Wall extends Area {
+class Wall extends Sprite {
 
 	constructor(x, y, debug) {
-		super(x, y, 1, 1, 'lightgreen');
+		// console.log(x, y, cell);
+
+		super(x * cell.w, y * cell.h, cell.w, cell.h);
+		// this.debug = true;
+		this.origin = { x: x, y: y };
+		// console.log(this);
 
 		const locations = [];
-		for (let _x = this.x; _x < this.x + this.w; _x++) {
-			for (let _y = this.y; _y < this.y + this.h; _y++) {
-				for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
-					locations.push({
-						x: _x * cell.w + Cool.random(-cell.w/3, cell.w/3),
-						y: _y * cell.h + Cool.random(-cell.h/3, cell.h/3)
-					});
-				}
-			}
+		for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
+			locations.push({
+				x: x + cell.w/2 + Cool.random(-cell.w/3, cell.w/3),
+				y: y + cell.h/2 + Cool.random(-cell.h/3, cell.h/3)
+			});
 		}
 
 		this.texture = new Texture({
@@ -23,51 +24,35 @@ class Wall extends Area {
 		}, false);
 		
 		this.addTexture();
-		this.debug = Game.debug ? debug : undefined;
+		// this.debug = Game.debug ? debug : undefined;
 	}
 
 	addTexture() {
 		this.texture.addJSON(Game.textures.walls, true);
 	}
 
-	scaled() {
-		return {
-			x: this.x * cell.w,
-			y: this.y * cell.h,
-			w: this.w * cell.w,
-			h: this.h * cell.h
-		}
-	}
-
 	display() {
+		super.display();
 		this.texture.display();
 
-		if (this.debug && false) {
-			Game.ctx.strokeStyle = this.debug;
-			Game.ctx.strokeRect(
-				this.x * cell.w - player.x + Game.width/2 - cell.w/2 + player.width/2, 
-				this.y * cell.h - player.y + Game.height/2 - cell.h/2 + player.height/2, 
-				this.w * cell.w, 
-				this.h * cell.h
-			);
-		}
-		
-		if (Game.debug) {
-			Game.ctx.globalAlpha = mapAlpha;
-			const sz = 20;
-			Game.ctx.fillStyle = this.debug;
-			Game.ctx.strokeStyle = this.debug;
-			Game.ctx.fillRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
-			// Game.ctx.strokeRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
+		// if (Game.debug) {
+		// 	Game.ctx.globalAlpha = mapAlpha;
+		// 	const sz = 20;
+		// 	Game.ctx.fillStyle = this.debug;
+		// 	Game.ctx.strokeStyle = this.debug;
+		// 	Game.ctx.fillRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
+		// 	// Game.ctx.strokeRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
 
-			Game.ctx.fillStyle = 'white';
-			Game.ctx.font = `${sz/2}px sans-serif`;
-			Game.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
-			Game.ctx.globalAlpha = 1.0;
-		}
+		// 	Game.ctx.fillStyle = 'white';
+		// 	Game.ctx.font = `${sz/2}px sans-serif`;
+		// 	Game.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
+		// 	Game.ctx.globalAlpha = 1.0;
+		// }
 	}
 
 	update(offset) {
+		this.position.x = this.origin.x + offset.x;
+		this.position.y = this.origin.y + offset.y;
 		this.texture.update(offset);
 	}
 }

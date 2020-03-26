@@ -1,9 +1,9 @@
 class Player extends Sprite {
 	constructor(src, x, y, debug) {
 		super(Math.round(x), Math.round(y));
-		this._x = Math.round(x);
-		this._y = Math.round(y);
-		this.prevXY = { x: x, y: y };
+		this.x = Math.round(x);
+		this.y = Math.round(y);
+		this.prevXY = { x: this.x, y: this.y };
 		this.center = true; /* need better name */
 		
 		// this.position.x += Game.width/2;
@@ -17,70 +17,53 @@ class Player extends Sprite {
 		});
 
 		this.input = { right: false, up: false, left: false, down: false };
+		this.target = new Cool.Vector(0, 0);
 
 		this.health = 100;
 		this.morality = 0;
 		this.hunger = 0;
+
 	}
 
 	inputKey(key, state) {
 		this.input[key] = state;
 	}
 
-	set x(value) {
-		this._x = Math.round(value);
+	setTarget(x, y) {
+		this.target.x = x;
+		this.target.y = y;
 	}
-
-	get x() {
-		return this._x;
-	}
-
-	set y(value) {
-		this._y = Math.round(value);
-	}
-
-	get y() {
-		return this._y;
-	}
-
-	// collide(other) {
-	// 	// console.log(other);
-	// 	/*
-	// 		everything is centered ... this would be easier using vectors ...
-	// 	*/
-	// 	if (player.x < other.x + other.w &&
-	// 		player.x + player.width > other.x &&
-	// 		player.y < other.y + other.h &&
-	// 		player.y + player.height > other.y) {
-	// 		return true;
-	// 	} else {
-	// 		return false;
-	// 	}
-	// }
 
 	update() {
+		if (Math.abs(this.target.x) < this.speed.x) this.target.x = 0;
+		if (Math.abs(this.target.y) < this.speed.y) this.target.y = 0;
 		this.prevXY = { x: this.x, y: this.y };
-
+		
 		let state = this.animation.state.includes('idle') ?
 			this.animation.state :
 			Cool.random(['idle']);
 			
-		if (this.input.up) {
+		if (this.input.up || this.target.y < 0) {
+			if (this.target.y < 0) this.target.y += this.speed.y;
 			if (this.y > Game.bounds.top)
 				this.y -= this.speed.y;
 			state = 'right';
 		}
-		if (this.input.down) {
+		if (this.input.down || this.target.y > 0) {
+			if (this.target.y > 0) this.target.y -= this.speed.y;
 			if (this.y < Game.bounds.bottom)
 				this.y += this.speed.y;
 			state = 'left';
 		}
-		if (this.input.right) {
+		if (this.input.right || this.target.x > 0) {
+			if (this.target.x > 0) this.target.x -= this.speed.x;
 			if (this.x < Game.bounds.right)
 				this.x += this.speed.x;
 			state = 'right';
 		}
-		if (this.input.left) {
+
+		if (this.input.left || this.target.x < 0) {
+			if (this.target.x < 0) this.target.x += this.speed.x;
 			if (this.x > Game.bounds.left)
 				this.x -= this.speed.x;
 			state = 'left';
@@ -89,6 +72,8 @@ class Player extends Sprite {
 	}
 
 	back() {
+		this.target.x = 0;
+		this.target.y = 0;
 		this.x = this.prevXY.x;
 		this.y = this.prevXY.y;
 	}
