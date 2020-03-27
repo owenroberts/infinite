@@ -17,7 +17,8 @@ Game.load(
 		ui: '/data/ui.json', 
 		sprites: '/data/sprites.json', 
 		textures: '/data/textures.json',
-		food: '/data/food.csv'
+		food: '/data/food.csv',
+		lettering: '/data/lettering.json'
 	},
 	Game.start
 );
@@ -34,6 +35,7 @@ cursor.src = '/css/walk.gif';
 
 /* debugging */
 let wall;
+let apple;
 
 let mapAlpha = 0;
 document.addEventListener('keydown', ev => {
@@ -44,8 +46,8 @@ document.addEventListener('keydown', ev => {
 function start() {
 	console.timeEnd('load game');
 	Game.scene = 'map';
-	Game.addLettering('/drawings/lettering/messages.json', 'messages');
-	Game.addLettering('/drawings/lettering/metrics.json', 'metrics');
+	Game.addLettering('metrics', Game.data.lettering.metrics);
+	Game.addLettering('messages', Game.data.lettering.messages);
 
 	Game.setBounds('top', -cell.h/2);
 	Game.setBounds('left', -cell.w/2);
@@ -66,7 +68,7 @@ function start() {
 	ui.metrics.health = new Text(3, 6, 'Health ' + player.health, 12, Game.lettering.metrics);
 	ui.metrics.morality = new Text(232, 6, 'Morality ' + player.morality, 13, Game.lettering.metrics);
 
-	ui.cursor = { x: 0, y: 0 };
+	ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
 	// ui.cursor = new Sprite(0, 0);
 	// ui.cursor.addJSON(Game.ui.cursor);
 	// ui.cursor.animation.state = 'walk';
@@ -81,7 +83,8 @@ function start() {
 	player.x = Math.round(_x * cell.w); //- Game.width/2 - cell.w/2;
 	player.y = Math.round(_y * cell.h); // - Game.height/2 - cell.h/2;
 
-	wall = new Wall(player.x + 100, player.y);
+	// wall = new Wall(player.x + 100, player.y);
+	apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
 function update() {
@@ -93,7 +96,8 @@ function update() {
 		y: -player.y + Game.height/2 
 	};
 	map.update(offset);
-	wall.update(offset);
+	// wall.update(offset);
+	apple.update(offset);
 	
 	/* detect wall collisions */
 	let wallCollision = false;
@@ -113,6 +117,8 @@ function draw() {
 	for (const metric in ui.metrics) {
 		ui.metrics[metric].display();
 	}
+
+	apple.display();
 }
 
 function keyDown(key) {
@@ -176,14 +182,21 @@ function mouseMoved(x, y) {
 
 function mouseDown() {
 	ui.cursor.down = true;
+	console.log(ui.cursor);
 }
 
 function mouseUp() {
 	ui.cursor.down = false;
 }
 
+
+/* re fuck ing work thi
+	use document instead of canvas in Events
+	test other shit
+*/
 document.addEventListener('click', function(ev) {
-	player.setTarget(ev.pageX - player.position.x, ev.pageY - player.position.y);
+	if (ui.cursor.state == 'walk')
+		player.setTarget(ev.pageX - player.position.x, ev.pageY - player.position.y);
 }, false);
 
 Game.canvas.addEventListener('mousemove', function(ev) {

@@ -24,7 +24,7 @@ class Room extends Area {
 	}
 
 	addTexture() {
-		this.texture.addJSON(Game.textures.dirt);
+		this.texture.addJSON(Game.data.textures.dirt);
 	}
 
 	display() {

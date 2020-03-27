@@ -19,8 +19,11 @@ class Food extends Item {
 
 	display() {
 		super.display();
+
+		Game.ctx.lineWidth = 2; // idk
 		this.pickup.display();
 		this.eat.display();
+		Game.ctx.lineWidth = 1;
 	}
 
 	update(offset) {
@@ -37,9 +40,11 @@ class Food extends Item {
 			*/
 
 			this.pickup.click(ui.cursor.x, ui.cursor.y, ui.cursor.down, state => {
+				console.log('pickup', state);
 				switch(state) {
 					case 'over':
 						cursor.src = '/css/pointer.gif';
+						ui.cursor.state = 'interact';
 					break;
 					case 'down':
 						cursor.src = '/css/click.gif';
@@ -50,11 +55,13 @@ class Food extends Item {
 					break;
 					case 'out':
 						cursor.src = '/css/walk.gif';
+						ui.cursor.state = 'walk';
 					break;
 				}
 			});
 
 			this.eat.click(ui.cursor.x, ui.cursor.y, ui.cursor.down, state => {
+				console.log('eat', state);
 				switch(state) {
 					case 'over':
 						cursor.src = '/css/mouth.gif';
@@ -68,6 +75,10 @@ class Food extends Item {
 					break;
 				}
 			});
+
+		} else {
+			this.pickup.active = false;
+			this.eat.active = false;
 		}
 	}
 }

@@ -1,0 +1,8 @@
+{
+	"messages": {
+		"src": "/drawings/lettering/messages.json" 
+	},
+	"metrics": {
+		"src": "/drawings/lettering/metrics.json"
+	}
+}

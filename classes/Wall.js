@@ -28,7 +28,7 @@ class Wall extends Sprite {
 	}
 
 	addTexture() {
-		this.texture.addJSON(Game.textures.walls, true);
+		this.texture.addJSON(Game.data.textures.walls, true);
 	}
 
 	display() {

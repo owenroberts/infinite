@@ -17,8 +17,8 @@ class HellMap extends Map {
 		const foodCount = random(1, this.roomCount/2);
 		const choices = [];
 		const indexes = [];
-		for (let i = 0; i < Game.food.data.length; i++) {
-			const food = Game.food.data[i];
+		for (let i = 0; i < Game.data.food.data.length; i++) {
+			const food = Game.data.food.data[i];
 			const prob = this.prob(food[5]);
 			// console.log(food[0], prob);
 			if (prob == 1) choices.push(i);
@@ -39,10 +39,10 @@ class HellMap extends Map {
 			const node = Cool.random(this.nodes);
 			if (node.room) {
 				const index = choices.pop();
-				const data = Game.food.data[index];
+				const data = Game.data.food.data[index];
 				const x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w;
 				const y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h;
-				const food = new Food(x, y, Game.food[data[0]], data);
+				const food = new Food(x, y, Game.data.food[data[0]], data);
 				this.food.push(food);
 			}
 		}
