@@ -6,8 +6,8 @@ class Room extends Area {
 		for (let _x = this.x; _x < this.x + this.w; _x++) {
 			for (let _y = this.y; _y < this.y + this.h; _y++) {
 				locations.push({
-					x: _x * cell.w,
-					y: _y * cell.h
+					x: _x * cell.w + cell.w/2,
+					y: _y * cell.h + cell.h/2
 				});
 			}
 		}

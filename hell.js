@@ -49,10 +49,10 @@ function start() {
 	Game.addLettering('metrics', Game.data.lettering.metrics);
 	Game.addLettering('messages', Game.data.lettering.messages);
 
-	Game.setBounds('top', -cell.h/2);
-	Game.setBounds('left', -cell.w/2);
-	Game.setBounds('right', cols * cell.w - cell.w/2);
-	Game.setBounds('bottom', rows * cell.h - cell.h/2);
+	Game.setBounds('top', Game.height/2);
+	Game.setBounds('left', Game.width/2);
+	Game.setBounds('right', cols * cell.w - Game.width/2);
+	Game.setBounds('bottom', rows * cell.h - Game.height/2);
 
 	console.time('map');
 	map = new HellMap(cols, rows);
