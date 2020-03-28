@@ -76,7 +76,7 @@ function start() {
 
 	player.x = Cool.random(minX, maxX); 
 	player.y = Cool.random(minY, maxY); 
-	
+
 	// console.log(player.x, player.y);
 
 	ui = {};
@@ -88,6 +88,14 @@ function start() {
 		Game.scenes.inventory.addToDisplay(ui.metrics[metric]);
 		Game.scenes.message.addToDisplay(ui.metrics[metric]);
 	}
+
+	ui.message = new Text(3 * 128, 6 + 32, '', 13, Game.lettering.messages);
+	Game.scenes.message.addToDisplay(ui.message);
+	Game.scenes.inventory.addToDisplay(ui.message);
+
+	// ui.continue = new HellTextButton(3 * 128, 6 + 32 + 32, 'Continue', 8, Game.lettering.messages);
+	// Game.scenes.message.addUI(ui.message);
+	// Game.scenes.inventory.addUI(ui.message);
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
 	ui.cursor = new Cursor({
@@ -108,7 +116,7 @@ function start() {
 	Game.scenes.map.addToDisplay(ui.arrow);
 	// Game.scenes.inventory.add(ui.arrow);
 
-	ui.inventoryOpen = new Toggle({
+	ui.inventoryOpen = new Button({
 		x: 100,
 		y: -50,
 		json: Game.data.ui.inventory,
@@ -126,10 +134,10 @@ function start() {
 			ui.cursor.state = 'interact';
 		}
 	});
-	Game.scenes.map.addToUI(ui.inventoryOpen);
+	Game.scenes.map.addUI(ui.inventoryOpen);
 	/* need something just checking the cursor state */
 	
-	ui.inventoryExit = new Toggle({
+	ui.inventoryExit = new Button({
 		x: 100,
 		y: -50,
 		json: Game.data.ui.exit,
@@ -145,10 +153,9 @@ function start() {
 		onClick: function() {
 			ui.cursor.state = 'walk';
 			Game.scene = 'map';
-			ui.inventoryOpen.toggle('off');
 		}
 	});
-	Game.scenes.inventory.addToUI(ui.inventoryExit);
+	Game.scenes.inventory.addUI(ui.inventoryExit);
 
 
 
@@ -250,7 +257,6 @@ function mouseUp(x, y) {
 	ui.cursor.up();
 	Game.scenes[Game.scene].uiUp(x, y);
 }
-
 
 /* re fuck ing work thi
 	use document instead of canvas in Events
