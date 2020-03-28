@@ -5,6 +5,7 @@ class HellMap extends Map {
 		this.nodes.forEach(node => {
 			if (node.room) this.roomCount++;
 		});
+		
 	}
 
 	prob(f) {
@@ -13,7 +14,7 @@ class HellMap extends Map {
 	}
 
 	addFood() {
-		const foodCount = random(1, this.roomCount/2);
+		const foodCount = 3; // random(1, this.roomCount/2);
 		const choices = [];
 		const indexes = [];
 		for (let i = 0; i < Game.data.food.data.length; i++) {
@@ -39,16 +40,23 @@ class HellMap extends Map {
 			if (node.room) {
 				const index = choices.pop();
 				const data = Game.data.food.data[index];
-				const x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w;
-				const y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h;
+				let x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w + cell.w/2;
+				let y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h + cell.h/2;
 				const food = new Food(x, y, Game.data.food[data[0]], data);
+				let count = 0;
+				while (count < 10 && this.food.filter(f => f.collide(food)).length > 0) {
+					console.log('while')
+					food.position.x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w + cell.w/2;
+					food.position.y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h + cell.h/2;
+					console.log(food, this.food);
+				}
+				
 				this.food.push(food);
 			}
 		}
 	}
 
 	remove(item) {
-		console.log('map remove', item);
 		const type = item.constructor.name.toLowerCase();
 		const index = map[type].indexOf(item);
 		map[type].splice(index, 1);

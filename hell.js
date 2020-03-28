@@ -7,7 +7,8 @@ Game.init({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: true
+	stats: true,
+	scenes: ['map', 'inventory', 'message']
 });
 
 // Game.lettering('drawings/letters.json');
@@ -26,12 +27,7 @@ Game.load(
 Game.lvl = 0;
 let player;
 let ui;
-let map, cols = 20, rows = 20, min = 6, cell = { w: 256, h: 256 };
-
-const cursor = document.getElementById('cursor');
-cursor.src = '/css/walk.gif';
-// cursor.ondragstart = ev => ev.preventDefault();
-
+let map, cols = 16, rows = 16, min = 5, cell = { w: 256, h: 256 };
 
 /* debugging */
 let wall;
@@ -58,84 +54,131 @@ function start() {
 	map = new HellMap(cols, rows);
 	map.setup();
 	map.addFood();
+	Game.scenes.map.add(map);
 	console.timeEnd('map');
 	
-	player = new Player('/drawings/sprites/skully_3f.json', Game.width/2, Game.height/2);
+	player = new Player(Game.data.sprites.player, Game.width/2, Game.height/2);
+	Game.scenes.inventory.addToDisplay(player.inventory);
+	// Game.scenes.map.add(player);
 	// player.debug = true;
-
-	ui = {};
-	ui.metrics = {};
-	ui.metrics.health = new Text(3, 6, 'Health ' + player.health, 12, Game.lettering.metrics);
-	ui.metrics.morality = new Text(232, 6, 'Morality ' + player.morality, 13, Game.lettering.metrics);
-
-	ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
-	ui.arrow = new Sprite(0, 0);
-	ui.arrow.addJSON(Game.data.ui.arrow);
-	ui.arrow.alive = false;
-	// ui.cursor = new Sprite(0, 0);
-	// ui.cursor.addJSON(Game.ui.cursor);
-	// ui.cursor.animation.state = 'walk';
-
-	ui.inventoryToggle = new Toggle({
-		x: 100,
-		y: -90,
-		func: 'toggleInventory',
-		json: Game.data.ui.inventory
-	});
 
 	/* place player in random room 
 		player.x player.y is actual place on map
 		player.position is where it draws on screen 
 	*/
 	const pos = Cool.random(map.nodes.filter(node => node.room)).room;
-	const _x = Cool.random(pos.x + 1, pos.x + pos.w - 2);
-	const _y = Cool.random(pos.y + 1, pos.y + pos.h - 2);
-	player.x = Math.round(_x * cell.w); //- Game.width/2 - cell.w/2;
-	player.y = Math.round(_y * cell.h); // - Game.height/2 - cell.h/2;
+	// console.log(pos);
 
-	wall = new Wall(player.x + 100, player.y);
-	apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
+	const minX = pos.x * cell.w + player.width;
+	const maxX = (pos.x + pos.w) * cell.h - player.width * 2;
+	const minY = pos.y * cell.h + player.height;
+	const maxY = (pos.y + pos.h) * cell.h - player.height * 2;
+
+	player.x = Cool.random(minX, maxX); 
+	player.y = Cool.random(minY, maxY); 
+	
+	// console.log(player.x, player.y);
+
+	ui = {};
+	ui.metrics = {};
+	ui.metrics.health = new Text(3, 6, 'Health ' + player.health, 12, Game.lettering.metrics);
+	ui.metrics.morality = new Text(232, 6, 'Morality ' + player.morality, 13, Game.lettering.metrics);
+	for (const metric in ui.metrics) {
+		Game.scenes.map.addToDisplay(ui.metrics[metric]);
+		Game.scenes.inventory.addToDisplay(ui.metrics[metric]);
+		Game.scenes.message.addToDisplay(ui.metrics[metric]);
+	}
+
+	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
+	ui.cursor = new Cursor({
+		'walk': '/css/walk.gif',
+		'interact': '/css/pointer.gif',
+		'click': '/css/click.gif',
+		'eat': '/css/mouth.gif'
+	});
+	ui.cursor.state = 'walk';
+	// ui.cursor = new Sprite(0, 0);
+	// ui.cursor.addJSON(Game.ui.cursor);
+	// ui.cursor.animation.state = 'walk';
+
+
+	ui.arrow = new Sprite(0, 0);
+	ui.arrow.addJSON(Game.data.ui.arrow);
+	ui.arrow.alive = false;
+	Game.scenes.map.addToDisplay(ui.arrow);
+	// Game.scenes.inventory.add(ui.arrow);
+
+	ui.inventoryOpen = new Toggle({
+		x: 100,
+		y: -50,
+		json: Game.data.ui.inventory,
+		onOver: function() {
+			ui.cursor.state = 'interact';
+		},
+		onOut: function() {
+			ui.cursor.state = 'walk';
+		},
+		onDown: function() {
+			ui.cursor.state = 'click';
+		},
+		onClick: function() {
+			Game.scene = 'inventory';
+			ui.cursor.state = 'interact';
+		}
+	});
+	Game.scenes.map.addToUI(ui.inventoryOpen);
+	/* need something just checking the cursor state */
+	
+	ui.inventoryExit = new Toggle({
+		x: 100,
+		y: -50,
+		json: Game.data.ui.exit,
+		onOver: function() {
+			ui.cursor.state = 'interact';
+		},
+		onOut: function() {
+			ui.cursor.state = 'walk';
+		},
+		onDown: function() {
+			ui.cursor.state = 'click';
+		},
+		onClick: function() {
+			ui.cursor.state = 'walk';
+			Game.scene = 'map';
+			ui.inventoryOpen.toggle('off');
+		}
+	});
+	Game.scenes.inventory.addToUI(ui.inventoryExit);
+
+
+
+	/* debugging */
+	// wall = new Wall(player.x + 100, player.y);
+	// apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
 function update() {
+	player.update();
+	const offset = {
+		x: -player.x + Game.width/2 ,
+		y: -player.y + Game.height/2 
+	};
+	Game.scenes[Game.scene].update(offset);
 
-	if (Game.scene == 'map') {
-			player.update();
-
-		const offset = {
-			x: -player.x + Game.width/2 ,
-			y: -player.y + Game.height/2 
-		};
-		map.update(offset);
-		// wall.update(offset);
-		apple.update(offset);
-		
-		/* detect wall collisions */
-		let wallCollision = false;
-		for (let i = 0; i < map.walls.length; i++) {
-			const wall = map.walls[i];
-			/* wall doesn't have collider should it? */
-			if (wall.collide(player)) wallCollision = true;
-		}
-
-		if (wallCollision) player.back();
+	let wallCollision = false;
+	for (let i = 0; i < map.walls.length; i++) {
+		const wall = map.walls[i];
+		/* wall doesn't have collider should it? */
+		if (wall.collide(player)) wallCollision = true;
 	}
+	if (wallCollision) player.back();
 }
 
 function draw() {
-	if (Game.scene == 'map') map.display();
+	Game.scenes[Game.scene].display();
 	player.display();
 
-	if (Game.scene == 'inventory') player.inventory.display();
-
-	for (const metric in ui.metrics) {
-		ui.metrics[metric].display();
-	}
-	ui.arrow.display();
-	ui.inventoryToggle.display();
-
-
-	apple.display();
+	// apple.display();
 }
 
 function keyDown(key) {
@@ -192,48 +235,20 @@ function keyUp(key) {
 // 	console.log(player.position.x - x, player.position.y - y);
 // }
 
-function toggleInventory() {
-	if (Game.scene == 'map') {
-		Game.scene = 'inventory';
-		ui.cursor.state = 'interact';
-		cursor.src = '/css/pointer.gif';
-	}
-	else if (Game.scene = 'inventory') {
-		ui.cursor.state = 'walk';
-		cursor.src = '/css/walk.gif';
-		Game.scene = 'map';
-	}
-}
-
 function mouseMoved(x, y) {
 	ui.cursor.x = x;
 	ui.cursor.y = y;
-
-	if (ui.inventoryToggle.over(x, y)) {
-		ui.cursor.state = 'interact';
-		cursor.src = '/css/pointer.gif';
-	}
-
-	if (ui.inventoryToggle.out(x, y)) {
-		ui.cursor.state = 'walk';
-		cursor.src = '/css/walk.gif';
-	}
+	Game.scenes[Game.scene].uiOver(x, y);
 }
 
 function mouseDown(x, y) {
-	ui.cursor.down = true;
-
-	if (ui.inventoryToggle.down(x, y)) {
-		ui.cursor.state = 'interact';
-		cursor.src = '/css/click.gif';
-	}
-	
+	ui.cursor.down();
+	Game.scenes[Game.scene].uiDown(x, y);
 }
 
 function mouseUp(x, y) {
-	ui.cursor.down = false;
-
-	ui.inventoryToggle.up(x, y);
+	ui.cursor.up();
+	Game.scenes[Game.scene].uiUp(x, y);
 }
 
 

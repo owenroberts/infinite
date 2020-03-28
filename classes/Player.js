@@ -1,5 +1,5 @@
 class Player extends Sprite {
-	constructor(src, x, y, debug) {
+	constructor(json, x, y, debug) {
 		super(Math.round(x), Math.round(y));
 		this.x = Math.round(x);
 		this.y = Math.round(y);
@@ -9,7 +9,7 @@ class Player extends Sprite {
 		this.debug = debug || false;
 		this.speed = new Cool.Vector(8, 8);
 		
-		this.addAnimation(src, () => {
+		this.addJSON(json, () => {
 			this.animation.state = 'idle';
 			this.setCollider(25, 6, 78, 90);
 		});
@@ -78,6 +78,5 @@ class Player extends Sprite {
 	}
 
 	eat() {
-
 	}
 }
