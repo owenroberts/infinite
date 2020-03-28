@@ -4,7 +4,7 @@ class Wall extends Sprite {
 		// console.log(x, y, cell);
 
 		super(x * cell.w, y * cell.h, cell.w, cell.h);
-		this.debug = true;
+		// this.debug = true;
 		this.origin = { x: x, y: y };
 
 		const locations = [];

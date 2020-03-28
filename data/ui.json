@@ -1,5 +1,8 @@
 {
-	"cursor": {
-		"src": "/drawings/ui/cursor.json"
+	"cursor": { "src": "/drawings/ui/cursor.json" },
+	"arrow": { "src": "/drawings/ui/arrow.json" },
+	"inventory": {
+		"src": "/drawings/ui/inventory-toggle.json",
+		"type": "Toggle"
 	}
 }

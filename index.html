@@ -40,6 +40,7 @@
 	<script src="classes/HellMap.js"></script>
 	<script src="classes/Food.js"></script>
 	<script src="classes/Player.js"></script>
+	<script src="classes/Inventory.js"></script>
 	<script src="hell.js"></script>
 	
 </body>
@@ -82,6 +83,8 @@
 	- player position isn't supposed to change
 	- text + ui class for food 
 
+	- consolidate button and toggle ... 
+
 - rename animation class ... fuck
 - lines problems
 
@@ -90,6 +93,8 @@
 	- lines on sidecar dont take on mobile stuff ...
 	- zoom ui and canvas separately ...
 	- cant draw on top part zoomed in after reset .... fixed by doing R/L instead of L/R
+	- state updates when using next prev
+	- update canvas size when fitting to canvas ...
 
 - lines needs immediate fix
 	- new drawing doesn't retain new lines setup
@@ -110,8 +115,9 @@
 - to do -
 	- grass in hell?
 	- partition collisions and test performance
-	- walls are off
 	- player gets stuck while clicking...
+		- adjust player collider
 	- player spawns on wall ...
-	- boundaries also off now ...
+	- game better name for .data
+	- text.js active vs sprite.js alive (really "visible")
  -->

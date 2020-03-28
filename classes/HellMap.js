@@ -1,5 +1,4 @@
 class HellMap extends Map {
-
 	setup() {
 		this.food = [];
 		this.roomCount = 0;
@@ -46,6 +45,13 @@ class HellMap extends Map {
 				this.food.push(food);
 			}
 		}
+	}
+
+	remove(item) {
+		console.log('map remove', item);
+		const type = item.constructor.name.toLowerCase();
+		const index = map[type].indexOf(item);
+		map[type].splice(index, 1);
 	}
 
 	display() {

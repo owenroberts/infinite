@@ -69,9 +69,19 @@ function start() {
 	ui.metrics.morality = new Text(232, 6, 'Morality ' + player.morality, 13, Game.lettering.metrics);
 
 	ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
+	ui.arrow = new Sprite(0, 0);
+	ui.arrow.addJSON(Game.data.ui.arrow);
+	ui.arrow.alive = false;
 	// ui.cursor = new Sprite(0, 0);
 	// ui.cursor.addJSON(Game.ui.cursor);
 	// ui.cursor.animation.state = 'walk';
+
+	ui.inventoryToggle = new Toggle({
+		x: 100,
+		y: -90,
+		func: 'toggleInventory',
+		json: Game.data.ui.inventory
+	});
 
 	/* place player in random room 
 		player.x player.y is actual place on map
@@ -83,40 +93,47 @@ function start() {
 	player.x = Math.round(_x * cell.w); //- Game.width/2 - cell.w/2;
 	player.y = Math.round(_y * cell.h); // - Game.height/2 - cell.h/2;
 
-	// wall = new Wall(player.x + 100, player.y);
+	wall = new Wall(player.x + 100, player.y);
 	apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
 function update() {
-	
-	player.update();
 
-	const offset = {
-		x: -player.x + Game.width/2 ,
-		y: -player.y + Game.height/2 
-	};
-	map.update(offset);
-	// wall.update(offset);
-	apple.update(offset);
-	
-	/* detect wall collisions */
-	let wallCollision = false;
-	for (let i = 0; i < map.walls.length; i++) {
-		const wall = map.walls[i];
-		/* wall doesn't have collider should it? */
-		// if (wall.collide(player)) wallCollision = true;
+	if (Game.scene == 'map') {
+			player.update();
+
+		const offset = {
+			x: -player.x + Game.width/2 ,
+			y: -player.y + Game.height/2 
+		};
+		map.update(offset);
+		// wall.update(offset);
+		apple.update(offset);
+		
+		/* detect wall collisions */
+		let wallCollision = false;
+		for (let i = 0; i < map.walls.length; i++) {
+			const wall = map.walls[i];
+			/* wall doesn't have collider should it? */
+			if (wall.collide(player)) wallCollision = true;
+		}
+
+		if (wallCollision) player.back();
 	}
-
-	if (wallCollision) player.back();
 }
 
 function draw() {
-	map.display();
+	if (Game.scene == 'map') map.display();
 	player.display();
+
+	if (Game.scene == 'inventory') player.inventory.display();
 
 	for (const metric in ui.metrics) {
 		ui.metrics[metric].display();
 	}
+	ui.arrow.display();
+	ui.inventoryToggle.display();
+
 
 	apple.display();
 }
@@ -175,18 +192,48 @@ function keyUp(key) {
 // 	console.log(player.position.x - x, player.position.y - y);
 // }
 
+function toggleInventory() {
+	if (Game.scene == 'map') {
+		Game.scene = 'inventory';
+		ui.cursor.state = 'interact';
+		cursor.src = '/css/pointer.gif';
+	}
+	else if (Game.scene = 'inventory') {
+		ui.cursor.state = 'walk';
+		cursor.src = '/css/walk.gif';
+		Game.scene = 'map';
+	}
+}
+
 function mouseMoved(x, y) {
 	ui.cursor.x = x;
 	ui.cursor.y = y;
+
+	if (ui.inventoryToggle.over(x, y)) {
+		ui.cursor.state = 'interact';
+		cursor.src = '/css/pointer.gif';
+	}
+
+	if (ui.inventoryToggle.out(x, y)) {
+		ui.cursor.state = 'walk';
+		cursor.src = '/css/walk.gif';
+	}
 }
 
-function mouseDown() {
+function mouseDown(x, y) {
 	ui.cursor.down = true;
-	console.log(ui.cursor);
+
+	if (ui.inventoryToggle.down(x, y)) {
+		ui.cursor.state = 'interact';
+		cursor.src = '/css/click.gif';
+	}
+	
 }
 
-function mouseUp() {
+function mouseUp(x, y) {
 	ui.cursor.down = false;
+
+	ui.inventoryToggle.up(x, y);
 }
 
 
@@ -194,7 +241,7 @@ function mouseUp() {
 	use document instead of canvas in Events
 	test other shit
 */
-document.addEventListener('click', function(ev) {
+document.addEventListener('mousedown', function(ev) {
 	if (ui.cursor.state == 'walk')
 		player.setTarget(ev.pageX - player.position.x, ev.pageY - player.position.y);
 }, false);

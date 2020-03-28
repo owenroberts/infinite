@@ -5,15 +5,13 @@ class Player extends Sprite {
 		this.y = Math.round(y);
 		this.prevXY = { x: this.x, y: this.y };
 		this.center = true; /* need better name */
-		
-		// this.position.x += Game.width/2;
-		// this.position.y += Game.height/2;
 
 		this.debug = debug || false;
 		this.speed = new Cool.Vector(8, 8);
 		
 		this.addAnimation(src, () => {
 			this.animation.state = 'idle';
+			this.setCollider(25, 6, 78, 90);
 		});
 
 		this.input = { right: false, up: false, left: false, down: false };
@@ -23,6 +21,7 @@ class Player extends Sprite {
 		this.morality = 0;
 		this.hunger = 0;
 
+		this.inventory = new Inventory();
 	}
 
 	inputKey(key, state) {
@@ -76,5 +75,9 @@ class Player extends Sprite {
 		this.target.y = 0;
 		this.x = this.prevXY.x;
 		this.y = this.prevXY.y;
+	}
+
+	eat() {
+
 	}
 }
