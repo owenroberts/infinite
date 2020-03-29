@@ -43,12 +43,13 @@ class HellMap extends Map {
 				let x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w + cell.w/2;
 				let y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h + cell.h/2;
 				const food = new Food(x, y, Game.data.food[data[0]], data);
-				let count = 0;
-				while (count < 10 && this.food.filter(f => f.collide(food)).length > 0) {
-					console.log('while')
+				while (this.food.filter(f => f.collide(food)).length > 0) {
 					food.position.x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w + cell.w/2;
 					food.position.y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h + cell.h/2;
-					console.log(food, this.food);
+					console.log(this.food.filter(f => f.collide(food)));
+					console.log(food.position);
+					console.log(this.food.forEach(f => console.log(f.position)));
+					debugger;
 				}
 				
 				this.food.push(food);

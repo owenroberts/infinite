@@ -3,10 +3,10 @@ class Food extends Item {
 		super({ x: x, y: y});
 		super.addJSON(json);
 		this.name = mets[0];
-		this.health = mets[1];
-		this.morality = mets[2];
-		this.hunger = mets[3];
-		this.speed = mets[4];
+		this.health = +mets[1];
+		this.morality = +mets[2];
+		this.hunger = +mets[3];
+		this.speed = +mets[4];
 		this.quote = mets[6];
 		this.inInventory = false;
 
@@ -21,15 +21,16 @@ class Food extends Item {
 			this.inInventory = true;
 			player.inventory.add(this);
 		};
-		this.pickup.debug = true;
 
 		this.eat = new HellTextButton(this.position.x + this.width/2, this.position.y + 35, `Eat ${this.name}`, 4 + this.name.length, Game.lettering.messages, 'eat');
 		Game.scenes.map.addUIUpdate(this.eat);
 		this.eat.alive = false;
 		this.eat.onClick = () => {
-			ui.arrow.alive = false;
-			ui.cursor.state = 'walk';
-			console.log('eat')
+			map.remove(this);
+			this.pickup.alive = false;
+			this.eat.alive = false;
+			Game.scenes.message.addToDisplay(this);
+			player.eat(this);
 		};
 	}
 

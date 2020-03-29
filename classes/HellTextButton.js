@@ -7,16 +7,21 @@ class HellTextButton extends TextButton {
 	onOver() {
 		ui.cursor.state = this.cursorState;
 		ui.arrow.alive = true;
-		ui.arrow.position.x = this.x + this.width;
-		ui.arrow.position.y = this.y;
+		ui.arrow.position.x = this.position.x + this.width;
+		ui.arrow.position.y = this.position.y;
 	}
 
 	onOut() {
-		ui.cursor.state = 'walk';
+		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
 		ui.arrow.alive = false;
 	}
 
 	onDown() {
 		ui.cursor.state = 'click';
+	}
+
+	onUp() {
+		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
+		ui.arrow.alive = false;
 	}
 }

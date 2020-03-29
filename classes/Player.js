@@ -17,6 +17,7 @@ class Player extends Sprite {
 		this.input = { right: false, up: false, left: false, down: false };
 		this.target = new Cool.Vector(0, 0);
 
+		this.metricCount = 0;
 		this.health = 100;
 		this.morality = 0;
 		this.hunger = 0;
@@ -31,6 +32,7 @@ class Player extends Sprite {
 	setTarget(x, y) {
 		this.target.x = x;
 		this.target.y = y;
+		this.hunger += 1; // what about key presses .... 
 	}
 
 	update() {
@@ -68,6 +70,14 @@ class Player extends Sprite {
 			state = 'left';
 		}
 		this.animation.state = state;
+
+		if (this.metricCount == 100) {
+			this.checkMetrics();
+			this.metricCount = 0;
+			// console.log('metric count');
+		}
+		this.metricCount++;
+
 	}
 
 	back() {
@@ -77,6 +87,54 @@ class Player extends Sprite {
 		this.y = this.prevXY.y;
 	}
 
-	eat() {
+	checkMetrics() {
+		if (this.health <= 0) {
+			ui.message.addMsg(`You have died.`);
+			if (this.morality == 0) {
+				ui.message.addMsg(`You have been morally neutral.`);
+				ui.message.addMsg(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
+			}
+			else if (this.morality > 0) {
+				ui.message.addMsg(`You have acted morally.`);
+				ui.message.addMsg(`You will move up to a previous ring of hell.`);
+				Game.lvl -= 1;
+			}
+			else {
+				ui.message.addMsg(`You are a sinner.`);
+				ui.message.addMsg(`You will descend further into hell.`);
+				Game.lvl += 1;
+			}
+		}
+
+		// update hunger metric 
+		// udpate ring of hell metric
+
+		ui.metrics.health.setMsg();
+		ui.metrics.morality.setMsg();
+
+	}
+
+	eat(food) {
+		Game.scene = 'message';
+
+		ui.message.setMsg(`You ate a ${food.name}.`);
+		ui.message.addMsg(food.quote);
+		
+		this.health += food.health;
+		if (food.health != 0) 
+			ui.message.addMsg(`Your health has ${food.health > 0 ? 'increased' : 'decreased'}.`);
+		
+		this.hunger = Math.max(0, this.hunger - food.hunger);
+		if (food.hunger > 0)
+			ui.message.addMsg(`Your hunger has abated.`);
+		
+		this.morality += food.morality;
+		if (food.morality != 0)
+			ui.message.addMsg(`You have ${food.morality > 0 ? 'acted morally' : 'sinned'}.`);
+		
+		this.speed.x += food.speed;
+		this.speed.y += food.speed;
+
+		this.checkMetrics();
 	}
 }

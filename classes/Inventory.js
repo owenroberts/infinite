@@ -16,14 +16,13 @@ class Inventory {
 
 	add(item) {
 		Game.scene = 'inventory';
-		ui.cursor.state = 'interact';
 
 		for (let i = 0; i < this.size; i++) {
 			if (!this[i].item) {
 				this[i].item = item;
 				item.position.x = this.x + this.w * i;
 				item.position.y = this.y + Math.floor(i/3) * this.h;
-				ui.message.setMsg(`You picked up a ${item.name}`);
+				ui.message.setMsg(`You picked up a ${item.name}.`);
 				return;
 			}
 		}

@@ -11,6 +11,20 @@ Game.init({
 	scenes: ['map', 'inventory', 'message']
 });
 
+Object.defineProperty(Game, 'scene', {
+	set: function(scene) {
+		if (scene != Game._scene) {
+			Game._scene = scene;
+			ui.cursor.state = scene == 'map' ? 'walk' : 'interact';
+			ui.arrow.alive = false;
+			ui.message.x = scene == 'message' ? 6 : 3 * 128 + 32;
+		}
+	},
+	get: function() {
+		return Game._scene;
+	}
+});
+
 // Game.lettering('drawings/letters.json');
 console.time('load game');
 Game.load(
@@ -28,6 +42,7 @@ Game.lvl = 0;
 let player;
 let ui;
 let map, cols = 16, rows = 16, min = 5, cell = { w: 256, h: 256 };
+let grafWrap = 20;
 
 /* debugging */
 let wall;
@@ -41,7 +56,7 @@ document.addEventListener('keydown', ev => {
 
 function start() {
 	console.timeEnd('load game');
-	Game.scene = 'map';
+	
 	Game.addLettering('metrics', Game.data.lettering.metrics);
 	Game.addLettering('messages', Game.data.lettering.messages);
 
@@ -81,21 +96,22 @@ function start() {
 
 	ui = {};
 	ui.metrics = {};
-	ui.metrics.health = new Text(3, 6, 'Health ' + player.health, 12, Game.lettering.metrics);
-	ui.metrics.morality = new Text(232, 6, 'Morality ' + player.morality, 13, Game.lettering.metrics);
-	for (const metric in ui.metrics) {
-		Game.scenes.map.addToDisplay(ui.metrics[metric]);
-		Game.scenes.inventory.addToDisplay(ui.metrics[metric]);
-		Game.scenes.message.addToDisplay(ui.metrics[metric]);
-	}
+	ui.metrics.level = new UIMetric(3, 6, () => {
+		return Game.lvl == 0 ? 'Purgatory' : `${Game.lvl} ring of Hell`; 
+	});
+	ui.metrics.morality = new UIMetric(200, 6, () => {
+		return `Morality ${player.morality}`;
+	});
+	ui.metrics.health = new UIMetric(450, 6, () => {
+		return `Health ${player.health}`;
+	});
+	// hunger is message ...
 
-	ui.message = new Text(3 * 128, 6 + 32, '', 13, Game.lettering.messages);
+	const introMessage = 'Welcome to Purgatory. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.';
+	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.lettering.messages);
+	ui.message.setMsg(introMessage);
 	Game.scenes.message.addToDisplay(ui.message);
 	Game.scenes.inventory.addToDisplay(ui.message);
-
-	// ui.continue = new HellTextButton(3 * 128, 6 + 32 + 32, 'Continue', 8, Game.lettering.messages);
-	// Game.scenes.message.addUI(ui.message);
-	// Game.scenes.inventory.addUI(ui.message);
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
 	ui.cursor = new Cursor({
@@ -114,49 +130,32 @@ function start() {
 	ui.arrow.addJSON(Game.data.ui.arrow);
 	ui.arrow.alive = false;
 	Game.scenes.map.addToDisplay(ui.arrow);
-	// Game.scenes.inventory.add(ui.arrow);
+	Game.scenes.inventory.addToDisplay(ui.arrow);
+	Game.scenes.message.addToDisplay(ui.arrow);
 
-	ui.inventoryOpen = new Button({
+	ui.inventoryOpen = new HellButton({
 		x: 100,
 		y: -50,
 		json: Game.data.ui.inventory,
-		onOver: function() {
-			ui.cursor.state = 'interact';
-		},
-		onOut: function() {
-			ui.cursor.state = 'walk';
-		},
-		onDown: function() {
-			ui.cursor.state = 'click';
-		},
 		onClick: function() {
 			Game.scene = 'inventory';
-			ui.cursor.state = 'interact';
 		}
 	});
 	Game.scenes.map.addUI(ui.inventoryOpen);
 	/* need something just checking the cursor state */
 	
-	ui.inventoryExit = new Button({
+	ui.inventoryExit = new HellButton({
 		x: 100,
 		y: -50,
 		json: Game.data.ui.exit,
-		onOver: function() {
-			ui.cursor.state = 'interact';
-		},
-		onOut: function() {
-			ui.cursor.state = 'walk';
-		},
-		onDown: function() {
-			ui.cursor.state = 'click';
-		},
 		onClick: function() {
-			ui.cursor.state = 'walk';
 			Game.scene = 'map';
+			ui.message.setMsg('');
 		}
 	});
 	Game.scenes.inventory.addUI(ui.inventoryExit);
 
+	Game.scene = 'message';
 
 
 	/* debugging */
