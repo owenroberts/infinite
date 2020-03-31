@@ -62,7 +62,7 @@ Game.lvl = 0;
 let player;
 let ui;
 let map, cols = 16, rows = 16, min = 5, cell = { w: 256, h: 256 };
-let grafWrap = 30;
+let grafWrap = 20;
 
 /* debugging */
 let wall;
