@@ -45,7 +45,6 @@ Object.defineProperty(Game, 'lvlName', {
 	}
 });
 
-// Game.lettering('drawings/letters.json');
 console.time('load data');
 Game.load(
 	{ 
@@ -61,7 +60,7 @@ Game.load(
 Game.lvl = 0;
 let player;
 let ui;
-let map, cols = 16, rows = 16, min = 5, cell = { w: 256, h: 256 };
+let map, cols = 20, rows = 20, min = 5, cell = { w: 256, h: 256 };
 let grafWrap = 20;
 
 /* debugging */
@@ -70,8 +69,8 @@ let apple;
 
 let mapAlpha = 0;
 document.addEventListener('keydown', ev => {
-	if (ev.which == 187) mapAlpha = Math.min(1, mapAlpha + 0.25);
-	else if (ev.which == 189) mapAlpha = Math.max(0, mapAlpha - 0.25);
+	if (ev.which == 187) mapAlpha = Math.min(1, mapAlpha + 0.5);
+	else if (ev.which == 189) mapAlpha = Math.max(0, mapAlpha - 0.5);
 });
 
 function start() {
@@ -128,13 +127,14 @@ function start() {
 	Game.scenes.inventory.addToDisplay(ui.arrow);
 	Game.scenes.message.addToDisplay(ui.arrow);
 
-	ui.inventoryOpen = new HellTextButton(10, -50, 'inventory', 9, Game.lettering.metrics);
+	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', 9, Game.lettering.metrics);
 	ui.inventoryOpen.onClick = function() {
 		Game.scene = 'inventory';
 	};
+	// Game.scenes.message.addUI(ui.inventoryOpen);
 	Game.scenes.map.addUI(ui.inventoryOpen);
 	
-	ui.inventoryExit = new HellTextButton(100, -50, 'exit', 4, Game.lettering.metrics);
+	ui.inventoryExit = new HellTextButton(750, 6, 'exit', 4, Game.lettering.metrics);
 	ui.inventoryExit.onClick = function() {
 		Game.scene = 'map';
 		ui.message.setMsg('');
@@ -160,6 +160,7 @@ function start() {
 function buildMap() {
 	console.time('map');
 	map.build(function() {
+		ui.message.setMsg('');
 		Game.scene = 'map';
 		console.timeEnd('map');
 		if (player.died) player.reborn();

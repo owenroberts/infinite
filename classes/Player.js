@@ -91,14 +91,9 @@ class Player extends Sprite {
 	}
 
 	spawn() {
-		const pos = Cool.random(map.nodes.filter(node => node.room)).room;
-		const minX = pos.x * cell.w + player.width;
-		const maxX = (pos.x + pos.w) * cell.h - player.width * 2;
-		const minY = pos.y * cell.h + player.height;
-		const maxY = (pos.y + pos.h) * cell.h - player.height * 2;
-
-		player.x = Cool.random(minX, maxX); 
-		player.y = Cool.random(minY, maxY); 
+		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell();
+		player.x = pos.x * cell.w; 
+		player.y = pos.y * cell.h;
 	}
 
 	reborn() {

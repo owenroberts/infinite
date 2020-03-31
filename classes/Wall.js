@@ -4,11 +4,9 @@ class Wall extends Sprite {
 		// console.log(x, y, cell);
 
 		super(x * cell.w, y * cell.h, cell.w, cell.h);
+		this.center = true;
 		// this.debug = true;
 		this.origin = { x: x, y: y };
-
-		// const locations = [];
-		
 
 		this.texture = new Texture({
 			scenes: ['map'],
@@ -28,13 +26,10 @@ class Wall extends Sprite {
 
 		for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
 			this.texture.addItem(Cool.random(indexes), {
-				x: x + cell.w/2 + Cool.random(-cell.w/3, cell.w/3),
-				y: y + cell.h/2 + Cool.random(-cell.h/3, cell.h/3)
+				x: x + Cool.random(-cell.w/3, cell.w/3),
+				y: y + Cool.random(-cell.h/3, cell.h/3)
 			});
 		}
-
-
-
 		// this.debug = Game.debug ? debug : undefined;
 	}
 

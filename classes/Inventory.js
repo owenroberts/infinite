@@ -22,7 +22,7 @@ class Inventory {
 				this[i].item = item;
 				item.position.x = this.x + this.w * i;
 				item.position.y = this.y + Math.floor(i/3) * this.h;
-				ui.message.setMsg(`You picked up a ${item.name}.`);
+				ui.message.setMsg(`You picked up the ${item.name}.`);
 				return;
 			}
 		}

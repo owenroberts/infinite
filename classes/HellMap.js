@@ -6,33 +6,34 @@ class HellMap extends Map {
 	}
 
 	build(callback) {
-		super.build();
-		this.setup();
-		this.addFood();
-		if (callback) callback();
-	}
-
-	setup() {
+		// cell buffer
+		const buf = {
+			w: Math.ceil(Game.width/2/cell.w),
+			h: Math.ceil(Game.height/2/cell.h)
+		}; 
+		super.build(buf);
 		this.food = [];
 		this.roomCount = 0;
 		this.nodes.forEach(node => {
 			if (node.room) this.roomCount++;
 		});
+		this.addFood();
+		if (callback) callback();
 	}
 
 	prob(f) {
 		f = f.replace(/p(?![a-z])/g, Cool.map(Game.lvl, 0, 28, 0, 1));
+		console.log(f);
 		return  Function('return ' + f)().clamp(0, 1);
 	}
 
 	addFood() {
-		const foodCount = 3; // random(1, this.roomCount/2);
+		const foodCount = random(1, this.roomCount);
 		const choices = [];
 		const indexes = [];
 		for (let i = 0; i < Game.data.food.data.length; i++) {
 			const food = Game.data.food.data[i];
 			const prob = this.prob(food[5]);
-			// console.log(food[0], prob);
 			if (prob == 1) choices.push(i);
 			else if (prob > 0) {
 				for (let j = 0; j < prob * 100; j++) {
@@ -43,8 +44,7 @@ class HellMap extends Map {
 
 		while (choices.length < foodCount) {
 			const index = Cool.random(indexes);
-			if (!choices.includes(index))
-				choices.push(index);
+			if (!choices.includes(index)) choices.push(index);
 		}
 
 		while (choices.length > 0) {
@@ -52,18 +52,13 @@ class HellMap extends Map {
 			if (node.room) {
 				const index = choices.pop();
 				const data = Game.data.food.data[index];
-				let x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w + cell.w/2;
-				let y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h + cell.h/2;
-				const food = new Food(x, y, Game.data.food[data[0]], data);
-				while (this.food.filter(f => f.collide(food)).length > 0) {
-					food.position.x = Cool.random(node.room.x + 1, node.room.x + node.room.w - 2) * cell.w + cell.w/2;
-					food.position.y = Cool.random(node.room.y + 1, node.room.y + node.room.h - 2) * cell.h + cell.h/2;
-					console.log(this.food.filter(f => f.collide(food)));
-					console.log(food.position);
-					console.log(this.food.forEach(f => console.log(f.position)));
-					debugger;
-				}
-				
+				const c = node.room.getCell();
+				const food = new Food(
+					c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
+					c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
+					Game.data.food[data[0]], 
+					data
+				);
 				this.food.push(food);
 			}
 		}

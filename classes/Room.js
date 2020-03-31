@@ -6,8 +6,8 @@ class Room extends Area {
 		for (let _x = this.x; _x < this.x + this.w; _x++) {
 			for (let _y = this.y; _y < this.y + this.h; _y++) {
 				locations.push({
-					x: _x * cell.w + cell.w/2,
-					y: _y * cell.h + cell.h/2
+					x: _x * cell.w,
+					y: _y * cell.h
 				});
 			}
 		}
@@ -21,10 +21,22 @@ class Room extends Area {
 		
 		this.addTexture();
 		this.debug = Game.debug ? debug : undefined;
+		this.takenCells = [];
 	}
 
 	addTexture() {
 		this.texture.addJSON(Game.data.textures.dirt);
+	}
+
+	getCell() {
+		let x = Cool.randomInt(this.x, this.x + this.w - 1);
+		let y = Cool.randomInt(this.y, this.y + this.h - 1);
+		while (this.takenCells.filter(c => c.x == x && c.y == y).length) {
+			x = Cool.randomInt(this.x, this.x + this.w);
+			y = Cool.randomInt(this.y, this.y + this.h);
+		}
+		this.takenCells.push({ x: x, y: y });
+		return { x: x, y: y };
 	}
 
 	display() {
