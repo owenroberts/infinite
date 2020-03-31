@@ -1,11 +1,23 @@
 class HellMap extends Map {
+
+	constructor(cols, rows) {	
+		super(cols, rows);
+		Game.scenes.map.add(this);
+	}
+
+	build(callback) {
+		super.build();
+		this.setup();
+		this.addFood();
+		if (callback) callback();
+	}
+
 	setup() {
 		this.food = [];
 		this.roomCount = 0;
 		this.nodes.forEach(node => {
 			if (node.room) this.roomCount++;
 		});
-		
 	}
 
 	prob(f) {

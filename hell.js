@@ -8,16 +8,30 @@ Game.init({
 	checkRetina: true,
 	debug: true,
 	stats: true,
-	scenes: ['map', 'inventory', 'message']
+	scenes: ['map', 'inventory', 'message', 'loading']
 });
 
 Object.defineProperty(Game, 'scene', {
 	set: function(scene) {
 		if (scene != Game._scene) {
 			Game._scene = scene;
-			ui.cursor.state = scene == 'map' ? 'walk' : 'interact';
+			ui.cursor.state = 'interact';
+			switch(scene) {
+				case 'map':
+					ui.cursor.state = 'walk';
+				break;
+				case 'loading':
+					ui.message.x = 6;
+					ui.cursor.state = 'loading';
+				break;
+				case 'message':
+					ui.message.x = 6;
+				break;
+				case 'inventory':
+					ui.message.x = 3 * 128 + 32;
+				break;
+			}
 			ui.arrow.alive = false;
-			ui.message.x = scene == 'message' ? 6 : 3 * 128 + 32;
 		}
 	},
 	get: function() {
@@ -25,8 +39,14 @@ Object.defineProperty(Game, 'scene', {
 	}
 });
 
+Object.defineProperty(Game, 'lvlName', {
+	get: function() {
+		return Game.lvl == 0 ? 'Purgatory' : `Ring of Hell ${Game.lvl}`
+	}
+});
+
 // Game.lettering('drawings/letters.json');
-console.time('load game');
+console.time('load data');
 Game.load(
 	{ 
 		ui: '/data/ui.json', 
@@ -42,7 +62,7 @@ Game.lvl = 0;
 let player;
 let ui;
 let map, cols = 16, rows = 16, min = 5, cell = { w: 256, h: 256 };
-let grafWrap = 20;
+let grafWrap = 30;
 
 /* debugging */
 let wall;
@@ -55,7 +75,7 @@ document.addEventListener('keydown', ev => {
 });
 
 function start() {
-	console.timeEnd('load game');
+	console.timeEnd('load data');
 	
 	Game.addLettering('metrics', Game.data.lettering.metrics);
 	Game.addLettering('messages', Game.data.lettering.messages);
@@ -65,60 +85,35 @@ function start() {
 	Game.setBounds('right', cols * cell.w - Game.width/2);
 	Game.setBounds('bottom', rows * cell.h - Game.height/2);
 
-	console.time('map');
+	
 	map = new HellMap(cols, rows);
-	map.setup();
-	map.addFood();
-	Game.scenes.map.add(map);
-	console.timeEnd('map');
 	
 	player = new Player(Game.data.sprites.player, Game.width/2, Game.height/2);
 	Game.scenes.inventory.addToDisplay(player.inventory);
 	// Game.scenes.map.add(player);
 	// player.debug = true;
 
-	/* place player in random room 
-		player.x player.y is actual place on map
-		player.position is where it draws on screen 
-	*/
-	const pos = Cool.random(map.nodes.filter(node => node.room)).room;
-	// console.log(pos);
-
-	const minX = pos.x * cell.w + player.width;
-	const maxX = (pos.x + pos.w) * cell.h - player.width * 2;
-	const minY = pos.y * cell.h + player.height;
-	const maxY = (pos.y + pos.h) * cell.h - player.height * 2;
-
-	player.x = Cool.random(minX, maxX); 
-	player.y = Cool.random(minY, maxY); 
-
-	// console.log(player.x, player.y);
 
 	ui = {};
 	ui.metrics = {};
 	ui.metrics.level = new UIMetric(3, 6, () => {
-		return Game.lvl == 0 ? 'Purgatory' : `${Game.lvl} ring of Hell`; 
+		return Game.lvlName; 
 	});
-	ui.metrics.morality = new UIMetric(200, 6, () => {
+	ui.metrics.morality = new UIMetric(270, 6, () => {
 		return `Morality ${player.morality}`;
 	});
-	ui.metrics.health = new UIMetric(450, 6, () => {
+	ui.metrics.health = new UIMetric(540, 6, () => {
 		return `Health ${player.health}`;
 	});
 	// hunger is message ...
-
-	const introMessage = 'Welcome to Purgatory. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.';
-	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.lettering.messages);
-	ui.message.setMsg(introMessage);
-	Game.scenes.message.addToDisplay(ui.message);
-	Game.scenes.inventory.addToDisplay(ui.message);
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
 	ui.cursor = new Cursor({
 		'walk': '/css/walk.gif',
 		'interact': '/css/pointer.gif',
 		'click': '/css/click.gif',
-		'eat': '/css/mouth.gif'
+		'eat': '/css/mouth.gif',
+		'loading': '/css/loader.gif'
 	});
 	ui.cursor.state = 'walk';
 	// ui.cursor = new Sprite(0, 0);
@@ -133,57 +128,68 @@ function start() {
 	Game.scenes.inventory.addToDisplay(ui.arrow);
 	Game.scenes.message.addToDisplay(ui.arrow);
 
-	ui.inventoryOpen = new HellButton({
-		x: 100,
-		y: -50,
-		json: Game.data.ui.inventory,
-		onClick: function() {
-			Game.scene = 'inventory';
-		}
-	});
+	ui.inventoryOpen = new HellTextButton(10, -50, 'inventory', 9, Game.lettering.metrics);
+	ui.inventoryOpen.onClick = function() {
+		Game.scene = 'inventory';
+	};
 	Game.scenes.map.addUI(ui.inventoryOpen);
-	/* need something just checking the cursor state */
 	
-	ui.inventoryExit = new HellButton({
-		x: 100,
-		y: -50,
-		json: Game.data.ui.exit,
-		onClick: function() {
-			Game.scene = 'map';
-			ui.message.setMsg('');
-		}
-	});
+	ui.inventoryExit = new HellTextButton(100, -50, 'exit', 4, Game.lettering.metrics);
+	ui.inventoryExit.onClick = function() {
+		Game.scene = 'map';
+		ui.message.setMsg('');
+	};
 	Game.scenes.inventory.addUI(ui.inventoryExit);
 
+	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.lettering.messages);
+	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
 	Game.scene = 'message';
 
+	ui.message.next = function() {
+		ui.message.continue.setMsg('Continue');
+		Game.scene = 'loading';
+		ui.message.setMsg('Building Purgatory...');
+		setTimeout(buildMap, 100);
+	};
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);
 	// apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
-function update() {
-	player.update();
-	const offset = {
-		x: -player.x + Game.width/2 ,
-		y: -player.y + Game.height/2 
-	};
-	Game.scenes[Game.scene].update(offset);
+function buildMap() {
+	console.time('map');
+	map.build(function() {
+		Game.scene = 'map';
+		console.timeEnd('map');
+		if (player.died) player.reborn();
+		player.spawn();
+	});
+}
 
-	let wallCollision = false;
-	for (let i = 0; i < map.walls.length; i++) {
-		const wall = map.walls[i];
-		/* wall doesn't have collider should it? */
-		if (wall.collide(player)) wallCollision = true;
+
+function update() {
+	if (Game.scene == 'map') {
+		player.update();
+		const offset = {
+			x: -player.x + Game.width/2 ,
+			y: -player.y + Game.height/2 
+		};
+		Game.scenes[Game.scene].update(offset);
+
+		let wallCollision = false;
+		for (let i = 0; i < map.walls.length; i++) {
+			const wall = map.walls[i];
+			/* wall doesn't have collider should it? */
+			if (wall.collide(player)) wallCollision = true;
+		}
+		if (wallCollision) player.back();
 	}
-	if (wallCollision) player.back();
 }
 
 function draw() {
 	Game.scenes[Game.scene].display();
 	player.display();
-
 	// apple.display();
 }
 

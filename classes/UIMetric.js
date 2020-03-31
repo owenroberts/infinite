@@ -1,4 +1,4 @@
-class UIMetric extends Text{
+class UIMetric extends Text {
 	constructor(x, y, callback) {
 		const msg = callback();
 		super(x, y, msg, msg.length, Game.lettering.metrics);
@@ -12,5 +12,7 @@ class UIMetric extends Text{
 
 	setMsg() {
 		super.setMsg(this.callback());
+		this.wrap = this.msg.length;
+		this.setBreaks();
 	}
 }

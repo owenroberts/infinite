@@ -1,7 +1,8 @@
 class HellTextButton extends TextButton {
-	constructor(x, y, msg, wrap, letters, cursorState) {
+	constructor(x, y, msg, wrap, letters, cursorState, onClick) {
 		super(x, y, msg, wrap, letters);
 		this.cursorState = cursorState || 'interact';
+		if (onClick) this.onClick = onClick;
 	}
 
 	onOver() {
@@ -23,5 +24,10 @@ class HellTextButton extends TextButton {
 	onUp() {
 		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
 		ui.arrow.alive = false;
+	}
+
+	check() {
+		// for changed button that hasn't moved ... 
+		if (this.tap(ui.cursor.x, ui.cursor.y)) ui.arrow.alive = true;
 	}
 }

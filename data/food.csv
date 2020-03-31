@@ -1,13 +1,16 @@
-food,health,morality,hunger,speed,probability,quotation
+         ,health,morality,hunger,speed,probability,quotation
 apple,-100,-100,20,0,p > 0 ? 0 : 1,"Him by fraud I have seduc’d
 From his Creator, and the more to increase
 Your wonder, with an Apple; he thereat
-Offended, worth your laughter, hath giv’n up
+Offended, worth your laughter, hath giv'n up
 Both his beloved Man and all his World,
-To Sin and Death a prey"
+To Sin and Death a prey, and so to us,
+Without our hazard, labour or allarme,
+To range in, and to dwell, and over Man
+To rule, as over all he should have rul'd."
 beer,0,-50,10,-1,"Math.pow(p, 5)","It is not for kings, Lemuel—it is not for kings to drink wine, not for rulers to crave beer, lest they drink and forget what has been decreed, and deprive all the oppressed of their rights. Let beer be for those who are perishing, wine for those who are in anguish!"
 christopsomo,0,10,40,0,0.9 - p,"""And when He had dipped the bread, He gave it to Judas Iscariot, the Son of Simon. And after the bread, then entered Satan into him.” For they say, Was this the worth of Christ’s bread, given from Christ’s own table, that after it Satan should enter into His disciple?"
-dates,0,20,10,1,"Math.pow(p, 2)",r
+dates,0,20,10,1,"Math.pow(p, 2)","The Messenger of Allah would break his fast with ripe dates before he would pray.  If those were not available, he would eat dried dates.  If those were not available, he would drink some water."
 eggs,0,20,30,0,"p < 0.5 ? Math.pow(60, -p) - 0.1 : Math.pow(p, 3) - 0.1","For she leaves her eggs to the earth and lets them be warmed on the ground, forgetting that a foot may crush them and that the wild beast may trample them."
 french_fries,0,-20,50,0,"Math.pow(p - 0.3, 3) * 5","Hunger was shred into atomics in every farthing porringer of husky chips of potato, fried with some reluctant drops of oil."
 gourd,-100,-10,20,0,Math.sin(p*3) - 0.05,"So one went out into the field to gather herbs, and found a wild vine, and gathered from it a lapful of wild gourds, and came and sliced them into the pot of stew, though they did not know what they were."
@@ -23,7 +26,7 @@ as if we were both two halves
 of the same melon."
 noodles,0,0,30,0,"Math.pow((p - 0.1), 2)","At your birth when they first hung out the bow, I was the most honored gues at the birthday feast.  Weilding my chopsticks I ate boiled noodles, and composed a congratulatory poem on a heavenly unicorn."
 oyster,0,-20,10,0,"Math.pow((p - 0.4), 2)","But anything in the seas or the rivers that has not fins and scales, of the swarming creatures in the waters and of the living creatures that are in the waters, is detestable to you."
-offal,0,20,10,0,"0.2 - Math.pow((p - 0.4), 2)",But burn the bull’s flesh and its hide and its intestines outside the camp. It is a sin offering.
+offal,0,20,10,0,"0.2 - Math.pow((p - 0.4), 2)",But burn the bull's flesh and its hide and its intestines outside the camp. It is a sin offering.
 peanuts,0,40,10,0,"0.2 - Math.pow((p/2 - 0.4), 2)","He is on the way out of darkness,
 before brightening the sky.
 Nechbet , the white of Nechen ,

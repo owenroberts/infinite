@@ -18,9 +18,12 @@ class Player extends Sprite {
 		this.target = new Cool.Vector(0, 0);
 
 		this.metricCount = 0;
+		this.died = false;
 		this.health = 100;
 		this.morality = 0;
 		this.hunger = 0;
+		this.hungerRate = 1;
+		this.hungerLevel = 0;
 
 		this.inventory = new Inventory();
 	}
@@ -32,7 +35,7 @@ class Player extends Sprite {
 	setTarget(x, y) {
 		this.target.x = x;
 		this.target.y = y;
-		this.hunger += 1; // what about key presses .... 
+		this.hunger += this.hungerRate; // what about key presses .... 
 	}
 
 	update() {
@@ -71,13 +74,13 @@ class Player extends Sprite {
 		}
 		this.animation.state = state;
 
-		if (this.metricCount == 100) {
-			this.checkMetrics();
-			this.metricCount = 0;
-			// console.log('metric count');
+		if (!this.died) {
+			if (this.metricCount == 200) {
+				this.checkHunger();
+				this.metricCount = 0;
+			}
+			this.metricCount++;
 		}
-		this.metricCount++;
-
 	}
 
 	back() {
@@ -87,54 +90,131 @@ class Player extends Sprite {
 		this.y = this.prevXY.y;
 	}
 
-	checkMetrics() {
-		if (this.health <= 0) {
-			ui.message.addMsg(`You have died.`);
-			if (this.morality == 0) {
-				ui.message.addMsg(`You have been morally neutral.`);
-				ui.message.addMsg(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
-			}
-			else if (this.morality > 0) {
-				ui.message.addMsg(`You have acted morally.`);
-				ui.message.addMsg(`You will move up to a previous ring of hell.`);
-				Game.lvl -= 1;
-			}
-			else {
-				ui.message.addMsg(`You are a sinner.`);
-				ui.message.addMsg(`You will descend further into hell.`);
-				Game.lvl += 1;
-			}
-		}
+	spawn() {
+		const pos = Cool.random(map.nodes.filter(node => node.room)).room;
+		const minX = pos.x * cell.w + player.width;
+		const maxX = (pos.x + pos.w) * cell.h - player.width * 2;
+		const minY = pos.y * cell.h + player.height;
+		const maxY = (pos.y + pos.h) * cell.h - player.height * 2;
 
-		// update hunger metric 
-		// udpate ring of hell metric
+		player.x = Cool.random(minX, maxX); 
+		player.y = Cool.random(minY, maxY); 
+	}
 
+	reborn() {
+		this.health = 100;
+		this.metricCount = 0;
 		ui.metrics.health.setMsg();
-		ui.metrics.morality.setMsg();
+		ui.metrics.level.setMsg();
+		this.died = false;
+		this.speed.x = 8;
+		this.speed.y = 8;
+	}
 
+	checkMorality() {
+		if (this.morality == 0) {
+			ui.message.addMsg(`You hath been morally neutral.`);
+			ui.message.addMsg(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
+		}
+		else if (this.morality > 0) {
+			ui.message.addMsg(`You hath acted morally.`);
+			ui.message.addMsg(`You will move up to a previous ring of hell.`);
+			Game.lvl -= 1;
+
+		}
+		else {
+			ui.message.addMsg(`You are a sinner.`);
+			ui.message.addMsg(`You will descend further into hell.`);
+			Game.lvl += 1;
+		}
+	}
+
+	checkHealth() {
+		ui.metrics.health.setMsg();
+		if (this.health <= 0) {
+			ui.message.addMsg(`You hath died.`);
+			this.died = true;
+			this.checkMorality();
+		}
+	}
+
+	checkHunger() {
+		if (Math.floor(player.hunger/10) > this.hungerLevel) {
+			this.hungerLevel = Math.floor(player.hunger/10);
+			if (this.hungerLevel > 2) {
+				this.speed.x -= 1;
+				this.speed.y -= 1;
+			}
+
+			Game.scene = 'message';
+
+			/* 
+				this is insane 
+				has to be set before going to switch and potentially dying
+				other option is a set of states in the hell message ... also not appealing
+				well ... if the character died, regardless, has to rebuild map ... 
+			*/	
+
+			switch(this.hungerLevel) {
+				case 1:
+					ui.message.setMsg('You feel a slight pang of hunger.');
+				break;
+				case 2:
+					ui.message.setMsg('Was that sound your stomach?');
+				break;
+				case 3:
+					ui.message.setMsg('Your stomach growled.');
+				break;
+				case 4:
+					ui.message.setMsg('Your stomach is twisting in pain.');
+				break;
+				case 5:
+					ui.message.setMsg('You are starting to feel weak.');
+				break;
+				case 6:
+					ui.message.setMsg('You are beginning to feel light headed.');
+				break;
+				case 7:
+					ui.message.setMsg('Your body is desparate for food.');
+				break;
+				case 8:
+					ui.message.setMsg('You starved to death.');
+					this.died = true;
+					this.checkMorality();
+				break;
+			}
+
+			
+		}
 	}
 
 	eat(food) {
 		Game.scene = 'message';
 
-		ui.message.setMsg(`You ate a ${food.name}.`);
+		// reset speed immediately, make this more complicated later
+		this.speed.x = 8;
+		this.speed.y = 8;
+
+		ui.message.setMsg(`You ate the ${food.name}.`);
 		ui.message.addMsg(food.quote);
 		
 		this.health += food.health;
 		if (food.health != 0) 
-			ui.message.addMsg(`Your health has ${food.health > 0 ? 'increased' : 'decreased'}.`);
+			ui.message.addMsg(`Your health hath ${food.health > 0 ? 'increased' : 'decreased'}.`);
 		
 		this.hunger = Math.max(0, this.hunger - food.hunger);
 		if (food.hunger > 0)
-			ui.message.addMsg(`Your hunger has abated.`);
+			ui.message.addMsg(`Your hunger hath abated.`);
 		
 		this.morality += food.morality;
 		if (food.morality != 0)
-			ui.message.addMsg(`You have ${food.morality > 0 ? 'acted morally' : 'sinned'}.`);
+			ui.message.addMsg(`You hath ${food.morality > 0 ? 'acted morally' : 'sinned'}.`);
 		
 		this.speed.x += food.speed;
 		this.speed.y += food.speed;
 
-		this.checkMetrics();
+		ui.metrics.morality.setMsg();
+		
+		this.checkHealth();
 	}
 }

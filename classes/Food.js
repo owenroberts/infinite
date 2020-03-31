@@ -8,7 +8,7 @@ class Food extends Item {
 		this.hunger = +mets[3];
 		this.speed = +mets[4];
 		this.quote = mets[6];
-		this.inInventory = false;
+		this.displayUI = true;
 
 		// this.debug = true;
 
@@ -17,7 +17,7 @@ class Food extends Item {
 		this.pickup.alive = false;
 		this.pickup.onClick = () => {
 			ui.arrow.alive = false;
-			map.remove(this);
+			this.remove();
 			this.inInventory = true;
 			player.inventory.add(this);
 		};
@@ -26,22 +26,27 @@ class Food extends Item {
 		Game.scenes.map.addUIUpdate(this.eat);
 		this.eat.alive = false;
 		this.eat.onClick = () => {
-			map.remove(this);
-			this.pickup.alive = false;
-			this.eat.alive = false;
+			this.remove();
 			Game.scenes.message.addToDisplay(this);
 			player.eat(this);
 		};
 	}
 
+	remove() {
+		this.displayUI = false;
+		map.remove(this);
+		Game.scenes.map.remove(this.pickup, 'ui');
+		Game.scenes.map.remove(this.eat, 'ui');
+	}
+
 	display() {
 		super.display();
 
-		if (!this.inInventory) {
-			Game.ctx.lineWidth = 2; // idk
+		if (this.displayUI) {
+			// Game.ctx.lineWidth = 2; // idk
 			this.pickup.display();
 			this.eat.display();
-			Game.ctx.lineWidth = 1;
+			// Game.ctx.lineWidth = 1;
 		}
 	}
 

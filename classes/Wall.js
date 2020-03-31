@@ -7,27 +7,35 @@ class Wall extends Sprite {
 		// this.debug = true;
 		this.origin = { x: x, y: y };
 
-		const locations = [];
+		// const locations = [];
+		
+
+		this.texture = new Texture({
+			scenes: ['map'],
+			frame: 'index',
+			json: Game.data.textures.walls
+		}, false);
+
+		let wallLength = 53; // have to figure out how to get this from anim later ....
+		let indexes = [];
+		for (let i = Game.lvl * 2, len = Game.lvl + Cool.random(5, 10); i < len; i++) {
+			const p = 1 - (i - Game.lvl)/len; // probability
+			for (let j = 0; j < Math.floor(p*10); j++) {
+				indexes.push(i);
+			}
+		}
+		// console.log('wall indexes', indexes);
+
 		for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
-			locations.push({
+			this.texture.addItem(Cool.random(indexes), {
 				x: x + cell.w/2 + Cool.random(-cell.w/3, cell.w/3),
 				y: y + cell.h/2 + Cool.random(-cell.h/3, cell.h/3)
 			});
 		}
 
-		this.texture = new Texture({
-			scenes: ['map'],
-			frame: 'index',
-			locations: locations,
-			frame: 'randomIndex'
-		}, false);
-		
-		this.addTexture();
-		// this.debug = Game.debug ? debug : undefined;
-	}
 
-	addTexture() {
-		this.texture.addJSON(Game.data.textures.walls, true);
+
+		// this.debug = Game.debug ? debug : undefined;
 	}
 
 	display() {
