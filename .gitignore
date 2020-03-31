@@ -1,4 +1,6 @@
 .DS_Store
+audio/
 doc/
 *.gdoc
 *.gsheet
+*.zip

@@ -22,7 +22,7 @@ class Player extends Sprite {
 		this.health = 100;
 		this.morality = 0;
 		this.hunger = 0;
-		this.hungerRate = 1;
+		this.hungerRate = 0.5;
 		this.hungerLevel = 0;
 
 		this.inventory = new Inventory();
@@ -104,6 +104,8 @@ class Player extends Sprite {
 		this.died = false;
 		this.speed.x = 8;
 		this.speed.y = 8;
+		this.target.x = 0;
+		this.target.y = 0;
 	}
 
 	checkMorality() {

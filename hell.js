@@ -7,7 +7,7 @@ Game.init({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: true,
+	stats: false,
 	scenes: ['map', 'inventory', 'message', 'loading']
 });
 
@@ -48,11 +48,11 @@ Object.defineProperty(Game, 'lvlName', {
 console.time('load data');
 Game.load(
 	{ 
-		ui: '/data/ui.json', 
-		sprites: '/data/sprites.json', 
-		textures: '/data/textures.json',
-		food: '/data/food.csv',
-		lettering: '/data/lettering.json'
+		ui: 'data/ui.json', 
+		sprites: 'data/sprites.json', 
+		textures: 'data/textures.json',
+		food: 'data/food.csv',
+		lettering: 'data/lettering.json'
 	},
 	Game.start
 );
@@ -108,11 +108,11 @@ function start() {
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
 	ui.cursor = new Cursor({
-		'walk': '/css/walk.gif',
-		'interact': '/css/pointer.gif',
-		'click': '/css/click.gif',
-		'eat': '/css/mouth.gif',
-		'loading': '/css/loader.gif'
+		'walk': 'css/walk.gif',
+		'interact': 'css/pointer.gif',
+		'click': 'css/click.gif',
+		'eat': 'css/mouth.gif',
+		'loading': 'css/loader.gif'
 	});
 	ui.cursor.state = 'walk';
 	// ui.cursor = new Sprite(0, 0);
@@ -168,7 +168,6 @@ function buildMap() {
 	});
 }
 
-
 function update() {
 	if (Game.scene == 'map') {
 		player.update();
@@ -192,6 +191,21 @@ function draw() {
 	Game.scenes[Game.scene].display();
 	player.display();
 	// apple.display();
+}
+
+function sizeCanvas() {
+
+	Game.width = window.innerWidth;
+	Game.height = window.innerHeight;
+	Game.canvas.width = window.innerWidth * Game.dpr;
+	Game.canvas.height =  window.innerHeight * Game.dpr;
+	Game.ctx.scale(Game.dpr, Game.dpr);
+	Game.canvas.style.zoom = 1 / Game.dpr;
+	Game.ctx.miterLimit = 1;
+	Game.ctxStrokeColor = undefined;
+
+	player.position.x = Game.width/2;
+	player.position.y = Game.height/2;
 }
 
 function keyDown(key) {

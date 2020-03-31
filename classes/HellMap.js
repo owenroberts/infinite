@@ -23,7 +23,7 @@ class HellMap extends Map {
 
 	prob(f) {
 		f = f.replace(/p(?![a-z])/g, Cool.map(Game.lvl, 0, 28, 0, 1));
-		console.log(f);
+		// console.log(f);
 		return  Function('return ' + f)().clamp(0, 1);
 	}
 

@@ -1,14 +1,14 @@
 {
 	"walls": {
-		"src": "/drawings/textures/walls.json",
+		"src": "drawings/textures/walls.json",
 		"scenes": ["map"]
 	},
 	"dirt": {
-		"src": "/drawings/textures/dirt.json",
+		"src": "drawings/textures/dirt.json",
 		"scenes": ["map"]
 	},
 	"grass": {
-		"src": "/drawings/textures/grass.json",
+		"src": "drawings/textures/grass.json",
 		"scenes": ["map"]
 	}
 }

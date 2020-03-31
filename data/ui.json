@@ -1,10 +1,10 @@
 {
-	"cursor": { "src": "/drawings/ui/cursor.json" },
-	"arrow": { "src": "/drawings/ui/arrow.json" },
+	"cursor": { "src": "drawings/ui/cursor.json" },
+	"arrow": { "src": "drawings/ui/arrow.json" },
 	"inventory": {
-		"src": "/drawings/ui/inventory-toggle.json"
+		"src": "drawings/ui/inventory-toggle.json"
 	},
 	"exit": {
-		"src": "/drawings/ui/inventory-exit.json"
+		"src": "drawings/ui/inventory-exit.json"
 	}
 }
