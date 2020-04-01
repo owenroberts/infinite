@@ -115,7 +115,6 @@ class Player extends Sprite {
 			ui.message.addMsg(`You hath acted morally.`);
 			ui.message.addMsg(`You will move up to a previous ring of hell.`);
 			Game.lvl -= 1;
-
 		}
 		else {
 			ui.message.addMsg(`You are a sinner.`);

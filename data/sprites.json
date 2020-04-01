@@ -1,5 +1,8 @@
 {
     "player": {
-        "src": "/drawings/sprites/skully_3f.json"
+        "src": "drawings/sprites/skully_3f.json"
+    },
+    "god": {
+    	"src": "drawings/sprites/god.json"
     }
 }
