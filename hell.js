@@ -21,14 +21,14 @@ Object.defineProperty(Game, 'scene', {
 					ui.cursor.state = 'walk';
 				break;
 				case 'loading':
-					ui.message.x = 6;
+					ui.message.x = leftAlign;
 					ui.cursor.state = 'loading';
 				break;
 				case 'message':
-					ui.message.x = 6;
+					ui.message.x = leftAlign;
 				break;
 				case 'inventory':
-					ui.message.x = 3 * 128 + 32;
+					ui.message.x = centerAlign;
 				break;
 			}
 			ui.arrow.alive = false;
@@ -52,6 +52,7 @@ Game.load(
 		sprites: 'data/sprites.json', 
 		textures: 'data/textures.json',
 		food: 'data/food.csv',
+		scripture: 'data/scripture.csv',
 		lettering: 'data/lettering.json'
 	},
 	Game.start
@@ -61,7 +62,7 @@ Game.lvl = 0;
 let player;
 let ui;
 let map, cols = 20, rows = 20, min = 5, cell = { w: 256, h: 256 };
-let grafWrap = 20;
+let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 200;
 
 /* debugging */
 let wall;
@@ -127,14 +128,14 @@ function start() {
 	Game.scenes.inventory.addToDisplay(ui.arrow);
 	Game.scenes.message.addToDisplay(ui.arrow);
 
-	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', 9, Game.lettering.metrics);
+	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', Game.lettering.metrics);
 	ui.inventoryOpen.onClick = function() {
 		Game.scene = 'inventory';
 	};
 	// Game.scenes.message.addUI(ui.inventoryOpen);
 	Game.scenes.map.addUI(ui.inventoryOpen);
 	
-	ui.inventoryExit = new HellTextButton(750, 6, 'exit', 4, Game.lettering.metrics);
+	ui.inventoryExit = new HellTextButton(750, 6, 'exit', Game.lettering.metrics);
 	ui.inventoryExit.onClick = function() {
 		Game.scene = 'map';
 		ui.message.setMsg('');
@@ -145,16 +146,18 @@ function start() {
 	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
 	Game.scene = 'message';
 
-	ui.message.next = function() {
-		ui.message.continue.setMsg('Continue');
-		Game.scene = 'loading';
-		ui.message.setMsg('Building Purgatory...');
-		setTimeout(buildMap, 100);
-	};
+	ui.message.next = loadNext;
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);
 	// apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
+}
+
+function loadNext() {
+	ui.message.continue.setMsg('Continue');
+	Game.scene = 'loading';
+	ui.message.setMsg(`Building ${Game.lvlName} ...`);
+	setTimeout(buildMap, 100);
 }
 
 function buildMap() {

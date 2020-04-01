@@ -185,30 +185,45 @@ class Player extends Sprite {
 		}
 	}
 
-	eat(food) {
+	consume(item, type) {
+
+		this.typeString;
+		switch(type) {
+			case 'food':
+				this.typeString = 'ate';
+			break;
+			case 'scripture':
+				this.typeString = 'read';
+			break;
+		}
+
 		Game.scene = 'message';
 
 		// reset speed immediately, make this more complicated later
 		this.speed.x = 8;
 		this.speed.y = 8;
 
-		ui.message.setMsg(`You ate the ${food.name}.`);
-		ui.message.addMsg(food.quote);
+		ui.message.setMsg(`You ${this.typeString} the ${item.name}.`);
+		ui.message.addMsg(item.quote);
 		
-		this.health += food.health;
-		if (food.health != 0) 
-			ui.message.addMsg(`Your health hath ${food.health > 0 ? 'increased' : 'decreased'}.`);
+		this.health += item.health;
+		if (item.health != 0) 
+			ui.message.addMsg(`Your health hath ${item.health > 0 ? 'increased' : 'decreased'}.`);
 		
-		this.hunger = Math.max(0, this.hunger - food.hunger);
-		if (food.hunger > 0)
+		this.hunger = Math.max(0, this.hunger - item.hunger);
+		if (item.hunger > 0)
+			ui.message.addMsg(`Your hunger hath abated.`);
+
+		this.hungerRate = Math.max(0.1, this.hungerRate + item.hungerRate);
+		if (item.hunger > 0)
 			ui.message.addMsg(`Your hunger hath abated.`);
 		
-		this.morality += food.morality;
-		if (food.morality != 0)
-			ui.message.addMsg(`You hath ${food.morality > 0 ? 'acted morally' : 'sinned'}.`);
+		this.morality += item.morality;
+		if (item.morality != 0)
+			ui.message.addMsg(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
 		
-		this.speed.x += food.speed;
-		this.speed.y += food.speed;
+		this.speed.x += item.speed;
+		this.speed.y += item.speed;
 
 		ui.metrics.morality.setMsg();
 		

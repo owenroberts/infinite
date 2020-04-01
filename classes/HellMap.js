@@ -12,12 +12,16 @@ class HellMap extends Map {
 			h: Math.ceil(Game.height/2/cell.h)
 		}; 
 		super.build(buf);
-		this.food = [];
+		
 		this.roomCount = 0;
 		this.nodes.forEach(node => {
 			if (node.room) this.roomCount++;
 		});
-		this.addFood();
+		
+		
+		this.addItems('food');
+		this.addItems('scripture');
+		
 		if (callback) callback();
 	}
 
@@ -27,13 +31,14 @@ class HellMap extends Map {
 		return  Function('return ' + f)().clamp(0, 1);
 	}
 
-	addFood() {
-		const foodCount = random(1, this.roomCount);
+	addItems(type) {
+		this[type] = [];
+		const itemCount = random(1, this.roomCount);
 		const choices = [];
 		const indexes = [];
-		for (let i = 0; i < Game.data.food.data.length; i++) {
-			const food = Game.data.food.data[i];
-			const prob = this.prob(food[5]);
+
+		for (let i = 0; i < Game.data[type].entries.length; i++) {
+			const prob = this.prob(Game.data[type].entries[i][6]); // this changes - make it json ....
 			if (prob == 1) choices.push(i);
 			else if (prob > 0) {
 				for (let j = 0; j < prob * 100; j++) {
@@ -42,32 +47,35 @@ class HellMap extends Map {
 			}
 		}
 
-		while (choices.length < foodCount) {
+		while (choices.length < itemCount) {
 			const index = Cool.random(indexes);
 			if (!choices.includes(index)) choices.push(index);
 		}
 
 		while (choices.length > 0) {
-			const node = Cool.random(this.nodes);
-			if (node.room) {
-				const index = choices.pop();
-				const data = Game.data.food.data[index];
-				const c = node.room.getCell();
-				const food = new Food(
-					c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
-					c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
-					Game.data.food[data[0]], 
-					data
-				);
-				this.food.push(food);
-			}
+			const node = Cool.random(this.nodes.filter(n => n.room));
+			const index = choices.pop();
+			const itemData = Game.data[type].entries[index];
+			const c = node.room.getCell();
+			const item = new HellItem(
+				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
+				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
+				Game.data[type][itemData[0]],
+				itemData,
+				type
+			);
+			this[type].push(item);
 		}
 	}
 
 	remove(item) {
-		const type = item.constructor.name.toLowerCase();
-		const index = map[type].indexOf(item);
-		map[type].splice(index, 1);
+		// item.constructor.name.toLowerCase();
+		const index = map[item.type].indexOf(item);
+		map[item.type].splice(index, 1);
+	}
+
+	add(item) {
+		map[item.type].push(item);
 	}
 
 	display() {
@@ -77,6 +85,9 @@ class HellMap extends Map {
 		}
 		for (let i  = 0; i < this.food.length; i++) {
 			this.food[i].display();
+		}
+		for (let i  = 0; i < this.scripture.length; i++) {
+			this.scripture[i].display();
 		}
 	}
 
@@ -96,6 +107,10 @@ class HellMap extends Map {
 
 		for (let i = 0; i < this.food.length; i++) {
 			this.food[i].update(offset);
+		}
+
+		for (let i = 0; i < this.scripture.length; i++) {
+			this.scripture[i].update(offset);
 		}
 	}
 }

@@ -1,0 +1,33 @@
+         ,health,morality,hunger,hungerRate,speed,probability,quotation
+An_Alchemical_Mass,100,0,0,0,0,"Math.pow(2, -p) - 0.5","O blessed creator of the earth, whiter than snow, sweeter than sweetness, fragrant at the bottom of the vessel like balsam. O salutary medicine for men, that cureth every weakness of the body: O sublime fount whence gushes forth truly the true water of life into the garden of thy faithful."
+Book_of_Shadows,0,-20,0,0,0,"Math.pow(1.5, -p) - 0.5","1.Many have failed to see the True Nature of Mankind.
+2. For mankind know not the true Splendor that is me.
+3. I give this message unto you so that you can pass it onto the Children of
+the Beast.
+4. For He is a lie, He is a sin.
+5. Mankind knows naught but shame."
+The_Celtic_Twilight,0,0,0,-0.1,0,"Math.pow(2, -(p + 0.1)) - 0.5","But now and then a landlord or an agent or a gauger will go by begging his bread, to show how God divides the righteous from the unrighteous."
+Book_of_the_Damned,0,20,0,0,0,"Math.pow(2, -(p - 0.1)) - 0.5","Would we, if we could, educate and sophisticate pigs, geese, cattle?
+Would it be wise to establish diplomatic relation with the hen that now functions, satisfied with mere sense of achievement by way of compensation?
+I think we're property."
+The_Evil_Eye,0,-20,0,0,0,"Math.pow(1.5, (p)) - 1.0","THERE be none of the affections which have been noted to fascinate or to bewitch, but love and envy; they both have vehement wishes, they frame themselves readily into imaginations and suggestions, and they come easily into the eye, especially upon the presence of the objects which are the points that conduce to fascination, if any such there be. We see likewise the Scripture calleth envy an evil eye."
+The_Fu_Hexagram,0,0,0,0,1,"Math.pow(1.4, (p)) - 1.0","The fourth SIX, divided, shows its subject moving right in the centre (among those represented by the other divided lines), and yet returning alone (to his proper path)."
+Gospel_of_Thomas,0,-20,0,0,0,"Math.pow(1.8, (p)) - 1.0","Jesus said, ""Let him who seeks continue seeking until he
+finds. When he finds, he will become troubled. When he becomes
+troubled, he will be astonished, and he will rule over the All."""
+Hymns_of_the_Atharvaveda,0,20,0,0,0,"Math.pow(2, -(p)) - 0.5","Do thou, O Bowstring, bend thyself around us: make my body
+   stone.
+  Firm in thy strength drive far away malignities and hateful
+   things.
+When, closely clinging round the wood, the bowstring sings
+   triumph to the swift and whizzing arrow,
+  Indra, ward off from us the shaft, the missile.
+As in its flight the arrow's point hangs between earth and
+   firmament,
+  So stand this Munja grass between ailment and dysenteric ill!"
+Three_Inca_Prayers,0,-20,0,0,0,"Math.pow(1.5, (p)) - 1","Whether male or female,
+at any rate commander of heat and reproduction,
+being one who,
+even with His spittle, can work sorcery,
+Where art Thou?"
+Jaina_Sutras,0,0,0,0,0,"Math.pow(1.9, (p)) - 1","See! there are men who control themselves; others pretend only to be houseless, for one destroys this (body of a plant) by bad and injurious doings, and many other beings, besides, which he hurts by means of plants, through his doing acts relating to plants."

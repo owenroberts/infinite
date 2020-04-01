@@ -1,6 +1,6 @@
 class HellTextButton extends TextButton {
-	constructor(x, y, msg, wrap, letters, cursorState, onClick) {
-		super(x, y, msg, wrap, letters);
+	constructor(x, y, msg, letters, cursorState, onClick) {
+		super(x, y, msg, msg.length, letters);
 		this.cursorState = cursorState || 'interact';
 		if (onClick) this.onClick = onClick;
 	}

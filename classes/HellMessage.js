@@ -3,7 +3,7 @@ class HellMessage extends Text {
 		super(x, y, msg, wrap, letters);
 		
 		this.list = [];
-		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', 100, Game.lettering.messages);
+		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', Game.lettering.messages);
 		
 		Game.scenes.message.addToDisplay(this);
 		Game.scenes.loading.addToDisplay(this);
@@ -16,13 +16,13 @@ class HellMessage extends Text {
 			if (this.list.length == 0) {
 				this.setMsg('');
 
-				if (player.died) buildMap();
+				if (player.died) loadNext();
 				else if (this.next) this.next();
 				else Game.scene = 'map';
 				
 
 				for (let i = 0; i < Game.scenes.message.displayItems.length; i++) {
-					if (Game.scenes.message.displayItems[i].constructor.name == 'Food') {
+					if (Game.scenes.message.displayItems[i].constructor.name == 'HellItem') {
 						Game.scenes.message.displayItems.splice(i, 1);
 					}
 				}
@@ -34,6 +34,7 @@ class HellMessage extends Text {
 		};
 	}
 
+	// change to add
 	addMsg(msg) {
 		for (let i = 0; i < msg.length; i += this.wrap * 4) {
 			this.list.push(msg.substring(i, i + this.wrap * 4));
@@ -41,6 +42,7 @@ class HellMessage extends Text {
 		if (!this.msg) this.setMsg(this.list.shift());
 	}
 
+	// change to set
 	setMsg(msg) {
 		// Game.scene = 'message';
 		super.setMsg(msg);
