@@ -8,7 +8,7 @@ Game.init({
 	checkRetina: true,
 	debug: true,
 	stats: false,
-	scenes: ['map', 'inventory', 'message', 'loading']
+	scenes: ['map', 'inventory', 'message', 'loading', 'win']
 });
 
 Object.defineProperty(Game, 'scene', {
@@ -62,6 +62,7 @@ let player;
 let ui;
 let map, cols = 20, rows = 20, min = 5, cell = { w: 256, h: 256 };
 let grafWrap = 20;
+let god;
 
 /* debugging */
 let wall;
@@ -91,6 +92,11 @@ function start() {
 	Game.scenes.inventory.addToDisplay(player.inventory);
 	// Game.scenes.map.add(player);
 	// player.debug = true;
+
+	god = new Sprite(256, Game.height/2);
+	god.center = true;
+	god.addJSON(Game.data.sprites.god);
+	Game.scenes.win.addToDisplay(god);
 
 
 	ui = {};
@@ -126,6 +132,7 @@ function start() {
 	Game.scenes.map.addToDisplay(ui.arrow);
 	Game.scenes.inventory.addToDisplay(ui.arrow);
 	Game.scenes.message.addToDisplay(ui.arrow);
+	Game.scenes.win.addToDisplay(ui.arrow);
 
 	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', 9, Game.lettering.metrics);
 	ui.inventoryOpen.onClick = function() {
@@ -145,16 +152,18 @@ function start() {
 	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
 	Game.scene = 'message';
 
-	ui.message.next = function() {
-		ui.message.continue.setMsg('Continue');
-		Game.scene = 'loading';
-		ui.message.setMsg('Building Purgatory...');
-		setTimeout(buildMap, 100);
-	};
+	ui.message.next = loadMap;
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);
 	// apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
+}
+
+function loadMap() {
+	ui.message.continue.setMsg('Continue');
+	Game.scene = 'loading';
+	ui.message.setMsg(`Building ${Game.lvlName} ...`);
+	setTimeout(buildMap, 100);
 }
 
 function buildMap() {

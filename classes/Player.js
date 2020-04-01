@@ -114,9 +114,17 @@ class Player extends Sprite {
 			ui.message.addMsg(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
 		}
 		else if (this.morality > 0) {
-			ui.message.addMsg(`You hath acted morally.`);
-			ui.message.addMsg(`You will move up to a previous ring of hell.`);
-			Game.lvl -= 1;
+			if (Game.lvl <= 0) {
+				Game.lvl == 0;
+				console.log('win state');
+				Game.scene = 'win';
+				ui.message.setMsg('Play again');
+				ui.message.next = loadMap;
+			} else {
+				Game.lvl -= 1;
+				ui.message.addMsg(`You hath acted morally.`);
+				ui.message.addMsg(`You will move up to a previous ring of hell.`);
+			}
 		}
 		else {
 			ui.message.addMsg(`You are a sinner.`);

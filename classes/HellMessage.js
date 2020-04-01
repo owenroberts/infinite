@@ -8,9 +8,11 @@ class HellMessage extends Text {
 		Game.scenes.message.addToDisplay(this);
 		Game.scenes.loading.addToDisplay(this);
 		Game.scenes.inventory.addToDisplay(this);
+		Game.scenes.win.addToDisplay(this);
 		
 		Game.scenes.inventory.addUI(this.continue);
 		Game.scenes.message.addUI(this.continue);
+		Game.scenes.win.addUI(this.continue);
 
 		this.continue.onClick = () => {
 			if (this.list.length == 0) {
