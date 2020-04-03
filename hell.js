@@ -61,7 +61,7 @@ Game.load(
 Game.lvl = 0;
 let player;
 let ui;
-let map, cols = 30, rows = 30, cell = { w: 256, h: 256 };
+let map, cols = 20, rows = 20, minNodeSize = 5, maxNodeSize = 10, cell = { w: 256, h: 256 };
 let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 200;
 let god;
 
@@ -87,7 +87,7 @@ function start() {
 	Game.setBounds('bottom', rows * cell.h - Game.height/2);
 
 	
-	map = new HellMap(cols, rows, 8, 14);
+	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	
 	player = new Player(Game.data.sprites.player, Game.width/2, Game.height/2);
 	Game.scenes.inventory.addToDisplay(player.inventory);
@@ -157,7 +157,7 @@ function start() {
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);
-	// apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
+	// apple = new HellItem(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
 function loadNextMap() {

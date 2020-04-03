@@ -57,20 +57,18 @@ class HellMap extends Map {
 
 		choicesWhileCount = 0;
 		while (choices.length > 0) {
-			const node = Cool.random(this.nodes);
-			if (node.room) {
-				const index = choices.pop();
-				const data = Game.data.food.entries[index];
-				const c = node.room.getCell();
-				const food = new HellItem(
-					c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
-					c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
-					Game.data.food[data[0]], 
-					data,
-					
-				);
-				this.food.push(food);
-			}
+			const node = Cool.random(this.nodes.filter(n => n.room));
+			const index = choices.pop();
+			const itemData = Game.data[type].entries[index];
+			const c = node.room.getCell();
+			const item = new HellItem(
+				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
+				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
+				Game.data[type][itemData[0]],
+				itemData,
+				type
+			);
+			this[type].push(item);
 			if (choicesWhileCount > 10) {
 				debugger;
 			}
@@ -78,7 +76,6 @@ class HellMap extends Map {
 	}
 
 	remove(item) {
-		console.log(item);
 		// item.constructor.name.toLowerCase();
 		const index = map[item.type].indexOf(item);
 		map[item.type].splice(index, 1);

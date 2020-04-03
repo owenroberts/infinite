@@ -15,7 +15,6 @@ class HellItem extends Item {
 		this.displayMapUI = true;
 		this.displayInventoryUI = false;
 
-		console.log(type);
 		this.consumeString;
 		switch(type) {
 			case 'food':
@@ -25,21 +24,25 @@ class HellItem extends Item {
 				this.consumeString = 'Read';
 			break;
 		}
-		console.log(this.consumeString);
 
+		/* this isn't own class because so much is reference to item */
 		this.pickup = new HellTextButton(this.position.x + this.width/2, this.position.y, `Pick up ${this.name}`, Game.lettering.messages);
 		Game.scenes.map.addUIUpdate(this.pickup);
-		this.pickup.alive = false;
+		this.pickup.alive = false; // alive for ui update, not display
+			// use scene for this? well they're part of scene but not activated ... fuck me
+
 		this.pickup.onClick = () => {
 			if (!player.inventory.isFull) {
 				ui.arrow.alive = false;
-				console.log(this);
 				map.remove(this);
-				this.displayInventoryUI = true;
+				this.displayMapUI = false;
+
 				Game.scenes.inventory.addUIUpdate(this);
 				Game.scenes.inventory.addUIUpdate(this.consume);
 				this.consume.position.x = centerAlign;
 				this.consume.position.y = inventoryY;
+				this.consume.alive = false;
+
 				player.inventory.add(this);
 			} else {
 				Game.scene = 'message'; // scene before message to set the continue position (in setMsg)
@@ -50,6 +53,7 @@ class HellItem extends Item {
 		this.consume = new HellTextButton(this.position.x + this.width/2, this.position.y + 35, `${this.consumeString} ${this.name}`, Game.lettering.messages, type == 'food' ? 'eat' : 'interact');
 		Game.scenes.map.addUIUpdate(this.consume);
 		this.consume.alive = false;
+
 		this.consume.onClick = () => {
 			this.remove();
 			Game.scenes.message.addToDisplay(this);
@@ -57,6 +61,7 @@ class HellItem extends Item {
 		};
 
 		this.drop = new HellTextButton(centerAlign, inventoryY + 35, `Drop ${this.name}`, Game.lettering.messages);
+		this.drop.alive = false;
 		Game.scenes.inventory.addUIUpdate(this.drop);
 		this.drop.onClick = () => {
 			this.position.x = player.x;
@@ -66,7 +71,7 @@ class HellItem extends Item {
 	}
 
 	remove() {
-		this.displayUI = false;
+		this.displayMapUI = false;
 		map.remove(this);
 		Game.scenes.map.remove(this.pickup, 'ui');
 		Game.scenes.map.remove(this.consume, 'ui');
@@ -76,10 +81,8 @@ class HellItem extends Item {
 		super.display();
 
 		if (this.displayMapUI) {
-			// Game.ctx.lineWidth = 2; // idk
 			this.pickup.display();
 			this.consume.display();
-			// Game.ctx.lineWidth = 1;
 		}
 
 		if (this.displayInventoryUI) {
@@ -101,7 +104,14 @@ class HellItem extends Item {
 		}
 	}
 
+	onOver() {
+		console.log('over');
+	}
+
 	onClick() {
-		this.displayInventoryUI != this.displayInventoryUI;
+		console.log('fuckin on click', this.displayInventoryUI)
+		this.displayInventoryUI = !this.displayInventoryUI;
+		this.consume.alive = this.displayInventoryUI;
+		this.drop.alive = this.displayInventoryUI;
 	}
 }

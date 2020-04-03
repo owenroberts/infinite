@@ -19,6 +19,7 @@ class HellTextButton extends TextButton {
 
 	onDown() {
 		ui.cursor.state = 'click';
+		// ui arrow?
 	}
 
 	onUp() {
