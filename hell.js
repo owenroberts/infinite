@@ -61,7 +61,7 @@ Game.load(
 Game.lvl = 0;
 let player;
 let ui;
-let map, cols = 20, rows = 20, min = 5, cell = { w: 256, h: 256 };
+let map, cols = 30, rows = 30, cell = { w: 256, h: 256 };
 let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 200;
 let god;
 
@@ -87,7 +87,7 @@ function start() {
 	Game.setBounds('bottom', rows * cell.h - Game.height/2);
 
 	
-	map = new HellMap(cols, rows);
+	map = new HellMap(cols, rows, 8, 14);
 	
 	player = new Player(Game.data.sprites.player, Game.width/2, Game.height/2);
 	Game.scenes.inventory.addToDisplay(player.inventory);
@@ -153,22 +153,14 @@ function start() {
 	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
 	Game.scene = 'message';
 
-<<<<<<< HEAD
-	ui.message.next = loadNext;
-=======
-	ui.message.next = loadMap;
->>>>>>> ship2
+	ui.message.next = loadNextMap;
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);
 	// apple = new Food(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
-<<<<<<< HEAD
-function loadNext() {
-=======
-function loadMap() {
->>>>>>> ship2
+function loadNextMap() {
 	ui.message.continue.setMsg('Continue');
 	Game.scene = 'loading';
 	ui.message.setMsg(`Building ${Game.lvlName} ...`);

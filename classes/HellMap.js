@@ -1,23 +1,22 @@
 class HellMap extends Map {
 
-	constructor(cols, rows) {	
-		super(cols, rows);
+	constructor(cols, rows, minNodeSize, maxNodeSize) {	
+		super(cols, rows, minNodeSize, maxNodeSize);
 		Game.scenes.map.add(this);
 	}
 
 	build(callback) {
-		// cell buffer
-		const buf = {
+		
+		super.build({
+			// cell buffer
 			w: Math.ceil(Game.width/2/cell.w),
 			h: Math.ceil(Game.height/2/cell.h)
-		}; 
-		super.build(buf);
+		});
 		
 		this.roomCount = 0;
 		this.nodes.forEach(node => {
 			if (node.room) this.roomCount++;
 		});
-		
 		
 		this.addItems('food');
 		this.addItems('scripture');
@@ -47,29 +46,39 @@ class HellMap extends Map {
 			}
 		}
 
+		let choicesWhileCount = 0;
 		while (choices.length < itemCount) {
 			const index = Cool.random(indexes);
 			if (!choices.includes(index)) choices.push(index);
+			if (choicesWhileCount > 10) {
+				debugger;
+			}
 		}
 
+		choicesWhileCount = 0;
 		while (choices.length > 0) {
 			const node = Cool.random(this.nodes);
 			if (node.room) {
 				const index = choices.pop();
 				const data = Game.data.food.entries[index];
 				const c = node.room.getCell();
-				const food = new Food(
+				const food = new HellItem(
 					c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
 					c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
 					Game.data.food[data[0]], 
-					data
+					data,
+					
 				);
 				this.food.push(food);
+			}
+			if (choicesWhileCount > 10) {
+				debugger;
 			}
 		}
 	}
 
 	remove(item) {
+		console.log(item);
 		// item.constructor.name.toLowerCase();
 		const index = map[item.type].indexOf(item);
 		map[item.type].splice(index, 1);

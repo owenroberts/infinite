@@ -15,6 +15,7 @@ class HellItem extends Item {
 		this.displayMapUI = true;
 		this.displayInventoryUI = false;
 
+		console.log(type);
 		this.consumeString;
 		switch(type) {
 			case 'food':
@@ -24,6 +25,7 @@ class HellItem extends Item {
 				this.consumeString = 'Read';
 			break;
 		}
+		console.log(this.consumeString);
 
 		this.pickup = new HellTextButton(this.position.x + this.width/2, this.position.y, `Pick up ${this.name}`, Game.lettering.messages);
 		Game.scenes.map.addUIUpdate(this.pickup);
@@ -31,7 +33,7 @@ class HellItem extends Item {
 		this.pickup.onClick = () => {
 			if (!player.inventory.isFull) {
 				ui.arrow.alive = false;
-				// this.remove();
+				console.log(this);
 				map.remove(this);
 				this.displayInventoryUI = true;
 				Game.scenes.inventory.addUIUpdate(this);
