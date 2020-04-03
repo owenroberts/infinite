@@ -31,9 +31,13 @@ class Room extends Area {
 	getCell() {
 		let x = Cool.randomInt(this.x, this.x + this.w - 1);
 		let y = Cool.randomInt(this.y, this.y + this.h - 1);
+		let whileCount = 0;
 		while (this.takenCells.filter(c => c.x == x && c.y == y).length) {
 			x = Cool.randomInt(this.x, this.x + this.w);
 			y = Cool.randomInt(this.y, this.y + this.h);
+			whileCount++;
+			if (whileCount > 10) loadMap();
+			return;
 		}
 		this.takenCells.push({ x: x, y: y });
 		return { x: x, y: y };
