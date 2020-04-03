@@ -36,11 +36,10 @@ class Room extends Area {
 			x = Cool.randomInt(this.x, this.x + this.w);
 			y = Cool.randomInt(this.y, this.y + this.h);
 			whileCount++;
-			if (whileCount >= 10) {
-				console.log(this);
-				console.log(x, y);
+			if (whileCount > 10) {
 				debugger;
-				loadNext();
+				loadMap();
+				return;
 			}
 		}
 		this.takenCells.push({ x: x, y: y });
