@@ -222,8 +222,6 @@ class Player extends Sprite {
 			ui.message.addMsg(`Your hunger hath abated.`);
 
 		this.hungerRate = Math.max(0.1, this.hungerRate + item.hungerRate);
-		if (item.hunger > 0)
-			ui.message.addMsg(`Your hunger hath abated.`);
 		
 		this.morality += item.morality;
 		if (item.morality != 0)

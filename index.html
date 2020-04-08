@@ -48,10 +48,13 @@
 	<script src="classes/Player.js"></script>
 	<script src="classes/Inventory.js"></script>
 	<script src="classes/Cursor.js"></script>
+
+	<script src="classes/buttonMixin.js"></script>
 	<script src="classes/HellTextButton.js"></script>
 	<script src="classes/HellButton.js"></script>
 	<script src="classes/HellMessage.js"></script>
 	<script src="classes/UIMetric.js"></script>
+	
 	<script src="hell.js"></script>
 	
 </body>
@@ -139,7 +142,15 @@
 
 4.3.2020
 - after jam list of stuff to do
+4.8.2020
 	- get inventory buttons to work
+		- consider adding separate button sprites ...
+			- and remove over/out/down/up states from sprite class
+		- add set position or position setter to sprite to make positions updates consistent
+		- after adding sprite, should click on it to change menu
+		- switch drop buttons ... 
+	
+	- rename "alive/active"
 	- optimize map generation
 	- text wrap for messages based on 960 browser window ... or 1280
 	- upate game to class
@@ -151,4 +162,8 @@
 	- room/path setup like the walls
 	- maps get progressively more complex
 		- figure out probabilities of map balance ...
+	- read and pick up icons
+	- get rid of roudned numbers
+	- fix poem line breaks
+	- its very annoying to have to remove elements from map/inventory AND the correct parts of the scene updates ... 
  -->

@@ -62,7 +62,7 @@ Game.lvl = 0;
 let player;
 let ui;
 let map, cols = 20, rows = 20, minNodeSize = 5, maxNodeSize = 10, cell = { w: 256, h: 256 };
-let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 200;
+let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260;
 let god;
 
 /* debugging */

@@ -15,6 +15,8 @@ class HellItem extends Item {
 		this.displayMapUI = true;
 		this.displayInventoryUI = false;
 
+		Object.assign(this, buttonMixin); // adds default onOver, onOut, onDown
+
 		this.consumeString;
 		switch(type) {
 			case 'food':
@@ -39,9 +41,9 @@ class HellItem extends Item {
 
 				Game.scenes.inventory.addUIUpdate(this);
 				Game.scenes.inventory.addUIUpdate(this.consume);
-				this.consume.position.x = centerAlign;
-				this.consume.position.y = inventoryY;
+				this.consume.setPosition(centerAlign, inventoryY - 35);
 				this.consume.alive = false;
+				this.pickup.alive = false;
 
 				player.inventory.add(this);
 			} else {
@@ -55,18 +57,28 @@ class HellItem extends Item {
 		this.consume.alive = false;
 
 		this.consume.onClick = () => {
+			Game.scenes.inventory.remove(this, 'ui');
+			if (this.displayMapUI) Game.scenes.message.addToDisplay(this);
 			this.remove();
-			Game.scenes.message.addToDisplay(this);
+			this.displayInventoryUI = false;
 			player.consume(this, type);
+			player.inventory.remove(this);
 		};
 
-		this.drop = new HellTextButton(centerAlign, inventoryY + 35, `Drop ${this.name}`, Game.lettering.messages);
+		this.drop = new HellTextButton(centerAlign, inventoryY, `Drop ${this.name}`, Game.lettering.messages);
 		this.drop.alive = false;
 		Game.scenes.inventory.addUIUpdate(this.drop);
+
 		this.drop.onClick = () => {
-			this.position.x = player.x;
-			this.position.y = player.y;
+			player.inventory.remove(this);
+			
+			this.setPosition(player.x, player.y);
 			map.add(this);
+			this.drop.alive = false;
+			Game.scene = 'map';
+			this.displayMapUI = true;
+			this.displayInventoryUI = false;
+			this.consume.setPosition(this.position.x + this.width/2, this.position.y + 35);
 		};
 	}
 
@@ -104,13 +116,18 @@ class HellItem extends Item {
 		}
 	}
 
-	onOver() {
-		console.log('over');
+	onClick() {
+		console.log(this);
+		const onOff = !this.displayInventoryUI;
+		for (let i = 0; i < player.inventory.items.length; i++) {
+			if (player.inventory.items[i])
+				player.inventory.items[i].toggleInventoryDisplay(false);
+		}
+		this.toggleInventoryDisplay(onOff);
 	}
 
-	onClick() {
-		console.log('fuckin on click', this.displayInventoryUI)
-		this.displayInventoryUI = !this.displayInventoryUI;
+	toggleInventoryDisplay(onOff) {
+		this.displayInventoryUI = typeof onOff === "undefined" ? !this.displayInventoryUI : onOff;
 		this.consume.alive = this.displayInventoryUI;
 		this.drop.alive = this.displayInventoryUI;
 	}

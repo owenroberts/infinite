@@ -7,7 +7,7 @@ class Inventory {
 		this.w = 128;
 		this.h = 128;
 
-		this.label = new Text(3, 80, "Inventory", 9, Game.lettering.metrics);
+		this.label = new Text(3, 140, "Inventory", 9, Game.lettering.metrics);
 		this.items = [];
 		this.labels = [];
 		for (let i = 0; i < this.maxSize; i++) {
@@ -31,9 +31,14 @@ class Inventory {
 				return;
 			}
 		}
-
 		// nowhere to add 
 	}
+
+	remove(item) {
+		this.items[this.items.indexOf(item)] = undefined;
+	}
+
+	/* need to toggle off display items */
 
 	display() {
 		this.label.display();
