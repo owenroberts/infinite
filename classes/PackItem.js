@@ -6,7 +6,7 @@ class PackItem extends HellItem {
 		Object.assign(this, buttonMixin); // adds default onOver, onOut, onDown
 
 		this.consume = new HellTextButton(centerAlign, inventoryY - 35, `${this.consumeString} ${this.name}`, Game.lettering.messages, this.type == 'food' ? 'eat' : 'interact');
-		this.consume.alive = false;
+		this.consume.isActive = false;
 
 		this.consume.onClick = () => {
 			player.consume(this, this.type);
@@ -14,7 +14,7 @@ class PackItem extends HellItem {
 		};
 
 		this.drop = new HellTextButton(centerAlign, inventoryY, `Drop ${this.name}`, Game.lettering.messages);
-		this.drop.alive = false;
+		this.drop.isActive = false;
 
 		this.drop.onClick = () => {
 			inventory.remove(this);
@@ -40,7 +40,7 @@ class PackItem extends HellItem {
 
 	toggleInventoryDisplay(onOff) {
 		this.displayInventory = typeof onOff === "undefined" ? !this.displayInventoryUI : onOff;
-		this.ui.all(ui => { ui.alive = this.displayInventory; });
+		this.ui.all(ui => { ui.isActive = this.displayInventory; });
 	}
 
 	over(x, y) {

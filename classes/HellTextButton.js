@@ -7,14 +7,14 @@ class HellTextButton extends TextButton {
 
 	onOver() {
 		ui.cursor.state = this.cursorState;
-		ui.arrow.alive = true;
+		ui.arrow.isActive = true;
 		ui.arrow.position.x = this.position.x + this.width;
 		ui.arrow.position.y = this.position.y;
 	}
 
 	onOut() {
 		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
-		ui.arrow.alive = false;
+		ui.arrow.isActive = false;
 	}
 
 	onDown() {
@@ -24,11 +24,11 @@ class HellTextButton extends TextButton {
 
 	onUp() {
 		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
-		ui.arrow.alive = false;
+		ui.arrow.isActive = false;
 	}
 
 	check() {
 		// for changed button that hasn't moved ... 
-		if (this.tap(ui.cursor.x, ui.cursor.y)) ui.arrow.alive = true;
+		if (this.tap(ui.cursor.x, ui.cursor.y)) ui.arrow.isActive = true;
 	}
 }

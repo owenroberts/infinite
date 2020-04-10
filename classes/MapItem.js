@@ -3,17 +3,17 @@ class MapItem extends HellItem {
 		super(...args);
 
 		this.pickup = new HellTextButton(this.position.x + this.width/2, this.position.y, `Pick up ${this.name}`, Game.lettering.messages);
-		this.pickup.alive = false;    // alive for ui update, not display
+		this.pickup.isActive = false;
 
 		this.pickup.onClick = () => {
 			if (inventory.add(args, this.name)) {
-				ui.arrow.alive = false; // global update for this? 
+				ui.arrow.isActive = false; // global update for this? 
 				map.remove(this);
 			}
 		};
 
 		this.consume = new HellTextButton(this.position.x + this.width/2, this.position.y + 35, `${this.consumeString} ${this.name}`, Game.lettering.messages, this.type == 'food' ? 'eat' : 'interact');
-		this.consume.alive = false;
+		this.consume.isActive = false;
 
 		this.consume.onClick = () => {
 			map.remove(this);
@@ -33,11 +33,11 @@ class MapItem extends HellItem {
 		if (this.collide(player)) {
 			this.pickup.setPosition(this.position.x + this.width/2, this.position.y - 35);
 			this.consume.setPosition(this.position.x + this.width/2, this.position.y);
-			this.pickup.alive = true;
-			this.consume.alive = true;
+			this.pickup.isActive = true;
+			this.consume.isActive = true;
 		} else {
-			this.pickup.alive = false;
-			this.consume.alive = false;
+			this.pickup.isActive = false;
+			this.consume.isActive = false;
 		}
 	}
 

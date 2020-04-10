@@ -31,7 +31,7 @@ Object.defineProperty(Game, 'scene', {
 					ui.message.x = centerAlign;
 				break;
 			}
-			ui.arrow.alive = false;
+			ui.arrow.isActive = false;
 		}
 	},
 	get: function() {
@@ -126,7 +126,7 @@ function start() {
 
 	ui.arrow = new Sprite(0, 0);
 	ui.arrow.addJSON(Game.data.ui.arrow);
-	ui.arrow.alive = false;
+	ui.arrow.isActive = false;
 	Game.scenes.map.addToDisplay(ui.arrow);
 	Game.scenes.inventory.addToDisplay(ui.arrow);
 	Game.scenes.message.addToDisplay(ui.arrow);
