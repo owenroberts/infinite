@@ -1,3 +1,7 @@
+/*
+	default cursor states for buttons and interactives
+*/
+
 const buttonMixin = {
 	onOver() {
 		ui.cursor.state = 'interact';

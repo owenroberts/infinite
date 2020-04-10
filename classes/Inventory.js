@@ -7,44 +7,49 @@ class Inventory {
 		this.w = 128;
 		this.h = 128;
 
+		Object.assign(this, itemMixin); // adds over, out, down, up
+
 		this.label = new Text(3, 140, "Inventory", 9, Game.lettering.metrics);
-		this.items = [];
+		this.items = new ItemCollection();
+		
+		/* not an item collection, only display bazed on size */
 		this.labels = [];
 		for (let i = 0; i < this.maxSize; i++) {
-			this.labels[i] = new Text(this.x + this.w * i - this.w/2, this.y + Math.floor(i/3) * this.h - this.h/2, ''+i, 1, Game.lettering.metrics);
+			this.labels[i] = new Text(
+				this.x + this.w * i - this.w/2, 
+				this.y + Math.floor(i/3) * this.h - this.h/2, 
+				''+i, 1, Game.lettering.metrics);
 		}
 	}
 
-	get isFull() {
-		return this.size == this.items.filter(item => item != undefined).length;
-	}
-
-	add(item) {
+	add(itemParams, name) {
 		Game.scene = 'inventory';
 
-		for (let i = 0; i < this.size; i++) {
-			if (!this.items[i]) {
-				this.items[i] = item;
-				item.position.x = this.x + this.w * i;
-				item.position.y = this.y + Math.floor(i/3) * this.h;
-				ui.message.setMsg(`You picked up the ${item.name}.`);
-				return;
-			}
+		if (this.items.length < this.size) {
+			this.items.add(new PackItem(...itemParams));
+			ui.message.setMsg(`You picked up the ${name}.`);
+
+			this.items.all((item, index) => {
+				item.position.x = this.x + this.w * index;
+				item.position.y = this.y + Math.floor(index/3) * this.h;
+			});
+			return true;
+		} else {
+			Game.scene = 'message';
+			ui.message.setMsg('Your pack is full.');
+			return false;
 		}
-		// nowhere to add 
 	}
 
 	remove(item) {
-		this.items[this.items.indexOf(item)] = undefined;
+		this.items.remove(item);
 	}
-
-	/* need to toggle off display items */
 
 	display() {
 		this.label.display();
 		for (let i = 0; i < this.size; i++) {
 			this.labels[i].display();
-			if (this.items[i]) this.items[i].display();
 		}
+		this.items.display();
 	}
 }

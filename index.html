@@ -37,13 +37,18 @@
 	<script src="map/Area.js"></script>
 	<script src="map/Node.js"></script>
 	<script src="map/Map.js"></script>
+
+	<script src="classes/ItemCollection.js"></script>
+	<script src="classes/itemMixin.js"></script>
 	
 	<script src="classes/HellMap.js"></script>
 	<script src="classes/Room.js"></script>
 	<script src="classes/Path.js"></script>
 	<script src="classes/Wall.js"></script>
+	
 	<script src="classes/HellItem.js"></script>
-	<!-- <script src="classes/Food.js"></script> -->
+	<script src="classes/MapItem.js"></script>
+	<script src="classes/PackItem.js"></script>
 	
 	<script src="classes/Player.js"></script>
 	<script src="classes/Inventory.js"></script>
@@ -149,6 +154,9 @@
 		- add set position or position setter to sprite to make positions updates consistent
 		- after adding sprite, should click on it to change menu
 		- switch drop buttons ... 
+		- invetory items/messages are not getting removed correctly ...
+			- maybe just create and delete everything instead of moving everything around so much ...
+
 	
 	- rename "alive/active"
 	- optimize map generation
@@ -166,4 +174,8 @@
 	- get rid of roudned numbers
 	- fix poem line breaks
 	- its very annoying to have to remove elements from map/inventory AND the correct parts of the scene updates ... 
+	- prune sprite.js
+	- rename inventory to "pack"
+	- what the fuck is crashing the map??
+	- make ui class with arrow, metrics, positions/properties etc.
  -->

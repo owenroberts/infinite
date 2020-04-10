@@ -24,8 +24,6 @@ class Player extends Sprite {
 		this.hunger = 0;
 		this.hungerRate = 0.5;
 		this.hungerLevel = 0;
-
-		this.inventory = new Inventory();
 	}
 
 	inputKey(key, state) {
@@ -213,7 +211,7 @@ class Player extends Sprite {
 		ui.message.setMsg(`You ${this.typeString} the ${item.name}.`);
 		ui.message.addMsg(item.quote);
 		
-		this.health += item.health;
+		this.health = Math.min(100, this.health + item.health);
 		if (item.health != 0) 
 			ui.message.addMsg(`Your health hath ${item.health > 0 ? 'increased' : 'decreased'}.`);
 		
@@ -234,4 +232,5 @@ class Player extends Sprite {
 		
 		this.checkHealth();
 	}
+
 }

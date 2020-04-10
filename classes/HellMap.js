@@ -1,8 +1,8 @@
 class HellMap extends Map {
-
-	constructor(cols, rows, minNodeSize, maxNodeSize) {	
-		super(cols, rows, minNodeSize, maxNodeSize);
+	constructor(...args) {	
+		super(...args);
 		Game.scenes.map.add(this);
+		Object.assign(this, itemMixin); // adds over, out, down, up
 	}
 
 	build(callback) {
@@ -18,6 +18,7 @@ class HellMap extends Map {
 			if (node.room) this.roomCount++;
 		});
 		
+		this.items = new ItemCollection();
 		this.addItems('food');
 		this.addItems('scripture');
 		
@@ -31,7 +32,6 @@ class HellMap extends Map {
 	}
 
 	addItems(type) {
-		this[type] = [];
 		const itemCount = random(1, this.roomCount);
 		const choices = [];
 		const indexes = [];
@@ -61,28 +61,26 @@ class HellMap extends Map {
 			const index = choices.pop();
 			const itemData = Game.data[type].entries[index];
 			const c = node.room.getCell();
-			const item = new HellItem(
+			const item = new MapItem(
 				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
 				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
 				Game.data[type][itemData[0]],
 				itemData,
 				type
 			);
-			this[type].push(item);
+			this.items.add(item);
 			if (choicesWhileCount > 10) {
 				debugger;
 			}
 		}
 	}
 
-	remove(item) {
-		// item.constructor.name.toLowerCase();
-		const index = map[item.type].indexOf(item);
-		map[item.type].splice(index, 1);
+	add(item) {
+		this.items.add(item);
 	}
 
-	add(item) {
-		map[item.type].push(item);
+	remove(item) {
+		this.items.remove(item);
 	}
 
 	display() {
@@ -90,12 +88,7 @@ class HellMap extends Map {
 		for (let i = 0; i < this.walls.length; i++) {
 			this.walls[i].display();
 		}
-		for (let i  = 0; i < this.food.length; i++) {
-			this.food[i].display();
-		}
-		for (let i  = 0; i < this.scripture.length; i++) {
-			this.scripture[i].display();
-		}
+		this.items.display();
 	}
 
 	update(offset) {
@@ -112,12 +105,6 @@ class HellMap extends Map {
 			this.walls[i].update(offset);
 		}
 
-		for (let i = 0; i < this.food.length; i++) {
-			this.food[i].update(offset);
-		}
-
-		for (let i = 0; i < this.scripture.length; i++) {
-			this.scripture[i].update(offset);
-		}
+		this.items.all(item => { item.update(offset); });
 	}
 }

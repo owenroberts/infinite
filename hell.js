@@ -59,10 +59,10 @@ Game.load(
 );
 
 Game.lvl = 0;
-let player;
+let player, inventory;
 let ui;
 let map, cols = 20, rows = 20, minNodeSize = 5, maxNodeSize = 10, cell = { w: 256, h: 256 };
-let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260;
+let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260; // global ui?
 let god;
 
 /* debugging */
@@ -85,20 +85,17 @@ function start() {
 	Game.setBounds('left', Game.width/2);
 	Game.setBounds('right', cols * cell.w - Game.width/2);
 	Game.setBounds('bottom', rows * cell.h - Game.height/2);
-
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	
 	player = new Player(Game.data.sprites.player, Game.width/2, Game.height/2);
-	Game.scenes.inventory.addToDisplay(player.inventory);
-	// Game.scenes.map.add(player);
-	// player.debug = true;
+	inventory = new Inventory();
+	Game.scenes.inventory.add(inventory);
 
 	god = new Sprite(256, Game.height/2);
 	god.center = true;
 	god.addJSON(Game.data.sprites.god);
 	Game.scenes.win.addToDisplay(god);
-
 
 	ui = {};
 	ui.metrics = {};
@@ -139,15 +136,16 @@ function start() {
 	ui.inventoryOpen.onClick = function() {
 		Game.scene = 'inventory';
 	};
-	// Game.scenes.message.addUI(ui.inventoryOpen);
-	Game.scenes.map.addUI(ui.inventoryOpen);
+	Game.scenes.map.addToDisplay(ui.inventoryOpen);
+	Game.scenes.map.addToUI(ui.inventoryOpen);
 	
 	ui.inventoryExit = new HellTextButton(750, 6, 'exit', Game.lettering.metrics);
 	ui.inventoryExit.onClick = function() {
 		Game.scene = 'map';
 		ui.message.setMsg('');
 	};
-	Game.scenes.inventory.addUI(ui.inventoryExit);
+	Game.scenes.inventory.addToDisplay(ui.inventoryExit);
+	Game.scenes.inventory.addToUI(ui.inventoryExit);
 
 	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.lettering.messages);
 	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
@@ -275,17 +273,17 @@ function keyUp(key) {
 function mouseMoved(x, y) {
 	ui.cursor.x = x;
 	ui.cursor.y = y;
-	Game.scenes[Game.scene].uiOver(x, y);
+	Game.scenes[Game.scene].mouseMoved(x, y);
 }
 
 function mouseDown(x, y) {
 	ui.cursor.down();
-	Game.scenes[Game.scene].uiDown(x, y);
+	Game.scenes[Game.scene].mouseDown(x, y);
 }
 
 function mouseUp(x, y) {
 	ui.cursor.up();
-	Game.scenes[Game.scene].uiUp(x, y);
+	Game.scenes[Game.scene].mouseUp(x, y);
 }
 
 /* re fuck ing work thi
