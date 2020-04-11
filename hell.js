@@ -7,7 +7,7 @@ Game.init({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: false,
+	stats: true,
 	scenes: ['map', 'inventory', 'message', 'loading', 'win']
 });
 
@@ -61,7 +61,7 @@ Game.load(
 Game.lvl = 0;
 let player, inventory;
 let ui;
-let map, cols = 20, rows = 20, minNodeSize = 5, maxNodeSize = 10, cell = { w: 256, h: 256 };
+let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
 let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260; // global ui?
 let god;
 
@@ -152,6 +152,7 @@ function start() {
 	Game.scene = 'message';
 
 	ui.message.next = loadNextMap;
+	loadNextMap();
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);

@@ -5,16 +5,16 @@ class Wall extends Sprite {
 
 		super(x * cell.w, y * cell.h, cell.w, cell.h);
 		this.center = true;
-		// this.debug = true;
+		this.debug = true;
 		this.origin = { x: x, y: y };
 
 		this.texture = new Texture({
-			scenes: ['map'],
 			frame: 'index',
+			center: true,
 			json: Game.data.textures.walls
 		}, false);
 
-		let wallLength = 53; // have to figure out how to get this from anim later ....
+		// indexes based on probably move through animation frames, higher frame number deeper in hell 
 		let indexes = [];
 		for (let i = Game.lvl * 2, len = Game.lvl + Cool.random(5, 10); i < len; i++) {
 			const p = 1 - (i - Game.lvl)/len; // probability
@@ -22,13 +22,13 @@ class Wall extends Sprite {
 				indexes.push(i);
 			}
 		}
-		// console.log('wall indexes', indexes);
 
 		for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
-			this.texture.addItem(Cool.random(indexes), {
-				x: x + Cool.random(-cell.w/3, cell.w/3),
-				y: y + Cool.random(-cell.h/3, cell.h/3)
-			});
+			this.texture.addLocation(
+				Cool.random(indexes),
+				x + Cool.random(-cell.w/3, cell.w/3),
+				y + Cool.random(-cell.h/3, cell.h/3)
+			);
 		}
 		// this.debug = Game.debug ? debug : undefined;
 	}

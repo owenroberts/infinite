@@ -13,14 +13,13 @@ class Room extends Area {
 		}
 
 		this.texture = new Texture({
-			scenes: ['map'],
-			frame: 'index',
 			locations: locations,
-			frame: 'randomIndex'
-		}, false);
-		
+			frame: 'randomIndex',
+			center: true
+		}, true);
 		this.addTexture();
-		this.debug = Game.debug ? debug : undefined;
+
+		this.debug = true; // Game.debug ? debug : undefined;
 		this.takenCells = [];
 	}
 
@@ -62,7 +61,6 @@ class Room extends Area {
 			Game.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
 			Game.ctx.globalAlpha = 1.0;
 		}
-		
 	}
 
 	update(offset) {

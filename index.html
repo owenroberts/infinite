@@ -24,7 +24,6 @@
 	<script src="lines/game/classes/item.js"></script>
 	<script src="lines/game/classes/texture.js"></script>
 
-	
 	<script src="lines/game/classes/ui.js"></script>
 	<script src="lines/game/classes/button.js"></script>
 	<script src="lines/game/classes/toggle.js"></script>
@@ -156,12 +155,28 @@
 		- switch drop buttons ... 
 		- invetory items/messages are not getting removed correctly ...
 			- maybe just create and delete everything instead of moving everything around so much ...
-
 4.9.2020	
 	- rename "alive/active"
 		- isActive is best for now
-		
+
+4.11.2020
 	- optimize map generation
+		- rooms take longer 
+			- loading json takes time, many references to same json
+			- this is probably normal
+			- texture with many locations is loading a new animation for each one, readings drawings etc.
+			- *implement the text approach to drawing an animation in multiple places ...
+				- textures aren't interactive, can be anims not sprites...
+				- walls have their own colliders
+				- this is because drawings are unpacking arrays [x,y] to objects {x: 0, y: 0}
+					- sacrificed load time for 
+				- this is probably same issue with walls, they all textures with multiple locations ...
+				- there is still an animation for every texture -- definitely game level issue
+			- maybe game.load makes animations and somehow everything references the animations?
+			- optimize animation load drawing time ... 
+				- or just use [x, y]
+			- *items were centering themselves, textures don't do that - items were also checking if they were on the fucking screen .... 
+
 	- text wrap for messages based on 960 browser window ... or 1280
 	- upate game to class
 	- figure out how to add scenes and stuff
@@ -180,4 +195,5 @@
 	- rename inventory to "pack"
 	- what the fuck is crashing the map??
 	- make ui class with arrow, metrics, positions/properties etc.
+	- move walls to hellmap?
  -->

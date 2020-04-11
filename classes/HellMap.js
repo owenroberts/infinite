@@ -108,3 +108,4 @@ class HellMap extends Map {
 		this.items.all(item => { item.update(offset); });
 	}
 }
+
