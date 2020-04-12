@@ -9,7 +9,7 @@ class Inventory {
 
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
-		this.label = new Text(3, 140, "Inventory", 9, Game.lettering.metrics);
+		this.label = new Text(3, 140, "Inventory", 9, Game.anims.lettering.metrics);
 		this.items = new ItemCollection();
 		
 		/* not an item collection, only display bazed on size */
@@ -18,7 +18,7 @@ class Inventory {
 			this.labels[i] = new Text(
 				this.x + this.w * i - this.w/2, 
 				this.y + Math.floor(i/3) * this.h - this.h/2, 
-				''+i, 1, Game.lettering.metrics);
+				''+i, 1, Game.anims.lettering.metrics);
 		}
 	}
 

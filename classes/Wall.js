@@ -5,13 +5,13 @@ class Wall extends Sprite {
 
 		super(x * cell.w, y * cell.h, cell.w, cell.h);
 		this.center = true;
-		this.debug = true;
+		// this.debug = true;
 		this.origin = { x: x, y: y };
 
 		this.texture = new Texture({
 			frame: 'index',
 			center: true,
-			json: Game.data.textures.walls
+			animation: Game.anims.textures.walls
 		}, false);
 
 		// indexes based on probably move through animation frames, higher frame number deeper in hell 

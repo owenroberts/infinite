@@ -78,8 +78,8 @@ document.addEventListener('keydown', ev => {
 function start() {
 	console.timeEnd('load data');
 	
-	Game.addLettering('metrics', Game.data.lettering.metrics);
-	Game.addLettering('messages', Game.data.lettering.messages);
+	Game.addLettering('metrics');
+	Game.addLettering('messages');
 
 	Game.setBounds('top', Game.height/2);
 	Game.setBounds('left', Game.width/2);
@@ -88,13 +88,13 @@ function start() {
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	
-	player = new Player(Game.data.sprites.player, Game.width/2, Game.height/2);
+	player = new Player(Game.anims.sprites.player, Game.width/2, Game.height/2);
 	inventory = new Inventory();
 	Game.scenes.inventory.add(inventory);
 
 	god = new Sprite(256, Game.height/2);
 	god.center = true;
-	god.addJSON(Game.data.sprites.god);
+	god.addAnimation(Game.anims.sprites.god);
 	Game.scenes.win.addToDisplay(god);
 
 	ui = {};
@@ -125,21 +125,21 @@ function start() {
 
 
 	ui.arrow = new Sprite(0, 0);
-	ui.arrow.addJSON(Game.data.ui.arrow);
+	ui.arrow.addAnimation(Game.anims.ui.arrow);
 	ui.arrow.isActive = false;
 	Game.scenes.map.addToDisplay(ui.arrow);
 	Game.scenes.inventory.addToDisplay(ui.arrow);
 	Game.scenes.message.addToDisplay(ui.arrow);
 	Game.scenes.win.addToDisplay(ui.arrow);
 
-	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', Game.lettering.metrics);
+	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', Game.anims.lettering.metrics);
 	ui.inventoryOpen.onClick = function() {
 		Game.scene = 'inventory';
 	};
 	Game.scenes.map.addToDisplay(ui.inventoryOpen);
 	Game.scenes.map.addToUI(ui.inventoryOpen);
 	
-	ui.inventoryExit = new HellTextButton(750, 6, 'exit', Game.lettering.metrics);
+	ui.inventoryExit = new HellTextButton(750, 6, 'exit', Game.anims.lettering.metrics);
 	ui.inventoryExit.onClick = function() {
 		Game.scene = 'map';
 		ui.message.setMsg('');
@@ -147,12 +147,12 @@ function start() {
 	Game.scenes.inventory.addToDisplay(ui.inventoryExit);
 	Game.scenes.inventory.addToUI(ui.inventoryExit);
 
-	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.lettering.messages);
+	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.anims.lettering.messages);
 	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
 	Game.scene = 'message';
 
 	ui.message.next = loadNextMap;
-	loadNextMap();
+	// loadNextMap();
 
 	/* debugging */
 	// wall = new Wall(player.x + 100, player.y);

@@ -3,7 +3,7 @@ class HellMessage extends Text {
 		super(x, y, msg, wrap, letters);
 		
 		this.list = [];
-		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', Game.lettering.messages);
+		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', Game.anims.lettering.messages);
 		
 		Game.scenes.message.addToDisplay(this);
 		Game.scenes.loading.addToDisplay(this);

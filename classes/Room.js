@@ -13,18 +13,18 @@ class Room extends Area {
 		}
 
 		this.texture = new Texture({
-			locations: locations,
 			frame: 'randomIndex',
 			center: true
 		}, true);
-		this.addTexture();
+		this.addTextureAnimation();
+		this.texture.addLocations(locations);
 
 		this.debug = true; // Game.debug ? debug : undefined;
 		this.takenCells = [];
 	}
 
-	addTexture() {
-		this.texture.addJSON(Game.data.textures.dirt);
+	addTextureAnimation() {
+		this.texture.animation = Game.anims.textures.dirt;
 	}
 
 	getCell() {

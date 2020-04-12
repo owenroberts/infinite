@@ -1,7 +1,7 @@
 class UIMetric extends Text {
 	constructor(x, y, callback) {
 		const msg = callback();
-		super(x, y, msg, msg.length, Game.lettering.metrics);
+		super(x, y, msg, msg.length, Game.anims.lettering.metrics);
 		this.callback = callback;
 
 		/* turn this in got Game.addToDisplay(this, ['map', 'scenes', 'inventory'] */

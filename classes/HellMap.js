@@ -64,7 +64,7 @@ class HellMap extends Map {
 			const item = new MapItem(
 				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
 				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
-				Game.data[type][itemData[0]],
+				Game.anims[type][itemData[0]],
 				itemData,
 				type
 			);

@@ -1,7 +1,7 @@
 class HellItem extends Item {
-	constructor(x, y, json, data, type) {
+	constructor(x, y, animation, data, type) {
 		super({ x: x, y: y});
-		this.addJSON(json);
+		this.addAnimation(animation);
 		this.type = type;
 		
 		this.name = data[0];
