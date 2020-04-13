@@ -31,7 +31,8 @@
 	<script src="lines/game/classes/TextButton.js"></script>
 
 	<script src="lines/game/events.js"></script>
-	<script src="lines/game/game.js"></script>
+	<script src="lines/game/classes/Stats.js"></script>
+	<script src="lines/game/classes/Game.js"></script>
 
 	<script src="map/Area.js"></script>
 	<script src="map/Node.js"></script>
@@ -179,12 +180,21 @@
 4.12.2020
 	- game load anims ... 
 	- no more src or fetch anywhere !!!!!
-
 	- text wrap for messages based on 960 browser window ... or 1280
 
-
-
+4.13.2020
 	- upate game to class
+		- then hell.js is class extending game? or game is object in hell.js?
+		- need to settle on permanent name here because base classes refer to Game.ctx etc
+			- sprite and anim - use ctx parameter?
+			- they are all part of the game section ... 
+			- or generic "app"
+			- at least gme is probably unique
+			- do editor etc. later
+			- Game class is really more like GameRenderer or something
+
+
+	
 	- figure out how to add scenes and stuff
 	- finish lines timeline
 	- look at other lines/game issues
@@ -202,4 +212,8 @@
 	- what the fuck is crashing the map??
 	- make ui class with arrow, metrics, positions/properties etc.
 	- move walls to hellmap?
+	- stat class
+	- try set timeout with game loading
+	- add gme load to gme constructor?
+	- events class?
  -->

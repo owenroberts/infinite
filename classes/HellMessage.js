@@ -3,30 +3,29 @@ class HellMessage extends Text {
 		super(x, y, msg, wrap, letters);
 		
 		this.list = [];
-		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', Game.anims.lettering.messages);
+		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', gme.anims.lettering.messages);
 		
-		Game.scenes.message.addToDisplay(this);
-		Game.scenes.loading.addToDisplay(this);
-		Game.scenes.inventory.addToDisplay(this);
-		Game.scenes.win.addToDisplay(this);
+		gme.scenes.message.addToDisplay(this);
+		gme.scenes.loading.addToDisplay(this);
+		gme.scenes.inventory.addToDisplay(this);
+		gme.scenes.win.addToDisplay(this);
 		
-		Game.scenes.inventory.addUI(this.continue);
-		Game.scenes.message.addUI(this.continue);
-		Game.scenes.win.addUI(this.continue);
+		gme.scenes.inventory.addUI(this.continue);
+		gme.scenes.message.addUI(this.continue);
+		gme.scenes.win.addUI(this.continue);
 
 		this.continue.onClick = () => {
-			console.log('click');
 			if (this.list.length == 0) {
 				this.set('');
 
 				if (player.died) loadNextMap();
 				else if (this.next) this.next();
-				else Game.scene = 'map';
+				else gme.scene = 'map';
 				
 				// removes items that we see when consuming ... 
-				for (let i = 0; i < Game.scenes.message.displayItems.length; i++) {
-					if (Game.scenes.message.displayItems[i].constructor.name == 'HellItem') {
-						Game.scenes.message.displayItems.splice(i, 1);
+				for (let i = 0; i < gme.scenes.message.displayItems.length; i++) {
+					if (gme.scenes.message.displayItems[i].constructor.name == 'HellItem') {
+						gme.scenes.message.displayItems.splice(i, 1);
 					}
 				}
 				this.next = undefined;
@@ -37,7 +36,6 @@ class HellMessage extends Text {
 		};
 	}
 
-	// change to add
 	add(msg) {
 		let waitForSpace = false; // wait for a space or line break here ... 
 		let nextBreak = this.wrap * 4;
@@ -61,10 +59,8 @@ class HellMessage extends Text {
 		if (!this.msg) this.set(this.list.shift());
 	}
 
-	// change to set
 	set(msg) {
-		// Game.scene = 'message';
-		super.set(msg);
+		super.setMsg(msg);
 		if (msg) {
 			this.isActive = true;
 			const returns = msg.match(/[\n\r]/g);

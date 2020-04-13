@@ -13,7 +13,7 @@ class HellTextButton extends TextButton {
 	}
 
 	onOut() {
-		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
+		ui.cursor.state = gme.scene == 'map' ? 'walk' : 'interact';
 		ui.arrow.isActive = false;
 	}
 
@@ -23,7 +23,7 @@ class HellTextButton extends TextButton {
 	}
 
 	onUp() {
-		ui.cursor.state = Game.scene == 'map' ? 'walk' : 'interact';
+		ui.cursor.state = gme.scene == 'map' ? 'walk' : 'interact';
 		ui.arrow.isActive = false;
 	}
 

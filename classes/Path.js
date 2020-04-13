@@ -1,6 +1,6 @@
 class Path extends Room {
 	
 	addTexture() {
-		this.texture.animation = Game.anim.textures.grass;
+		this.texture.animation = gme.anim.textures.grass;
 	}
 }

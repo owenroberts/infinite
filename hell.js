@@ -1,6 +1,6 @@
 window.random = Cool.random; /* for p5 based map */
 
-Game.init({
+const gme = new Game({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	lps: 10,
@@ -11,10 +11,10 @@ Game.init({
 	scenes: ['map', 'inventory', 'message', 'loading', 'win']
 });
 
-Object.defineProperty(Game, 'scene', {
+Object.defineProperty(gme, 'scene', {
 	set: function(scene) {
-		if (scene != Game._scene) {
-			Game._scene = scene;
+		if (scene != gme._scene) {
+			gme._scene = scene;
 			ui.cursor.state = 'interact';
 			switch(scene) {
 				case 'map':
@@ -35,18 +35,18 @@ Object.defineProperty(Game, 'scene', {
 		}
 	},
 	get: function() {
-		return Game._scene;
+		return gme._scene;
 	}
 });
 
-Object.defineProperty(Game, 'lvlName', {
+Object.defineProperty(gme, 'lvlName', {
 	get: function() {
-		return Game.lvl == 0 ? 'Purgatory' : `Ring of Hell ${Game.lvl}`
+		return gme.lvl == 0 ? 'Purgatory' : `Ring of Hell ${gme.lvl}`
 	}
 });
 
 console.time('load data');
-Game.load(
+gme.load(
 	{ 
 		ui: 'data/ui.json', 
 		sprites: 'data/sprites.json', 
@@ -54,18 +54,17 @@ Game.load(
 		food: 'data/food.csv',
 		scripture: 'data/scripture.csv',
 		lettering: 'data/lettering.json'
-	},
-	Game.start
+	}
 );
 
-Game.lvl = 0;
+gme.lvl = 0;
 let player, inventory;
 let ui;
 let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
 let grafWrap = 28, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260; // global ui?
 let god;
 
-const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
+const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
 
 /* debugging */
 let wall;
@@ -80,29 +79,29 @@ document.addEventListener('keydown', ev => {
 function start() {
 	console.timeEnd('load data');
 	
-	Game.addLettering('metrics');
-	Game.addLettering('messages');
+	gme.addLettering('metrics');
+	gme.addLettering('messages');
 
-	Game.setBounds('top', Game.height/2);
-	Game.setBounds('left', Game.width/2);
-	Game.setBounds('right', cols * cell.w - Game.width/2);
-	Game.setBounds('bottom', rows * cell.h - Game.height/2);
+	gme.setBounds('top', gme.height/2);
+	gme.setBounds('left', gme.width/2);
+	gme.setBounds('right', cols * cell.w - gme.width/2);
+	gme.setBounds('bottom', rows * cell.h - gme.height/2);
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	
-	player = new Player(Game.anims.sprites.player, Game.width/2, Game.height/2);
+	player = new Player(gme.anims.sprites.player, gme.width/2, gme.height/2);
 	inventory = new Inventory();
-	Game.scenes.inventory.add(inventory);
+	gme.scenes.inventory.add(inventory);
 
-	god = new Sprite(256, Game.height/2);
+	god = new Sprite(256, gme.height/2);
 	god.center = true;
-	god.addAnimation(Game.anims.sprites.god);
-	Game.scenes.win.addToDisplay(god);
+	god.addAnimation(gme.anims.sprites.god);
+	gme.scenes.win.addToDisplay(god);
 
 	ui = {};
 	ui.metrics = {};
 	ui.metrics.level = new UIMetric(3, 6, () => {
-		return Game.lvlName; 
+		return gme.lvlName; 
 	});
 	ui.metrics.morality = new UIMetric(270, 6, () => {
 		return `Morality ${player.morality}`;
@@ -121,51 +120,43 @@ function start() {
 		'loading': 'css/loader.gif'
 	});
 	ui.cursor.state = 'walk';
-	// ui.cursor = new Sprite(0, 0);
-	// ui.cursor.addJSON(Game.ui.cursor);
-	// ui.cursor.animation.state = 'walk';
-
 
 	ui.arrow = new Sprite(0, 0);
-	ui.arrow.addAnimation(Game.anims.ui.arrow);
+	ui.arrow.addAnimation(gme.anims.ui.arrow);
 	ui.arrow.isActive = false;
-	Game.scenes.map.addToDisplay(ui.arrow);
-	Game.scenes.inventory.addToDisplay(ui.arrow);
-	Game.scenes.message.addToDisplay(ui.arrow);
-	Game.scenes.win.addToDisplay(ui.arrow);
+	gme.scenes.map.addToDisplay(ui.arrow);
+	gme.scenes.inventory.addToDisplay(ui.arrow);
+	gme.scenes.message.addToDisplay(ui.arrow);
+	gme.scenes.win.addToDisplay(ui.arrow);
 
-	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', Game.anims.lettering.metrics);
+	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', gme.anims.lettering.metrics);
 	ui.inventoryOpen.onClick = function() {
-		Game.scene = 'inventory';
+		gme.scene = 'inventory';
 	};
-	Game.scenes.map.addToDisplay(ui.inventoryOpen);
-	Game.scenes.map.addToUI(ui.inventoryOpen);
+	gme.scenes.map.addToDisplay(ui.inventoryOpen);
+	gme.scenes.map.addToUI(ui.inventoryOpen);
 	
-	ui.inventoryExit = new HellTextButton(750, 6, 'exit', Game.anims.lettering.metrics);
+	ui.inventoryExit = new HellTextButton(750, 6, 'exit', gme.anims.lettering.metrics);
 	ui.inventoryExit.onClick = function() {
-		Game.scene = 'map';
+		gme.scene = 'map';
 		ui.message.set('');
 	};
-	Game.scenes.inventory.addToDisplay(ui.inventoryExit);
-	Game.scenes.inventory.addToUI(ui.inventoryExit);
+	gme.scenes.inventory.addToDisplay(ui.inventoryExit);
+	gme.scenes.inventory.addToUI(ui.inventoryExit);
 
-	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.anims.lettering.messages);
+	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.debug = true;
 	ui.message.set(welcomeMessage);
-	Game.scene = 'message';
+	gme.scene = 'message';
 
 	ui.message.next = loadNextMap;
 	// loadNextMap();
-
-	/* debugging */
-	// wall = new Wall(player.x + 100, player.y);
-	// apple = new HellItem(player.x + 100, player.y, Game.data.food.apple, ['apple'])
 }
 
 function loadNextMap() {
-	ui.message.continue.set('Continue');
-	Game.scene = 'loading';
-	ui.message.set(`Building ${Game.lvlName} ...`);
+	ui.message.continue.setMsg('Continue');
+	gme.scene = 'loading';
+	ui.message.set(`Building ${gme.lvlName} ...`);
 	setTimeout(buildMap, 100);
 }
 
@@ -173,7 +164,7 @@ function buildMap() {
 	console.time('map');
 	map.build(function() {
 		ui.message.set('');
-		Game.scene = 'map';
+		gme.scene = 'map';
 		console.timeEnd('map');
 		if (player.died) player.reborn();
 		player.spawn();
@@ -181,13 +172,13 @@ function buildMap() {
 }
 
 function update() {
-	if (Game.scene == 'map') {
+	if (gme.scene == 'map') {
 		player.update();
 		const offset = {
-			x: -player.x + Game.width/2 ,
-			y: -player.y + Game.height/2 
+			x: -player.x + gme.width/2 ,
+			y: -player.y + gme.height/2 
 		};
-		Game.scenes[Game.scene].update(offset);
+		gme.scenes[gme.scene].update(offset);
 
 		let wallCollision = false;
 		for (let i = 0; i < map.walls.length; i++) {
@@ -200,24 +191,24 @@ function update() {
 }
 
 function draw() {
-	Game.scenes[Game.scene].display();
+	gme.scenes[gme.scene].display();
 	player.display();
 	// apple.display();
 }
 
 function sizeCanvas() {
 
-	Game.width = window.innerWidth;
-	Game.height = window.innerHeight;
-	Game.canvas.width = window.innerWidth * Game.dpr;
-	Game.canvas.height =  window.innerHeight * Game.dpr;
-	Game.ctx.scale(Game.dpr, Game.dpr);
-	Game.canvas.style.zoom = 1 / Game.dpr;
-	Game.ctx.miterLimit = 1;
-	Game.ctxStrokeColor = undefined;
+	gme.width = window.innerWidth;
+	gme.height = window.innerHeight;
+	gme.canvas.width = window.innerWidth * gme.dpr;
+	gme.canvas.height =  window.innerHeight * gme.dpr;
+	gme.ctx.scale(gme.dpr, gme.dpr);
+	gme.canvas.style.zoom = 1 / gme.dpr;
+	gme.ctx.miterLimit = 1;
+	gme.ctxStrokeColor = undefined;
 
-	player.position.x = Game.width/2;
-	player.position.y = Game.height/2;
+	player.position.x = gme.width/2;
+	player.position.y = gme.height/2;
 }
 
 function keyDown(key) {
@@ -277,17 +268,17 @@ function keyUp(key) {
 function mouseMoved(x, y) {
 	ui.cursor.x = x;
 	ui.cursor.y = y;
-	Game.scenes[Game.scene].mouseMoved(x, y);
+	gme.scenes[gme.scene].mouseMoved(x, y);
 }
 
 function mouseDown(x, y) {
 	ui.cursor.down();
-	Game.scenes[Game.scene].mouseDown(x, y);
+	gme.scenes[gme.scene].mouseDown(x, y);
 }
 
 function mouseUp(x, y) {
 	ui.cursor.up();
-	Game.scenes[Game.scene].mouseUp(x, y);
+	gme.scenes[gme.scene].mouseUp(x, y);
 }
 
 /* re fuck ing work thi
@@ -299,7 +290,7 @@ document.addEventListener('mousedown', function(ev) {
 		player.setTarget(ev.pageX - player.position.x, ev.pageY - player.position.y);
 }, false);
 
-Game.canvas.addEventListener('mousemove', function(ev) {
+gme.canvas.addEventListener('mousemove', function(ev) {
 	cursor.style.left = `${ev.offsetX}px`;
 	cursor.style.top = `${ev.offsetY}px`;
 }, false);

@@ -19,12 +19,12 @@ class Room extends Area {
 		this.addTextureAnimation();
 		this.texture.addLocations(locations);
 
-		this.debug = true; // Game.debug ? debug : undefined;
+		this.debug = true;
 		this.takenCells = [];
 	}
 
 	addTextureAnimation() {
-		this.texture.animation = Game.anims.textures.dirt;
+		this.texture.animation = gme.anims.textures.dirt;
 	}
 
 	getCell() {
@@ -49,17 +49,16 @@ class Room extends Area {
 		this.texture.display();
 		
 		if (this.debug) {
-			Game.ctx.globalAlpha = mapAlpha;
+			gme.ctx.globalAlpha = mapAlpha;
 			const sz = 20;
-			Game.ctx.fillStyle = this.debug;
-			Game.ctx.strokeStyle = this.debug;
-			Game.ctx.fillRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
-			// Game.ctx.strokeRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
+			gme.ctx.fillStyle = this.debug;
+			gme.ctx.strokeStyle = this.debug;
+			gme.ctx.fillRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
 
-			Game.ctx.fillStyle = 'white';
-			Game.ctx.font = `${sz/2}px sans-serif`;
-			Game.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
-			Game.ctx.globalAlpha = 1.0;
+			gme.ctx.fillStyle = 'white';
+			gme.ctx.font = `${sz/2}px sans-serif`;
+			gme.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
+			gme.ctx.globalAlpha = 1.0;
 		}
 	}
 

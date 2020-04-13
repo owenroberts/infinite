@@ -1,7 +1,7 @@
 class HellMap extends Map {
 	constructor(...args) {	
 		super(...args);
-		Game.scenes.map.add(this);
+		gme.scenes.map.add(this);
 		Object.assign(this, itemMixin); // adds over, out, down, up
 	}
 
@@ -9,8 +9,8 @@ class HellMap extends Map {
 		
 		super.build({
 			// cell buffer
-			w: Math.ceil(Game.width/2/cell.w),
-			h: Math.ceil(Game.height/2/cell.h)
+			w: Math.ceil(gme.width/2/cell.w),
+			h: Math.ceil(gme.height/2/cell.h)
 		});
 		
 		this.roomCount = 0;
@@ -26,7 +26,7 @@ class HellMap extends Map {
 	}
 
 	prob(f) {
-		f = f.replace(/p(?![a-z])/g, Cool.map(Game.lvl, 0, 28, 0, 1));
+		f = f.replace(/p(?![a-z])/g, Cool.map(gme.lvl, 0, 28, 0, 1));
 		// console.log(f);
 		return  Function('return ' + f)().clamp(0, 1);
 	}
@@ -36,8 +36,8 @@ class HellMap extends Map {
 		const choices = [];
 		const indexes = [];
 
-		for (let i = 0; i < Game.data[type].entries.length; i++) {
-			const prob = this.prob(Game.data[type].entries[i][6]); // this changes - make it json ....
+		for (let i = 0; i < gme.data[type].entries.length; i++) {
+			const prob = this.prob(gme.data[type].entries[i][6]); // this changes - make it json ....
 			if (prob == 1) choices.push(i);
 			else if (prob > 0) {
 				for (let j = 0; j < prob * 100; j++) {
@@ -59,12 +59,12 @@ class HellMap extends Map {
 		while (choices.length > 0) {
 			const node = Cool.random(this.nodes.filter(n => n.room));
 			const index = choices.pop();
-			const itemData = Game.data[type].entries[index];
+			const itemData = gme.data[type].entries[index];
 			const c = node.room.getCell();
 			const item = new MapItem(
 				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
 				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
-				Game.anims[type][itemData[0]],
+				gme.anims[type][itemData[0]],
 				itemData,
 				type
 			);

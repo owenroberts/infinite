@@ -46,26 +46,26 @@ class Player extends Sprite {
 			
 		if (this.input.up || this.target.y < 0) {
 			if (this.target.y < 0) this.target.y += this.speed.y;
-			if (this.y > Game.bounds.top)
+			if (this.y > gme.bounds.top)
 				this.y -= this.speed.y;
 			state = 'right';
 		}
 		if (this.input.down || this.target.y > 0) {
 			if (this.target.y > 0) this.target.y -= this.speed.y;
-			if (this.y < Game.bounds.bottom)
+			if (this.y < gme.bounds.bottom)
 				this.y += this.speed.y;
 			state = 'left';
 		}
 		if (this.input.right || this.target.x > 0) {
 			if (this.target.x > 0) this.target.x -= this.speed.x;
-			if (this.x < Game.bounds.right)
+			if (this.x < gme.bounds.right)
 				this.x += this.speed.x;
 			state = 'right';
 		}
 
 		if (this.input.left || this.target.x < 0) {
 			if (this.target.x < 0) this.target.x += this.speed.x;
-			if (this.x > Game.bounds.left)
+			if (this.x > gme.bounds.left)
 				this.x -= this.speed.x;
 			state = 'left';
 		}
@@ -108,17 +108,16 @@ class Player extends Sprite {
 	checkMorality() {
 		if (this.morality == 0) {
 			ui.message.add(`You hath been morally neutral.`);
-			ui.message.add(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
+			ui.message.add(`You will remain in ${gme.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
 		}
 		else if (this.morality > 0) {
-			if (Game.lvl <= 0) {
-				Game.lvl == 0;
-				console.log('win state');
-				Game.scene = 'win';
+			if (gme.lvl <= 0) {
+				gme.lvl == 0;
+				gme.scene = 'win';
 				ui.message.set('Play again');
 				ui.message.next = loadMap;
 			} else {
-				Game.lvl -= 1;
+				gme.lvl -= 1;
 				ui.message.add(`You hath acted morally.`);
 				ui.message.add(`You will move up to a previous ring of hell.`);
 			}
@@ -126,7 +125,7 @@ class Player extends Sprite {
 		else {
 			ui.message.add(`You are a sinner.`);
 			ui.message.add(`You will descend further into hell.`);
-			Game.lvl += 1;
+			gme.lvl += 1;
 		}
 	}
 
@@ -147,7 +146,7 @@ class Player extends Sprite {
 				this.speed.y -= 1;
 			}
 
-			Game.scene = 'message';
+			gme.scene = 'message';
 
 			/* 
 				this is insane 
@@ -201,7 +200,7 @@ class Player extends Sprite {
 			break;
 		}
 
-		Game.scene = 'message';
+		gme.scene = 'message';
 
 		// reset speed immediately, make this more complicated later
 		this.speed.x = 8;
@@ -227,7 +226,7 @@ class Player extends Sprite {
 		this.speed.x += item.speed;
 		this.speed.y += item.speed;
 
-		ui.metrics.morality.set();
+		ui.metrics.morality.update();
 		
 		this.checkHealth();
 	}

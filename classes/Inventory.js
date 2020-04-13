@@ -9,7 +9,7 @@ class Inventory {
 
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
-		this.label = new Text(3, 140, "Inventory", 9, Game.anims.lettering.metrics);
+		this.label = new Text(3, 140, "Inventory", 9, gme.anims.lettering.metrics);
 		this.items = new ItemCollection();
 		
 		/* not an item collection, only display bazed on size */
@@ -18,12 +18,12 @@ class Inventory {
 			this.labels[i] = new Text(
 				this.x + this.w * i - this.w/2, 
 				this.y + Math.floor(i/3) * this.h - this.h/2, 
-				''+i, 1, Game.anims.lettering.metrics);
+				''+i, 1, gme.anims.lettering.metrics);
 		}
 	}
 
 	add(itemParams, name) {
-		Game.scene = 'inventory';
+		gme.scene = 'inventory';
 
 		if (this.items.length < this.size) {
 			this.items.add(new PackItem(...itemParams));
@@ -35,7 +35,7 @@ class Inventory {
 			});
 			return true;
 		} else {
-			Game.scene = 'message';
+			gme.scene = 'message';
 			ui.message.set('Your pack is full.');
 			return false;
 		}
