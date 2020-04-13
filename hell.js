@@ -62,8 +62,10 @@ Game.lvl = 0;
 let player, inventory;
 let ui;
 let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
-let grafWrap = 20, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260; // global ui?
+let grafWrap = 28, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260; // global ui?
 let god;
+
+const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
 
 /* debugging */
 let wall;
@@ -142,13 +144,14 @@ function start() {
 	ui.inventoryExit = new HellTextButton(750, 6, 'exit', Game.anims.lettering.metrics);
 	ui.inventoryExit.onClick = function() {
 		Game.scene = 'map';
-		ui.message.setMsg('');
+		ui.message.set('');
 	};
 	Game.scenes.inventory.addToDisplay(ui.inventoryExit);
 	Game.scenes.inventory.addToUI(ui.inventoryExit);
 
 	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, Game.anims.lettering.messages);
-	ui.message.setMsg(`Welcome to Infinite Hell. \nYou are in ${Game.lvlName}. \nYou are morally neutral. \nYou must perform a moral act you may find your way to Heaven. \nIf you sin, you will descend further into Hell.`);
+	ui.message.debug = true;
+	ui.message.set(welcomeMessage);
 	Game.scene = 'message';
 
 	ui.message.next = loadNextMap;
@@ -160,16 +163,16 @@ function start() {
 }
 
 function loadNextMap() {
-	ui.message.continue.setMsg('Continue');
+	ui.message.continue.set('Continue');
 	Game.scene = 'loading';
-	ui.message.setMsg(`Building ${Game.lvlName} ...`);
+	ui.message.set(`Building ${Game.lvlName} ...`);
 	setTimeout(buildMap, 100);
 }
 
 function buildMap() {
 	console.time('map');
 	map.build(function() {
-		ui.message.setMsg('');
+		ui.message.set('');
 		Game.scene = 'map';
 		console.timeEnd('map');
 		if (player.died) player.reborn();

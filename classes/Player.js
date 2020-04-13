@@ -96,8 +96,8 @@ class Player extends Sprite {
 	reborn() {
 		this.health = 100;
 		this.metricCount = 0;
-		ui.metrics.health.setMsg();
-		ui.metrics.level.setMsg();
+		ui.metrics.health.update();
+		ui.metrics.level.update();
 		this.died = false;
 		this.speed.x = 8;
 		this.speed.y = 8;
@@ -107,33 +107,33 @@ class Player extends Sprite {
 
 	checkMorality() {
 		if (this.morality == 0) {
-			ui.message.addMsg(`You hath been morally neutral.`);
-			ui.message.addMsg(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
+			ui.message.add(`You hath been morally neutral.`);
+			ui.message.add(`You will remain in ${Game.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
 		}
 		else if (this.morality > 0) {
 			if (Game.lvl <= 0) {
 				Game.lvl == 0;
 				console.log('win state');
 				Game.scene = 'win';
-				ui.message.setMsg('Play again');
+				ui.message.set('Play again');
 				ui.message.next = loadMap;
 			} else {
 				Game.lvl -= 1;
-				ui.message.addMsg(`You hath acted morally.`);
-				ui.message.addMsg(`You will move up to a previous ring of hell.`);
+				ui.message.add(`You hath acted morally.`);
+				ui.message.add(`You will move up to a previous ring of hell.`);
 			}
 		}
 		else {
-			ui.message.addMsg(`You are a sinner.`);
-			ui.message.addMsg(`You will descend further into hell.`);
+			ui.message.add(`You are a sinner.`);
+			ui.message.add(`You will descend further into hell.`);
 			Game.lvl += 1;
 		}
 	}
 
 	checkHealth() {
-		ui.metrics.health.setMsg();
+		ui.metrics.health.update();
 		if (this.health <= 0) {
-			ui.message.addMsg(`You hath died.`);
+			ui.message.add(`You hath died.`);
 			this.died = true;
 			this.checkMorality();
 		}
@@ -158,28 +158,28 @@ class Player extends Sprite {
 
 			switch(this.hungerLevel) {
 				case 1:
-					ui.message.setMsg('You feel a slight pang of hunger.');
+					ui.message.set('You feel a slight pang of hunger.');
 				break;
 				case 2:
-					ui.message.setMsg('Was that sound your stomach?');
+					ui.message.set('Was that sound your stomach?');
 				break;
 				case 3:
-					ui.message.setMsg('Your stomach growled.');
+					ui.message.set('Your stomach growled.');
 				break;
 				case 4:
-					ui.message.setMsg('Your stomach is twisting in pain.');
+					ui.message.set('Your stomach is twisting in pain.');
 				break;
 				case 5:
-					ui.message.setMsg('You are starting to feel weak.');
+					ui.message.set('You are starting to feel weak.');
 				break;
 				case 6:
-					ui.message.setMsg('You are beginning to feel light headed.');
+					ui.message.set('You are beginning to feel light headed.');
 				break;
 				case 7:
-					ui.message.setMsg('Your body is desparate for food.');
+					ui.message.set('Your body is desparate for food.');
 				break;
 				case 8:
-					ui.message.setMsg('You starved to death.');
+					ui.message.set('You starved to death.');
 					this.died = true;
 					this.checkMorality();
 				break;
@@ -207,27 +207,27 @@ class Player extends Sprite {
 		this.speed.x = 8;
 		this.speed.y = 8;
 
-		ui.message.setMsg(`You ${this.typeString} the ${item.name}.`);
-		ui.message.addMsg(item.quote);
+		ui.message.set(`You ${this.typeString} the ${item.name}.`);
+		ui.message.add(item.quote);
 		
 		this.health = Math.min(100, this.health + item.health);
 		if (item.health != 0) 
-			ui.message.addMsg(`Your health hath ${item.health > 0 ? 'increased' : 'decreased'}.`);
+			ui.message.add(`Your health hath ${item.health > 0 ? 'increased' : 'decreased'}.`);
 		
 		this.hunger = Math.max(0, this.hunger - item.hunger);
 		if (item.hunger > 0)
-			ui.message.addMsg(`Your hunger hath abated.`);
+			ui.message.add(`Your hunger hath abated.`);
 
 		this.hungerRate = Math.max(0.1, this.hungerRate + item.hungerRate);
 		
 		this.morality += item.morality;
 		if (item.morality != 0)
-			ui.message.addMsg(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
+			ui.message.add(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
 		
 		this.speed.x += item.speed;
 		this.speed.y += item.speed;
 
-		ui.metrics.morality.setMsg();
+		ui.metrics.morality.set();
 		
 		this.checkHealth();
 	}

@@ -10,7 +10,7 @@ class UIMetric extends Text {
 		Game.scenes.message.addToDisplay(this);
 	}
 
-	setMsg() {
+	update() {
 		super.setMsg(this.callback());
 		this.wrap = this.msg.length;
 		this.setBreaks();

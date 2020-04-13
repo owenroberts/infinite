@@ -27,7 +27,7 @@ class Inventory {
 
 		if (this.items.length < this.size) {
 			this.items.add(new PackItem(...itemParams));
-			ui.message.setMsg(`You picked up the ${name}.`);
+			ui.message.set(`You picked up the ${name}.`);
 
 			this.items.all((item, index) => {
 				item.position.x = this.x + this.w * index;
@@ -36,7 +36,7 @@ class Inventory {
 			return true;
 		} else {
 			Game.scene = 'message';
-			ui.message.setMsg('Your pack is full.');
+			ui.message.set('Your pack is full.');
 			return false;
 		}
 	}

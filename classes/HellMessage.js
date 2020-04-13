@@ -15,8 +15,9 @@ class HellMessage extends Text {
 		Game.scenes.win.addUI(this.continue);
 
 		this.continue.onClick = () => {
+			console.log('click');
 			if (this.list.length == 0) {
-				this.setMsg('');
+				this.set('');
 
 				if (player.died) loadNextMap();
 				else if (this.next) this.next();
@@ -30,24 +31,40 @@ class HellMessage extends Text {
 				}
 				this.next = undefined;
 			} else {
-				this.setMsg(this.list.shift());
+				this.set(this.list.shift());
 				this.continue.check();
 			}
 		};
 	}
 
 	// change to add
-	addMsg(msg) {
-		for (let i = 0; i < msg.length; i += this.wrap * 4) {
-			this.list.push(msg.substring(i, i + this.wrap * 4));
+	add(msg) {
+		let waitForSpace = false; // wait for a space or line break here ... 
+		let nextBreak = this.wrap * 4;
+		let start = 0;
+
+		for (let i = 0; i < msg.length; i++) {
+			if (i == start + nextBreak || waitForSpace) {
+				if (msg[i].match(/[\n\r\s]/g)) {
+					this.list.push(msg.substring(start, i));
+					waitForSpace = false;
+					start = i + 1;
+				} else {
+					waitForSpace = true;
+				}
+			} else if (start + nextBreak > msg.length) {
+				this.list.push(msg.substring(start, msg.length));
+				i = msg.length;
+			}
 		}
-		if (!this.msg) this.setMsg(this.list.shift());
+
+		if (!this.msg) this.set(this.list.shift());
 	}
 
 	// change to set
-	setMsg(msg) {
+	set(msg) {
 		// Game.scene = 'message';
-		super.setMsg(msg);
+		super.set(msg);
 		if (msg) {
 			this.isActive = true;
 			const returns = msg.match(/[\n\r]/g);
