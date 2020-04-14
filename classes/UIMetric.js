@@ -4,10 +4,7 @@ class UIMetric extends Text {
 		super(x, y, msg, msg.length, gme.anims.lettering.metrics);
 		this.callback = callback;
 
-		/* turn this in got Game.addToDisplay(this, ['map', 'scenes', 'inventory'] */
-		gme.scenes.map.addToDisplay(this);
-		gme.scenes.inventory.addToDisplay(this);
-		gme.scenes.message.addToDisplay(this);
+		gme.scenes.add(this, ['map', 'inventory', 'message'], 'display');
 	}
 
 	update() {

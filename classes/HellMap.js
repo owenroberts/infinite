@@ -91,7 +91,15 @@ class HellMap extends Map {
 		this.items.display();
 	}
 
-	update(offset) {
+	update() {
+
+		// only map uses offset ... 
+		const offset = {
+			x: -player.x + gme.width / 2,
+			y: -player.y + gme.height / 2 
+		};
+
+
 		// this.nodes[0].update(offset);
 		for (let i = 0; i < this.nodes.length; i++) {
 			const node = this.nodes[i];
@@ -104,6 +112,15 @@ class HellMap extends Map {
 		for (let i = 0; i < this.walls.length; i++) {
 			this.walls[i].update(offset);
 		}
+
+		let wallCollision = false;
+		for (let i = 0; i < map.walls.length; i++) {
+			const wall = map.walls[i];
+			/* wall doesn't have collider should it? */
+			if (wall.collide(player)) wallCollision = true;
+		}
+		if (wallCollision) player.back();
+
 
 		this.items.all(item => { item.update(offset); });
 	}

@@ -19,7 +19,7 @@
 	<script src="lines/classes/animation.js"></script>
 
 	<script src="lines/game/classes/anim.js"></script>
-	<script src="lines/game/classes/scene.js"></script>
+	<script src="lines/game/classes/Scene.js"></script>
 	<script src="lines/game/classes/sprite.js"></script>
 	<script src="lines/game/classes/item.js"></script>
 	<script src="lines/game/classes/texture.js"></script>
@@ -30,7 +30,9 @@
 	<script src="lines/game/classes/text.js"></script>
 	<script src="lines/game/classes/TextButton.js"></script>
 
-	<script src="lines/game/events.js"></script>
+	<script src="lines/game/classes/Manager.js"></script>
+	<script src="lines/game/classes/SceneManager.js"></script>
+	<script src="lines/game/classes/Events.js"></script>
 	<script src="lines/game/classes/Stats.js"></script>
 	<script src="lines/game/classes/Game.js"></script>
 
@@ -41,6 +43,7 @@
 	<script src="classes/ItemCollection.js"></script>
 	<script src="classes/itemMixin.js"></script>
 	
+	<script src="classes/HellGame.js"></script>
 	<script src="classes/HellMap.js"></script>
 	<script src="classes/Room.js"></script>
 	<script src="classes/Path.js"></script>
@@ -186,16 +189,20 @@
 	- upate game to class
 		- then hell.js is class extending game? or game is object in hell.js?
 		- need to settle on permanent name here because base classes refer to Game.ctx etc
-			- sprite and anim - use ctx parameter?
-			- they are all part of the game section ... 
-			- or generic "app"
-			- at least gme is probably unique
 			- do editor etc. later
-			- Game class is really more like GameRenderer or something
+			- Game class is really more like GameRenderer or something or GameEngine or LnsEngine
 
-
-	
 	- figure out how to add scenes and stuff
+		- manager + scenemaanger
+		- does this really save a lot of time?
+		- i can just add things directly to scenes maybe ... 
+		- i think this is pretty nice
+
+	- do i really need to be able to say gme.scene ?
+		- gme.scenes.current or gme.currentScene is clearer
+		- but gme.scene is superfluous with scene manager
+	
+
 	- finish lines timeline
 	- look at other lines/game issues
 	- figure out sinners + food/scripture
@@ -216,4 +223,8 @@
 	- try set timeout with game loading
 	- add gme load to gme constructor?
 	- events class?
+	- sprite and anim - use ctx parameter? (instead of gme)
+		- they are all part of the game section ... 
+		- or generic "app"
+		- at least gme is probably unique
  -->

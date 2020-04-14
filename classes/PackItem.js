@@ -3,6 +3,8 @@ class PackItem extends HellItem {
 		super(...args);
 		this.displayInventory = false;
 
+		// gme.scenes.add(this, 'inventory', 'ui');
+
 		Object.assign(this, buttonMixin); // adds default onOver, onOut, onDown
 
 		this.consume = new HellTextButton(centerAlign, inventoryY - 35, `${this.consumeString} ${this.name}`, gme.anims.lettering.messages, this.type == 'food' ? 'eat' : 'interact');
@@ -33,6 +35,7 @@ class PackItem extends HellItem {
 	}
 
 	onClick() {
+		console.log('click')
 		const onOff = !this.displayInventory;
 		inventory.items.all(item => item.toggleInventoryDisplay(false))
 		this.toggleInventoryDisplay(onOff);

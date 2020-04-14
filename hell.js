@@ -1,6 +1,6 @@
 window.random = Cool.random; /* for p5 based map */
 
-const gme = new Game({
+const gme = new HellGame({
 	width: window.innerWidth,
 	height: window.innerHeight,
 	lps: 10,
@@ -11,39 +11,6 @@ const gme = new Game({
 	scenes: ['map', 'inventory', 'message', 'loading', 'win']
 });
 
-Object.defineProperty(gme, 'scene', {
-	set: function(scene) {
-		if (scene != gme._scene) {
-			gme._scene = scene;
-			ui.cursor.state = 'interact';
-			switch(scene) {
-				case 'map':
-					ui.cursor.state = 'walk';
-				break;
-				case 'loading':
-					ui.message.x = leftAlign;
-					ui.cursor.state = 'loading';
-				break;
-				case 'message':
-					ui.message.x = leftAlign;
-				break;
-				case 'inventory':
-					ui.message.x = centerAlign;
-				break;
-			}
-			ui.arrow.isActive = false;
-		}
-	},
-	get: function() {
-		return gme._scene;
-	}
-});
-
-Object.defineProperty(gme, 'lvlName', {
-	get: function() {
-		return gme.lvl == 0 ? 'Purgatory' : `Ring of Hell ${gme.lvl}`
-	}
-});
 
 console.time('load data');
 gme.load(
@@ -57,7 +24,6 @@ gme.load(
 	}
 );
 
-gme.lvl = 0;
 let player, inventory;
 let ui;
 let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
@@ -79,24 +45,22 @@ document.addEventListener('keydown', ev => {
 function start() {
 	console.timeEnd('load data');
 	
-	gme.addLettering('metrics');
-	gme.addLettering('messages');
+	gme.addLettering(gme.anims.lettering.metrics);
+	gme.addLettering(gme.anims.lettering.messages);
 
-	gme.setBounds('top', gme.height/2);
-	gme.setBounds('left', gme.width/2);
-	gme.setBounds('right', cols * cell.w - gme.width/2);
-	gme.setBounds('bottom', rows * cell.h - gme.height/2);
+	gme.setBounds('top', gme.height / 2);
+	gme.setBounds('left', gme.width / 2);
+	gme.setBounds('right', cols * cell.w - gme.width / 2);
+	gme.setBounds('bottom', rows * cell.h - gme.height / 2);
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
-	
-	player = new Player(gme.anims.sprites.player, gme.width/2, gme.height/2);
+	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
 	inventory = new Inventory();
-	gme.scenes.inventory.add(inventory);
 
-	god = new Sprite(256, gme.height/2);
+	god = new Sprite(256, gme.height / 2);
 	god.center = true;
 	god.addAnimation(gme.anims.sprites.god);
-	gme.scenes.win.addToDisplay(god);
+	gme.scenes.add(god, 'win', 'display');
 
 	ui = {};
 	ui.metrics = {};
@@ -124,25 +88,18 @@ function start() {
 	ui.arrow = new Sprite(0, 0);
 	ui.arrow.addAnimation(gme.anims.ui.arrow);
 	ui.arrow.isActive = false;
-	gme.scenes.map.addToDisplay(ui.arrow);
-	gme.scenes.inventory.addToDisplay(ui.arrow);
-	gme.scenes.message.addToDisplay(ui.arrow);
-	gme.scenes.win.addToDisplay(ui.arrow);
+	gme.scenes.add(ui.arrow, ['map', 'inventory', 'message', 'win'], 'display');
 
-	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', gme.anims.lettering.metrics);
-	ui.inventoryOpen.onClick = function() {
+	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', gme.anims.lettering.metrics, 'interact', function() {
 		gme.scene = 'inventory';
-	};
-	gme.scenes.map.addToDisplay(ui.inventoryOpen);
-	gme.scenes.map.addToUI(ui.inventoryOpen);
+	});
+	gme.scenes.add(ui.inventoryOpen, ['map'], 'ui');
 	
-	ui.inventoryExit = new HellTextButton(750, 6, 'exit', gme.anims.lettering.metrics);
-	ui.inventoryExit.onClick = function() {
+	ui.inventoryExit = new HellTextButton(750, 6, 'exit', gme.anims.lettering.metrics, 'interact', function() {
 		gme.scene = 'map';
 		ui.message.set('');
-	};
-	gme.scenes.inventory.addToDisplay(ui.inventoryExit);
-	gme.scenes.inventory.addToUI(ui.inventoryExit);
+	});
+	gme.scenes.add(ui.inventoryExit, ['inventory'], 'ui');
 
 	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.debug = true;
@@ -172,28 +129,13 @@ function buildMap() {
 }
 
 function update() {
-	if (gme.scene == 'map') {
-		player.update();
-		const offset = {
-			x: -player.x + gme.width/2 ,
-			y: -player.y + gme.height/2 
-		};
-		gme.scenes[gme.scene].update(offset);
-
-		let wallCollision = false;
-		for (let i = 0; i < map.walls.length; i++) {
-			const wall = map.walls[i];
-			/* wall doesn't have collider should it? */
-			if (wall.collide(player)) wallCollision = true;
-		}
-		if (wallCollision) player.back();
-	}
+	player.update();
+	gme.scenes.current.update();
 }
 
 function draw() {
-	gme.scenes[gme.scene].display();
+	gme.scenes.current.display();
 	player.display();
-	// apple.display();
 }
 
 function sizeCanvas() {
@@ -268,17 +210,17 @@ function keyUp(key) {
 function mouseMoved(x, y) {
 	ui.cursor.x = x;
 	ui.cursor.y = y;
-	gme.scenes[gme.scene].mouseMoved(x, y);
+	gme.scenes.current.mouseMoved(x, y);
 }
 
 function mouseDown(x, y) {
 	ui.cursor.down();
-	gme.scenes[gme.scene].mouseDown(x, y);
+	gme.scenes.current.mouseDown(x, y);
 }
 
 function mouseUp(x, y) {
 	ui.cursor.up();
-	gme.scenes[gme.scene].mouseUp(x, y);
+	gme.scenes.current.mouseUp(x, y);
 }
 
 /* re fuck ing work thi

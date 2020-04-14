@@ -7,6 +7,7 @@ class Inventory {
 		this.w = 128;
 		this.h = 128;
 
+		gme.scenes.inventory.addUI(this);
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
 		this.label = new Text(3, 140, "Inventory", 9, gme.anims.lettering.metrics);
@@ -52,4 +53,6 @@ class Inventory {
 		}
 		this.items.display();
 	}
+
+
 }
