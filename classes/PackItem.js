@@ -35,7 +35,6 @@ class PackItem extends HellItem {
 	}
 
 	onClick() {
-		console.log('click')
 		const onOff = !this.displayInventory;
 		inventory.items.all(item => item.toggleInventoryDisplay(false))
 		this.toggleInventoryDisplay(onOff);

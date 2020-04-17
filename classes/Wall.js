@@ -1,12 +1,9 @@
 class Wall extends Sprite {
-
 	constructor(x, y, debug) {
-		// console.log(x, y, cell);
-
 		super(x * cell.w, y * cell.h, cell.w, cell.h);
 		this.center = true;
-		// this.debug = true;
-		this.origin = new Cool.Vector(x, y);
+		this.debug = true;
+		this.origin = { x: x, y: y };
 
 		this.texture = new Texture({
 			frame: 'index',
@@ -38,7 +35,8 @@ class Wall extends Sprite {
 	}
 
 	update(offset) {
-		this.position = this.origin.add(offset);
+		this.position.x = this.origin.x + offset.x;
+		this.position.y = this.origin.y + offset.y;
 		this.texture.update(offset);
 	}
 }

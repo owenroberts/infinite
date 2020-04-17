@@ -1,6 +1,6 @@
 class Room extends Area {
-	constructor(x, y, w, h, debug) {
-		super(x, y, w, h);
+	constructor(...args) {
+		super(...args);
 
 		const locations = [];
 		for (let _x = this.x; _x < this.x + this.w; _x++) {

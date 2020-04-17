@@ -94,12 +94,12 @@ class HellMap extends Map {
 	update() {
 
 		// only map uses offset ... 
-		// const offset = {
-		// 	x: -player.x + gme.width / 2,
-		// 	y: -player.y + gme.height / 2 
-		// };
+		const offset = {
+			x: -player.x + gme.width / 2,
+			y: -player.y + gme.height / 2 
+		};
 
-		const offset = new Cool.Vector(-player.x + gme.width / 2, -player.y + gme.height / 2);
+		// const offset = new Cool.Vector(-player.x + gme.width / 2, -player.y + gme.height / 2);
 
 
 		// this.nodes[0].update(offset);
@@ -117,7 +117,8 @@ class HellMap extends Map {
 
 		let wallCollision = false;
 		for (let i = 0; i < map.walls.length; i++) {
-			if (map.walls[i].collide(player)) wallCollision = true;
+			const wall = map.walls[i];
+			if (wall.collide(player)) wallCollision = true;
 		}
 		if (wallCollision) player.back();
 
