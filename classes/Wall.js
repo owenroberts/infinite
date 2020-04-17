@@ -6,7 +6,7 @@ class Wall extends Sprite {
 		super(x * cell.w, y * cell.h, cell.w, cell.h);
 		this.center = true;
 		// this.debug = true;
-		this.origin = { x: x, y: y };
+		this.origin = new Cool.Vector(x, y);
 
 		this.texture = new Texture({
 			frame: 'index',
@@ -38,8 +38,7 @@ class Wall extends Sprite {
 	}
 
 	update(offset) {
-		this.position.x = this.origin.x + offset.x;
-		this.position.y = this.origin.y + offset.y;
+		this.position = this.origin.add(offset);
 		this.texture.update(offset);
 	}
 }

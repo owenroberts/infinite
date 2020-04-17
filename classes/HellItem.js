@@ -1,4 +1,4 @@
-class HellItem extends Item {
+class HellItem extends Entity {
 	constructor(x, y, animation, data, type) {
 		super({ x: x, y: y});
 		this.addAnimation(animation);

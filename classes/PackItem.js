@@ -26,7 +26,7 @@ class PackItem extends HellItem {
 			gme.scene = 'map';
 		};
 
-		this.ui = new ItemCollection([this.consume, this.drop]);
+		this.ui = new SpriteCollection([this.consume, this.drop]);
 	}
 
 	display() {

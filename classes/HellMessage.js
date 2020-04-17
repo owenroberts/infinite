@@ -16,13 +16,7 @@ class HellMessage extends Text {
 				if (player.died) loadNextMap();
 				else if (this.next) this.next();
 				else gme.scene = 'map';
-				
-				// removes items that we see when consuming ... 
-				for (let i = 0; i < gme.scenes.message.displayItems.length; i++) {
-					if (gme.scenes.message.displayItems[i].constructor.name == 'HellItem') {
-						gme.scenes.message.displayItems.splice(i, 1);
-					}
-				}
+
 				this.next = undefined;
 			} else {
 				this.set(this.list.shift());

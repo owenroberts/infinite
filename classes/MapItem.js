@@ -20,7 +20,7 @@ class MapItem extends HellItem {
 			player.consume(this, this.type);
 		};
 
-		this.ui = new ItemCollection([this.pickup, this.consume]);
+		this.ui = new SpriteCollection([this.pickup, this.consume]);
 	}
 
 	display() {

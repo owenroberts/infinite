@@ -11,7 +11,7 @@ class Inventory {
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
 		this.label = new Text(3, 140, "Inventory", 9, gme.anims.lettering.metrics);
-		this.items = new ItemCollection();
+		this.items = new SpriteCollection();
 		
 		/* not an item collection, only display bazed on size */
 		this.labels = [];

@@ -1,0 +1,232 @@
+3.5.2020
+- fuck this takes forever
+- game updates
+	
+	
+	
+
+	- dont render until offset applied
+
+	- player collisions with map not working
+		- separate display function for player?
+	- stat class
+	- sprite use w h instead of width and height
+	- why does fps cap at 9?
+	- item vs sprite, params vs xy inconsistent
+
+	- what the actual fuck
+	- need names of positions to make sense
+	- item update func is more generic map thing
+	- i'm dismantling this stupid fucking system backwards ..
+	- player position isn't supposed to change
+	- text + ui class for food 
+
+	- consolidate button and toggle and text ... 
+	- sub classes don't fetch 
+	
+
+	
+3.7.2020
+	- fix starting point
+	- buffer one cell
+	- dirt more sparse
+	- cluster walls
+	- smaller skully
+	- buffer half screen width at least
+	- wall collisions
+		- everything centered vs not centered
+	- need puddles 
+	- to do -
+		- grass in hell?
+		- partition collisions and test performance
+		- player gets stuck while clicking...
+			- adjust player collider
+		- player spawns on wall ...
+		- game better name for .data
+		- text.js active vs sprite.js alive (really "visible")
+		- item on wall ... 
+		- item ui class 
+4.3.2020
+- after jam list of stuff to do
+4.8.2020
+	- get inventory buttons to work
+		- consider adding separate button sprites ...
+			- and remove over/out/down/up states from sprite class
+		- add set position or position setter to sprite to make positions updates consistent
+		- after adding sprite, should click on it to change menu
+		- switch drop buttons ... 
+		- invetory items/messages are not getting removed correctly ...
+			- maybe just create and delete everything instead of moving everything around so much ...
+4.9.2020	
+	- rename "alive/active"
+		- isActive is best for now
+4.11.2020
+	- optimize map generation
+		- rooms take longer 
+			- loading json takes time, many references to same json
+			- this is probably normal
+			- texture with many locations is loading a new animation for each one, readings drawings etc.
+			- *implement the text approach to drawing an animation in multiple places ...
+				- textures aren't interactive, can be anims not sprites...
+				- walls have their own colliders
+				- this is because drawings are unpacking arrays [x,y] to objects {x: 0, y: 0}
+					- sacrificed load time for 
+				- this is probably same issue with walls, they all textures with multiple locations ...
+				- there is still an animation for every texture -- definitely game level issue
+			- maybe game.load makes animations and somehow everything references the animations?
+			- optimize animation load drawing time ... 
+				- or just use [x, y]
+			- *items were centering themselves, textures don't do that - items were also checking if they were on the fucking screen .... 
+			- items would actually be fine if! you were using one animation instead of a million ... 
+4.12.2020
+	- game load anims ... 
+	- no more src or fetch anywhere !!!!!
+	- text wrap for messages based on 960 browser window ... or 1280
+4.13.2020
+	- upate game to class
+		- then hell.js is class extending game? or game is object in hell.js?
+		- need to settle on permanent name here because base classes refer to Game.ctx etc
+			- do editor etc. later
+			- Game class is really more like GameRenderer or something or GameEngine or LnsEngine
+	- figure out how to add scenes and stuff
+		- manager + scenemaanger
+		- does this really save a lot of time?
+		- i can just add things directly to scenes maybe ... 
+		- i think this is pretty nice
+	- do i really need to be able to say gme.scene ?
+		- gme.scenes.current or gme.currentScene is clearer
+		- but gme.scene is superfluous with scene manager
+4.14.2020
+	- finish lines timeline
+		- collapse layers
+			- save in settings? maybe use setting to look at settings within ui modules
+		-  other functionality of layers/frames
+			- cut segment etc, add to edit modal, or rewrite original funcs?
+				- something that i want to do to one at a time vs multiple
+					(multiple layers can be toggled...)
+				- split modal for now, maybe frame based split button later (ignore toggle)
+		- add tweens to timeline ...
+		- cloning drawings for editing drawing in layer
+		- drag and drop tweens would be fun ... 
+		- tween/layer ui super class?
+		- tween class, super for layer and tween ... endFrame, startFrame
+		- fix toggle handler/onoff
+			- really need to clarify what toggle "on" and "off" mean
+4.15.2020
+		- animation sub class for animate that uses layer class and more layer functions/getters/setters like get toggled layers
+		- drawing class too??
+			- useful for cut line, cut segment etc, then i dont have to repeat that code 
+	- look at other lines/game issues
+		- rename animation class ... fuck
+		- new drawing doesn't retain new lines setup
+		- insert doesn't work with layers ...
+		- lines on sidecar dont take on mobile stuff ... uh duh
+4.16.2020
+		- zoom ui and canvas separately ...
+		- cant draw on top part zoomed in after reset .... fixed by doing R/L instead of L/R
+			- blocked by tooltip
+		- state updates when using next prev
+		- update canvas size when fitting to canvas ...
+		- turn off cursor optoin  for ipad
+		- apply wiggle to segments ... 
+			- this looks cool
+			- need to play with lines more ...
+			- add option 
+			- fuck
+			- wiggle is applied 
+			- hell yeah
+		- lns.ui.timeline.panel.timeline is kinda weird
+			- this seems fine
+	- game		
+		- drawSprites type list of sprites
+			- this is covered with scenes
+		- Game.sprites and Game.ui defaults
+			- Game.data contains sprite info
+			- Game.anims contains all loaded animations
+		- Game.scenes default?
+			- scene, scenemanager
+4.17.2020
+		- test performance of game with array vs object for ui/scenes
+			- scene just uses array, i think thats better
+		- loading may just have to be handled by individual games ....
+			- nah we load anims now buddy
+		- load animations first then make classes ...  yerp
+		- what purpose do items have? why not just sprites?
+			- update function not in sprite for map
+				- item is a sprite that is part of the map, not ui
+				- are enemies/obstacles items?
+					- they do need to update
+				- do all games need maps?
+				- update is really more a MapItem thing ... maybe not a default part of a game?
+
+			- might make more sense to call item GameSprite or GameItem or GameObject
+			- ItemCollection
+			- map uses items
+			- scene also refers to item, but prob should be sprite
+			- Sprite is the main default class, for UI and Item
+			- Item used both as generic like a list has items and as a specific Item is a map version of sprite...
+			- Entity is what i used for idtio ... 
+				- Entity -> Interactive -> Pickup
+				- Player
+				- Sprite -> Character
+				- Sprite -> Item -> Interactive
+				- Sprit -> UI -> Toggle
+			- Sprite is just a thing that can be rendered, clicked, moved
+			- I think I prefer Entity as something that's in the game, vs Item is things character can collect, or like parts of something else
+			- Item Collection is part of Hell Classes
+		- adding SpriteCollection as Game Class - could just be Collection
+			- Collection is list
+			- Manager is object w keys
+		- also fixed removing game items in hell message
+		- also fixed current state changing issue moving to game
+		- generally heading towards objects not automatically adding stuff
+			- not anymore!
+		- player/map relationship is super confusing ... 
+			- easier now with scenes . player is just not on map
+		- p5 play style camera? - for now no, this is more resolved with better understanding of map update system than previously
+		- make a debug draw function
+			- ? this already exists?
+			- do i mean debug class?
+		- really need to wait for sprites to actually load!
+			- no anims!
+		- just load json to make different animations ...
+			- too many anim objects?
+			- hell yes!
+		- texture is really annoying, need to separate functions better
+			- i think this is better sans src and json etc.
+		- use more vectors
+			- disadvantage is references getting stuck
+			- Cool.Vector is also really long, vs p5.Vector or Cool.Vec or something
+
+
+	- consolidate play and timeline panels
+		- but i don't really need those buttons open all the time?
+	- better name for animation.state vs animation.currentState - not clear that state is label/string and currentState is start/end values
+	- way to always update ui ... ?
+
+	- figure out sinners + food/scripture
+	- update other game components
+	- room/path setup like the walls
+	- maps get progressively more complex
+		- figure out probabilities of map balance ...
+	- read and pick up icons
+	- get rid of roudned numbers
+	- fix poem line breaks
+	- its very annoying to have to remove elements from map/inventory AND the correct parts of the scene updates ... 
+	- prune sprite.js
+	- rename inventory to "pack"
+	- what the fuck is crashing the map??
+	- make ui class with arrow, metrics, positions/properties etc.
+	- move walls to hellmap?
+	- stat class
+	- try set timeout with game loading
+	- add gme load to gme constructor?
+	- events class?
+	- sprite and anim - use ctx parameter? (instead of gme)
+		- they are all part of the game section ... 
+		- or generic "app"
+		- at least gme is probably unique
+	- game editor is a whole other story ....
+		- update when we revisit garden
+	- js minifier?
+	- wall image changes glitch?

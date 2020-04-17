@@ -18,7 +18,7 @@ class HellMap extends Map {
 			if (node.room) this.roomCount++;
 		});
 		
-		this.items = new ItemCollection();
+		this.items = new SpriteCollection();
 		this.addItems('food');
 		this.addItems('scripture');
 		
@@ -94,10 +94,12 @@ class HellMap extends Map {
 	update() {
 
 		// only map uses offset ... 
-		const offset = {
-			x: -player.x + gme.width / 2,
-			y: -player.y + gme.height / 2 
-		};
+		// const offset = {
+		// 	x: -player.x + gme.width / 2,
+		// 	y: -player.y + gme.height / 2 
+		// };
+
+		const offset = new Cool.Vector(-player.x + gme.width / 2, -player.y + gme.height / 2);
 
 
 		// this.nodes[0].update(offset);
@@ -115,9 +117,7 @@ class HellMap extends Map {
 
 		let wallCollision = false;
 		for (let i = 0; i < map.walls.length; i++) {
-			const wall = map.walls[i];
-			/* wall doesn't have collider should it? */
-			if (wall.collide(player)) wallCollision = true;
+			if (map.walls[i].collide(player)) wallCollision = true;
 		}
 		if (wallCollision) player.back();
 
