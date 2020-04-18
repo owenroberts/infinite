@@ -2,10 +2,6 @@
 - fuck this takes forever
 - game updates
 	
-	
-	
-
-	- dont render until offset applied
 
 	- player collisions with map not working
 		- separate display function for player?
@@ -23,8 +19,6 @@
 
 	- consolidate button and toggle and text ... 
 	- sub classes don't fetch 
-	
-
 	
 3.7.2020
 	- fix starting point
@@ -197,7 +191,10 @@
 		- use more vectors
 			- disadvantage is references getting stuck
 			- Cool.Vector is also really long, vs p5.Vector or Cool.Vec or something
-
+		- dont render until offset applied
+			- did that shit
+4.18.2020
+		
 
 	- consolidate play and timeline panels
 		- but i don't really need those buttons open all the time?
@@ -228,5 +225,20 @@
 		- at least gme is probably unique
 	- game editor is a whole other story ....
 		- update when we revisit garden
+
 	- js minifier?
+		- https://developers.google.com/closure/compiler/
+			- nah
+		- minify by project vs minify in lines ...
+		- try just infinite hell first
+			- dont need any interface css ...
+		- js is all over the place
+		- gulp
+			- https://www.freecodecamp.org/news/gulp-4-walk-through-with-example-code-c3c018eab306/
+			- es6 issues
+			- uglify-js only supports JavaScript (ECMAScript 5).
+			- To minify ECMAScript 2015 or above, transpile using tools like Babel.
+			- so im converting code to ecma < 5, how does that effect hell.js
+
+
 	- wall image changes glitch?

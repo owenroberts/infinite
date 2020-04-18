@@ -1,0 +1,34 @@
+{
+	"name": "infinite_hell",
+	"version": "0.0.1",
+	"description": "A game about hell.",
+	"main": "gulpfile.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/owenroberts/infinite.git"
+	},
+	"author": "@owenroberts",
+	"devDependencies": {
+		"@babel/core": "^7.9.0",
+		"@babel/preset-env": "^7.9.5",
+		"babelify": "^10.0.0",
+		"cssnano": "^4.1.10",
+		"gulp": "^4.0.2",
+		"gulp-autoprefixer": "^7.0.1",
+		"gulp-babel": "^8.0.0",
+		"gulp-better-rollup": "^4.0.1",
+		"gulp-concat": "^2.5.2",
+		"gulp-plumber": "^1.2.1",
+		"gulp-postcss": "^8.0.0",
+		"gulp-replace": "^1.0.0",
+		"gulp-sass": "^4.0.2",
+		"gulp-sourcemaps": "^2.6.5",
+		"gulp-uglify": "^3.0.2",
+		"gulp-uglifycss": "^1.0.9"
+	},
+	"babel": {
+		"presets": [
+			"@babel/preset-env"
+		]
+	}
+}
