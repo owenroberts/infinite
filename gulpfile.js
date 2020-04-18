@@ -17,13 +17,13 @@ gulp.task('scripts', () => {
 */
 
 const jsFiles = [
-	'./lines/classes/*.js', 
+	'./lines/classes/LinesAnimation.js', 
 	'./lines/game/classes/*.js', 
 	'./map/Area.js', 
 	'./map/Node.js',
 	'./map/Map.js', 
 	'./classes/*.js', 
-	'./hell.js'
+//	'./hell.js'
 ];
 
 // JS task: concatenates and uglifies JS files to script.js
@@ -31,7 +31,7 @@ function jsTask(){
     return src(jsFiles)
     	.pipe(babel())
 		.pipe(concat('game.min.js'))
-		.pipe(uglify())
+//		.pipe(uglify())
 		.pipe(dest('./')
     );
 }
