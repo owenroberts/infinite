@@ -13,7 +13,7 @@ class HellTextButton extends TextButton {
 	}
 
 	onOut() {
-		ui.cursor.state =gme.currentSceneName == 'map' ? 'walk' : 'interact';
+		ui.cursor.state = gme.currentSceneName == 'map' ? 'walk' : 'interact';
 		ui.arrow.isActive = false;
 	}
 

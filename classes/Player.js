@@ -1,9 +1,11 @@
 class Player extends Sprite {
 	constructor(animation, x, y, debug) {
 		super(Math.round(x), Math.round(y));
-		this.x = Math.round(x);
-		this.y = Math.round(y);
-		this.prevXY = { x: this.x, y: this.y };
+		this.mapPosition = {
+			x: Math.round(x),
+			y: Math.round(y)
+		};
+		this.prevPosition = { x: this.mapPosition.x, y: this.mapPosition.y };
 		this.center = true; /* need better name */
 
 		this.debug = debug || false;
@@ -30,8 +32,7 @@ class Player extends Sprite {
 	}
 
 	setTarget(x, y) {
-		this.target.x = x;
-		this.target.y = y;
+		this.target = { x: x, y: y};
 		this.hunger += this.hungerRate; // what about key presses .... 
 	}
 
@@ -46,27 +47,27 @@ class Player extends Sprite {
 			
 		if (this.input.up || this.target.y < 0) {
 			if (this.target.y < 0) this.target.y += this.speed.y;
-			if (this.y > gme.bounds.top)
-				this.y -= this.speed.y;
+			if (this.mapPosition.y > gme.bounds.top)
+				this.mapPosition.y -= this.speed.y;
 			state = 'right';
 		}
 		if (this.input.down || this.target.y > 0) {
 			if (this.target.y > 0) this.target.y -= this.speed.y;
-			if (this.y < gme.bounds.bottom)
-				this.y += this.speed.y;
+			if (this.mapPosition.y < gme.bounds.bottom)
+				this.mapPosition.y += this.speed.y;
 			state = 'left';
 		}
 		if (this.input.right || this.target.x > 0) {
 			if (this.target.x > 0) this.target.x -= this.speed.x;
-			if (this.x < gme.bounds.right)
-				this.x += this.speed.x;
+			if (this.mapPosition.x < gme.bounds.right)
+				this.mapPosition.x += this.speed.x;
 			state = 'right';
 		}
 
 		if (this.input.left || this.target.x < 0) {
 			if (this.target.x < 0) this.target.x += this.speed.x;
-			if (this.x > gme.bounds.left)
-				this.x -= this.speed.x;
+			if (this.mapPosition.x > gme.bounds.left)
+				this.mapPosition.x -= this.speed.x;
 			state = 'left';
 		}
 		this.animation.state = state;
@@ -81,16 +82,14 @@ class Player extends Sprite {
 	}
 
 	back() {
-		this.target.x = 0;
-		this.target.y = 0;
-		this.x = this.prevXY.x;
-		this.y = this.prevXY.y;
+		this.target = { x: 0, y: 0};
+		this.mapPosition = this.prevPosition;
 	}
 
-	spawn() {
+	spawn(position) {
 		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell();
-		player.x = pos.x * cell.w; 
-		player.y = pos.y * cell.h;
+		this.mapPosition.x = pos.x * cell.w; 
+		this.mapPosition.y = pos.y * cell.h;
 	}
 
 	reborn() {

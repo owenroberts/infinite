@@ -7,3 +7,4 @@ audio/
 *.gsheet
 *.zip
 node_modules/
+src_maps/
