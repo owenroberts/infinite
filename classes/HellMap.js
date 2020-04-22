@@ -93,7 +93,7 @@ class HellMap extends Map {
 
 	update() {
 
-		const offset = new Cool.Vector(-player.x + gme.width / 2, -player.y + gme.height / 2);
+		const offset = new Cool.Vector(-player.mapPosition.x + gme.width / 2, -player.mapPosition.y + gme.height / 2);
 
 		// this.nodes[0].update(offset);
 		for (let i = 0; i < this.nodes.length; i++) {

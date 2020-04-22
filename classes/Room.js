@@ -32,6 +32,7 @@ class Room extends Area {
 		let y = Cool.randomInt(this.y, this.y + this.h - 1);
 		let whileCount = 0;
 		while (this.takenCells.filter(c => c.x == x && c.y == y).length) {
+			console.log('while room', whileCount);
 			x = Cool.randomInt(this.x, this.x + this.w);
 			y = Cool.randomInt(this.y, this.y + this.h);
 			whileCount++;

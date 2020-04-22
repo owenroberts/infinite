@@ -11,7 +11,6 @@ const gme = new HellGame({
 	scenes: ['map', 'inventory', 'message', 'loading', 'win']
 });
 
-
 console.time('load data');
 gme.load(
 	{ 

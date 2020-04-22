@@ -44,10 +44,9 @@ function jsTasks() {
 
 
 function serverTask() {
-	console.log('server task')
 	return src('./')
 		.pipe(server({
-			livereload: true,
+			livereload: false,
 			open: true,
 			port: 8080	// set a port to avoid conflicts with other local apps
 		}));

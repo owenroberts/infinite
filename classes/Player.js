@@ -39,7 +39,7 @@ class Player extends Sprite {
 	update() {
 		if (Math.abs(this.target.x) < this.speed.x) this.target.x = 0;
 		if (Math.abs(this.target.y) < this.speed.y) this.target.y = 0;
-		this.prevXY = { x: this.x, y: this.y };
+		this.prevPosition = { x: this.mapPosition.x, y: this.mapPosition.y };
 		
 		let state = this.animation.state.includes('idle') ?
 			this.animation.state :
@@ -86,7 +86,7 @@ class Player extends Sprite {
 		this.mapPosition = this.prevPosition;
 	}
 
-	spawn(position) {
+	spawn() {
 		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell();
 		this.mapPosition.x = pos.x * cell.w; 
 		this.mapPosition.y = pos.y * cell.h;
