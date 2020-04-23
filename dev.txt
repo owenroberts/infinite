@@ -1,20 +1,5 @@
 3.5.2020
 - fuck this takes forever
-- game updates
-	
-	- why does fps cap at 9?
-	- item vs sprite, params vs xy inconsistent
-
-	- what the actual fuck
-	- need names of positions to make sense
-	- item update func is more generic map thing
-	- i'm dismantling this stupid fucking system backwards ..
-	- player position isn't supposed to change
-	- text + ui class for food 
-
-	- consolidate button and toggle and text ... 
-	- sub classes don't fetch 
-	
 3.7.2020
 	- fix starting point
 	- buffer one cell
@@ -204,7 +189,6 @@
 			- so im converting code to ecma < 5, how does that effect hell.js
 		- this is pretty tight actually, but need a template file that works from main project directory and one that works on lines project
 4.22.2020
-
 	- finish game updates
 		- stat class
 			- done
@@ -221,42 +205,81 @@
 		 	- xy - just use x and y? - player.x signifies something else ... 
 		 		- could make that mapXY or something which would make it more clear .... 
 		 		- player.x player.y is where it is on map, position is where it starts and is drawn
+4.23.2020
+		- why does fps cap at 9?
+			- updated the game update function with one requestAnim
+			- added a different stats function - calculates fps over time
+				http://jsfiddle.net/m1erickson/CtsY3/
+			- may want to get something like mr doob
+			- shows draw rate is closer to 10
+			- frame rate caps around 43 in map, rises in the inventory - it is just drawing a lot
+			- actually mr doob also uses this method sort of, shows range as well ... 
+				https://github.com/mrdoob/stats.js/blob/master/src/Stats.js
+				- just use this?
+				- frames is always just 1?
+			- fine for now
 
-
+		- item vs sprite, params vs xy inconsistent
+			- worked out
+		- what the actual fuck
+			- ?
+		- need names of positions to make sense
+			- ?
+			- Entity 
+				- position is really draw position (origin + offset)
+				- origin is map position
+				- 
+		- item update func is more generic map thing
+			- entity - thing on map
+		- i'm dismantling this stupid fucking system backwards ..
+			- hopefully it makes more sense now ....
+		- player position isn't supposed to change - "draw position"
+		- text + ui class for food 
+			- better version of this idea implemented
+		- consolidate button and toggle and text ... 
+			- i think this is fine, mapped out everything
+		- sub classes don't fetch - yes!
+	- add gme load to gme constructor?
+		- any reason to create game before loading?
+		- yes ... loading screen
+	- events class?
+		- use mouse events and keyboard events separately?
+		- any point in having events in separate file?
+	- sprite and anim - use ctx parameter? (instead of gme)
+		- they are all part of the game section ... 
+		- or generic "app"
+		- at least gme is probably unique
+		- will gme always be called gme?
+		- GAME created in class
 
 	- lines play update
 	
 	- consolidate play and timeline panels
 		- but i don't really need those buttons open all the time?
 	- better name for animation.state vs animation.currentState - not clear that state is label/string and currentState is start/end values
+		- use manager?
 	- way to always update ui ... ?
-	- update text line breaks with regex to check space followed by \n\r
 	
+	
+- hell updates
+	- what the fuck is crashing the map??
+	- make ui class with arrow, metrics, positions/properties etc.
+	- wall image changes glitch?
+	- rename inventory to "pack"
+	- update text line breaks with regex to check space followed by \n\r
 	- figure out sinners + food/scripture
 	- update other game components
 	- room/path setup like the walls
+		- ?
 	- maps get progressively more complex
 		- figure out probabilities of map balance ...
-	- read and pick up icons
-	- get rid of roudned numbers
-	- fix poem line breaks
-	- its very annoying to have to remove elements from map/inventory AND the correct parts of the scene updates ... 
-	
-	- rename inventory to "pack"
-	- what the fuck is crashing the map??
-	- make ui class with arrow, metrics, positions/properties etc.
+	- read and pick up icons (mouse cursor)
+	- get rid of float numbers
 	- move walls to hellmap?
-	- stat class
-	- try set timeout with game loading
-	- add gme load to gme constructor?
-	- events class?
-	- sprite and anim - use ctx parameter? (instead of gme)
-		- they are all part of the game section ... 
-		- or generic "app"
-		- at least gme is probably unique
-	- game editor is a whole other story ....
-		- update when we revisit garden
-
 	
 
-	- wall image changes glitch?
+- try set timeout with game loading
+	- load is so much shorter it doesn't matter here
+	- revisit with garden or when hell has a lot more assets
+- game editor is a whole other story ....
+	- update when we revisit garden - "we" lol

@@ -19,7 +19,7 @@ class Inventory {
 			this.labels[i] = new Text(
 				this.x + this.w * i - this.w/2, 
 				this.y + Math.floor(i/3) * this.h - this.h/2, 
-				''+i, 1, gme.anims.lettering.metrics);
+				`${i+1}`, 1, gme.anims.lettering.metrics);
 		}
 	}
 

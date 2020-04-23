@@ -36,9 +36,8 @@ class Wall extends Sprite {
 	}
 
 	update(offset) {
-		this.position = this.origin.copy().add(offset.copy());
-		// this.position.x = this.origin.x + offset.x;
-		// this.position.y = this.origin.y + offset.y;
+		this.position.x = this.origin.x + offset.x;
+		this.position.y = this.origin.y + offset.y;
 		this.texture.update(offset);
 	}
 }

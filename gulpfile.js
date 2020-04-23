@@ -36,8 +36,8 @@ function jsTask(files, name, dir){
 }
 
 function jsTasks() {
-	const anim = jsTask(['./lines/classes/LinesAnimation.js'], 'anim.min.js', './lines/src/');
-	const game = jsTask(lnsFiles, 'game.min.js', './lines/src/');
+	const anim = jsTask(['./lines/classes/LinesAnimation.js'], 'anim.min.js', './lines/build/');
+	const game = jsTask(lnsFiles, 'game.min.js', './lines/build/');
 	const hell = jsTask(hellFiles, 'hell.min.js', './');
 	return merge(anim, game, hell);
 }

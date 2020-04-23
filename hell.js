@@ -11,7 +11,6 @@ const gme = new HellGame({
 	scenes: ['map', 'inventory', 'message', 'loading', 'win']
 });
 
-console.time('load data');
 gme.load(
 	{ 
 		ui: 'data/ui.json', 
@@ -42,10 +41,6 @@ document.addEventListener('keydown', ev => {
 });
 
 function start() {
-	console.timeEnd('load data');
-	
-	gme.addLettering(gme.anims.lettering.metrics);
-	gme.addLettering(gme.anims.lettering.messages);
 
 	gme.setBounds('top', gme.height / 2);
 	gme.setBounds('left', gme.width / 2);
@@ -75,6 +70,8 @@ function start() {
 	// hunger is message ...
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
+	// like Manager with callback ... 
+	// cursor generic function and HellCursor?
 	ui.cursor = new Cursor({
 		'walk': 'css/walk.gif',
 		'interact': 'css/pointer.gif',
@@ -202,36 +199,26 @@ function keyUp(key) {
 	}
 }
 
-// function mouseClick(x, y) {
-// 	console.log(player.position.x - x, player.position.y - y);
-// }
-
 function mouseMoved(x, y) {
-	ui.cursor.x = x;
+	ui.cursor.x = x; // for ui taps
 	ui.cursor.y = y;
 	gme.scenes.current.mouseMoved(x, y);
+
+	// css image cursor
+	cursor.style.left = `${x}px`;
+	cursor.style.top = `${y}px`;
 }
 
 function mouseDown(x, y) {
 	ui.cursor.down();
 	gme.scenes.current.mouseDown(x, y);
+
+	// cursor changes after uiDown from scene, prevents character from walking when ui clicked
+	if (ui.cursor.state == 'walk')
+		player.setTarget(x - player.position.x, y - player.position.y);
 }
 
 function mouseUp(x, y) {
 	ui.cursor.up();
 	gme.scenes.current.mouseUp(x, y);
 }
-
-/* re fuck ing work thi
-	use document instead of canvas in Events
-	test other shit
-*/
-document.addEventListener('mousedown', function(ev) {
-	if (ui.cursor.state == 'walk')
-		player.setTarget(ev.pageX - player.position.x, ev.pageY - player.position.y);
-}, false);
-
-gme.canvas.addEventListener('mousemove', function(ev) {
-	cursor.style.left = `${ev.offsetX}px`;
-	cursor.style.top = `${ev.offsetY}px`;
-}, false);

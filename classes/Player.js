@@ -1,3 +1,8 @@
+/*
+	mapPosition is used to offset map sprites (entity)
+	position is where it draws on screen (doesn't change if player is centered)
+*/
+
 class Player extends Sprite {
 	constructor(animation, x, y, debug) {
 		super(Math.round(x), Math.round(y));
