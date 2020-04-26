@@ -46,8 +46,8 @@ class Player extends Sprite {
 		if (Math.abs(this.target.y) < this.speed.y) this.target.y = 0;
 		this.prevPosition = { x: this.mapPosition.x, y: this.mapPosition.y };
 		
-		let state = this.animation.state.includes('idle') ?
-			this.animation.state :
+		let state = this.animation.stateName.includes('idle') ?
+			this.animation.stateName :
 			Cool.random(['idle']);
 			
 		if (this.input.up || this.target.y < 0) {

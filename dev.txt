@@ -251,14 +251,29 @@
 		- at least gme is probably unique
 		- will gme always be called gme?
 		- GAME created in class
-
+4.25.2020
 	- lines play update
-	
 	- consolidate play and timeline panels
 		- but i don't really need those buttons open all the time?
+		- blender design where timeline and vse are seprate ... 
+		- these are technically different things ... fine with this for now
 	- better name for animation.state vs animation.currentState - not clear that state is label/string and currentState is start/end values
 		- use manager?
+		- manager requires a class and i don't want to make a state class at this point
+		- should i make a state class ?
+			- also add states to the timeline ... 
+		- related to range class ... start end and label
+		- layers and tweens 
+			- startFrame, endFrame
+			- sf, ef, sv, ev
+			- Range -> FrameRange
+			- Tween (FrameRange + Range -> ValueRange)
+			- State (FrameRange + Label
+		)
+		- do all this stuff later ...
 	- way to always update ui ... ?
+		- not really a clear way to do this...
+		- could add it to every button callback but that would be over kill prob
 	
 	
 - hell updates
@@ -276,10 +291,11 @@
 	- read and pick up icons (mouse cursor)
 	- get rid of float numbers
 	- move walls to hellmap?
-	
 
 - try set timeout with game loading
 	- load is so much shorter it doesn't matter here
 	- revisit with garden or when hell has a lot more assets
 - game editor is a whole other story ....
 	- update when we revisit garden - "we" lol
+- update all interface classes and lines classes (maybe when we gulp ... )
+- rewrite animate/interface/drawings ...

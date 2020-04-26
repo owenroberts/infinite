@@ -1,4 +1,5 @@
 const { src, dest, watch, series, parallel } = require('gulp');
+const { lnsFiles } = require('./lines/gulpfile');
 
 const replace = require('gulp-replace');
 const sourcemaps = require('gulp-sourcemaps');
@@ -7,12 +8,6 @@ const uglify = require('gulp-uglify-es').default;
 const server = require('gulp-webserver');
 const merge = require('merge-stream');
 
-
-const lnsFiles = [
-	'./lines/game/classes/Sprite.js',
-	'./lines/game/classes/UI.js',
-	'./lines/game/classes/*.js',
-];
 
 const hellFiles = [
 	'./map/Area.js', 
@@ -36,10 +31,16 @@ function jsTask(files, name, dir){
 }
 
 function jsTasks() {
-	const anim = jsTask(['./lines/classes/LinesAnimation.js'], 'anim.min.js', './lines/build/');
-	const game = jsTask(lnsFiles, 'game.min.js', './lines/build/');
-	const hell = jsTask(hellFiles, 'hell.min.js', './');
-	return merge(anim, game, hell);
+	const hellTask = jsTask(hellFiles, 'hell.min.js', './');
+	const allLnsTasks = [];
+	for (const file in lnsFiles) {
+		for (let i = 0; i < lnsFiles[file].length; i++) {
+			lnsFiles[file][i] = lnsFiles[file][i].replace('./', './lines/')
+		}
+		allLnsTasks.push( jsTask(lnsFiles[file], `${file}.min.js`, './lines/build'));
+	}
+
+	return merge(hellTask, ...allLnsTasks);
 }
 
 
@@ -54,16 +55,16 @@ function serverTask() {
 
 // Cachebust
 function cacheBustTask(){
-    var cbString = new Date().getTime();
-    return src(['index.html'])
-        .pipe(replace(/cb=\d+/g, 'cb=' + cbString))
-        .pipe(dest('.'));
+	var cbString = new Date().getTime();
+	return src(['index.html'])
+		.pipe(replace(/cb=\d+/g, 'cb=' + cbString))
+		.pipe(dest('.'));
 }
 
 // Watch task: watch SCSS and JS files for changes
 // If any change, run scss and js tasks simultaneously
 function watchTask(){
-	watch([...lnsFiles, ...hellFiles],
+	watch([...lnsFiles.base, ...lnsFiles.game, ...hellFiles],
 		{interval: 1000, usePolling: true}, //Makes docker work
 		series(
 			parallel(jsTasks),
