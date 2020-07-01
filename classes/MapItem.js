@@ -21,11 +21,19 @@ class MapItem extends HellItem {
 		};
 
 		this.ui = new SpriteCollection([this.pickup, this.consume]);
+		// this.c = 'purple'; // debug color 
 	}
 
 	display() {
 		super.display();
 		this.ui.display();
+
+		if (mapAlpha > 0) {
+			gme.ctx.globalAlpha = mapAlpha;
+			gme.ctx.fillStyle = this.c;
+			gme.ctx.fillRect(this.origin.x / cell.w * mapCellSize, this.origin.y / cell.h * mapCellSize, 8, 8);
+			gme.ctx.globalAlpha = 1.0;
+		}
 	}
 
 	update(offset) {

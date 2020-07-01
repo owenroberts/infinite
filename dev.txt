@@ -275,6 +275,21 @@
 		- not really a clear way to do this...
 		- could add it to every button callback but that would be over kill prob
 	
+
+4.26.2020
+	- working on range class for fun?
+		- only needed for animate layers to display the layers
+		- LinesAnimation still uses {} layers
+		- draw module uses Layer
+		- is this useful for LinesAnimate if we want to create layer and drawing classes ?
+		- tween goes in the animate folder if not
+		- useful with tweens *if*
+			- reset tweens automatically called
+			- range has some sort of compare method ... 
+			- do i really need to reset tweens?  can't i just do it manually?
+			- couldn't it be useful?
+			- or its a button
+			- makes more sense to do it with shift paramters
 	
 - hell updates
 	- what the fuck is crashing the map??
@@ -297,5 +312,16 @@
 	- revisit with garden or when hell has a lot more assets
 - game editor is a whole other story ....
 	- update when we revisit garden - "we" lol
+	- editor maybe gets its own folder
+	- rename classes
+	- css to main css folder
 - update all interface classes and lines classes (maybe when we gulp ... )
 - rewrite animate/interface/drawings ...
+- performance test on mapping frames at beginning
+
+5.26.2020
+- prob missing indiecade deadline
+- what's left to do?
+	- sound
+	- basically all of the game mechanics and drawings
+	

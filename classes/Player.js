@@ -235,4 +235,17 @@ class Player extends Sprite {
 		this.checkHealth();
 	}
 
+	display() {
+		super.display();
+
+		// debug opject ?
+		if (mapAlpha > 0) {
+			gme.ctx.globalAlpha = mapAlpha;
+			gme.ctx.fillStyle = 'blue';
+			gme.ctx.fillRect(this.mapPosition.x / cell.w * mapCellSize, this.mapPosition.y / cell.h * mapCellSize, 8, 8);
+
+			gme.ctx.globalAlpha = 1.0;
+		}
+	}
+
 }

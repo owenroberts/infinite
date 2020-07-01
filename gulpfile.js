@@ -34,8 +34,11 @@ function jsTasks() {
 	const hellTask = jsTask(hellFiles, 'hell.min.js', './');
 	const allLnsTasks = [];
 	for (const file in lnsFiles) {
+		
+		// rewrite lnsFiles to include the local lines directory, only once 
 		for (let i = 0; i < lnsFiles[file].length; i++) {
-			lnsFiles[file][i] = lnsFiles[file][i].replace('./', './lines/')
+			if (!lnsFiles[file][i].includes('lines/'))
+				lnsFiles[file][i] = lnsFiles[file][i].replace('./', './lines/');
 		}
 		allLnsTasks.push( jsTask(lnsFiles[file], `${file}.min.js`, './lines/build'));
 	}
@@ -48,7 +51,7 @@ function serverTask() {
 	return src('./')
 		.pipe(server({
 			livereload: false,
-			open: true,
+			open: false,
 			port: 8080	// set a port to avoid conflicts with other local apps
 		}));
 }

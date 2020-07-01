@@ -34,7 +34,8 @@ const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \
 let wall;
 let apple;
 
-let mapAlpha = 0;
+let mapAlpha = 0.5;
+let mapCellSize = 20;
 document.addEventListener('keydown', ev => {
 	if (ev.which == 187) mapAlpha = Math.min(1, mapAlpha + 0.5);
 	else if (ev.which == 189) mapAlpha = Math.max(0, mapAlpha - 0.5);
@@ -149,6 +150,7 @@ function sizeCanvas() {
 	player.position.y = gme.height/2;
 }
 
+/* remove key presses */
 function keyDown(key) {
 	switch (key) {
 		case 'a':

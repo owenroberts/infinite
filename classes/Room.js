@@ -35,6 +35,8 @@ class Room extends Area {
 			console.log('while room', whileCount);
 			x = Cool.randomInt(this.x, this.x + this.w);
 			y = Cool.randomInt(this.y, this.y + this.h);
+
+
 			whileCount++;
 			if (whileCount > 10) {
 				debugger;
@@ -49,16 +51,15 @@ class Room extends Area {
 	display() {
 		this.texture.display();
 		
-		if (this.debug) {
+		if (this.debug && mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha;
-			const sz = 20;
-			gme.ctx.fillStyle = this.debug;
-			gme.ctx.strokeStyle = this.debug;
-			gme.ctx.fillRect(this.x * sz, this.y * sz, this.w * sz, this.h * sz);
+			gme.ctx.fillStyle = this.c;
+			gme.ctx.strokeStyle = this.c;
+			gme.ctx.fillRect(this.x * mapCellSize, this.y * mapCellSize, this.w * mapCellSize, this.h * mapCellSize);
 
 			gme.ctx.fillStyle = 'white';
-			gme.ctx.font = `${sz/2}px sans-serif`;
-			gme.ctx.fillText(`${this.x},${this.y}`, this.x * sz, this.y * sz + 10);
+			gme.ctx.font = `${mapCellSize/2}px sans-serif`;
+			gme.ctx.fillText(`${this.x},${this.y}`, this.x * mapCellSize, this.y * mapCellSize + 10);
 			gme.ctx.globalAlpha = 1.0;
 		}
 	}

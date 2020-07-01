@@ -6,12 +6,12 @@ class HellMap extends Map {
 	}
 
 	build(callback) {
-		
+		const maxNodes = 5 + gme.lvl; // move up faster?
 		super.build({
 			// cell buffer
 			w: Math.ceil(gme.width/2/cell.w),
 			h: Math.ceil(gme.height/2/cell.h)
-		});
+		}, maxNodes);
 		
 		this.roomCount = 0;
 		this.nodes.forEach(node => {
@@ -19,6 +19,7 @@ class HellMap extends Map {
 		});
 		
 		this.items = new SpriteCollection();
+		
 		this.addItems('food');
 		this.addItems('scripture');
 		
@@ -37,7 +38,7 @@ class HellMap extends Map {
 		const indexes = [];
 
 		for (let i = 0; i < gme.data[type].entries.length; i++) {
-			const prob = this.prob(gme.data[type].entries[i][6]); // this changes - make it json ....
+			const prob = this.prob(gme.data[type].entries[i][6]);
 			if (prob == 1) choices.push(i);
 			else if (prob > 0) {
 				for (let j = 0; j < prob * 100; j++) {
@@ -50,8 +51,16 @@ class HellMap extends Map {
 		while (choices.length < itemCount) {
 			const index = Cool.random(indexes);
 			if (!choices.includes(index)) choices.push(index);
+
+			// looking for crash
+			choicesWhileCount++;
+
 			if (choicesWhileCount > 10) {
-				debugger;
+				console.log('fuck', choicesWhileCount);
+				console.log(choices);
+				console.log(indexes);
+				console.log(itemCount);
+				break;
 			}
 		}
 
@@ -69,8 +78,12 @@ class HellMap extends Map {
 				type
 			);
 			this.items.add(item);
+
+			// crash?
+			choicesWhileCount++;
 			if (choicesWhileCount > 10) {
-				debugger;
+				console.log('fuck', choicesWhileCount);
+				break;
 			}
 		}
 	}

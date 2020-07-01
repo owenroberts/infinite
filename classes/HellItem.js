@@ -14,8 +14,14 @@ class HellItem extends Entity {
 		this.quote = data[7];
 
 		// add mouse type to this, simplify
-		this.consumeString;
-		if (type == 'food') this.consumeString = 'Eat';
-		else if (type == 'scripture') this.consumeString = 'Read';
+		this.consumeString; // this should go in data file eventually
+		if (type == 'food') {
+			this.consumeString = 'Eat';
+			this.c = 'red'; // debug color
+		}
+		else if (type == 'scripture') {
+			this.c = 'lightblue'; // debug color
+			this.consumeString = 'Read';
+		}
 	}
 }
