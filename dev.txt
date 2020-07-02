@@ -303,7 +303,7 @@
 		- ?
 	- maps get progressively more complex
 		- figure out probabilities of map balance ...
-	- read and pick up icons (mouse cursor)
+	
 	- get rid of float numbers
 	- move walls to hellmap?
 
@@ -325,3 +325,29 @@
 	- sound
 	- basically all of the game mechanics and drawings
 	
+7.2.2020
+- map gets bigger -
+	- 5 nodes = max 3 rooms + gme.lvl
+- add exit
+	- what happens when arriving on exit?
+	- option to enter?
+		- need to make consume and pickup specific to food/scripture items
+		- or part of data?
+- new data csv
+- add sinners
+- combine action food + sinner, scripture + sinner, food + scripture?
+	- player + item
+	- "world" metrics + item
+	- npc + item
+	- item + item?
+	- special items?
+- redo ui, metrics, interface
+- read and pick up icons (mouse cursor)
+	- icons for all actions
+- reveal hells gate by sinning? or some transformation? animal?
+- something better than ui for pickups?
+- moving arrow keys leaves map ui visible
+	- either fix this or remove arrow keys for "release"
+- global "cell" should be "cellSize" and a map property?
+	- generally rewrite global and non-specific vars
+- gme vs GAME

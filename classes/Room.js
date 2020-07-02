@@ -27,25 +27,19 @@ class Room extends Area {
 		this.texture.animation = gme.anims.textures.dirt;
 	}
 
-	getCell() {
-		let x = Cool.randomInt(this.x, this.x + this.w - 1);
-		let y = Cool.randomInt(this.y, this.y + this.h - 1);
-		let whileCount = 0;
-		while (this.takenCells.filter(c => c.x == x && c.y == y).length) {
-			console.log('while room', whileCount);
-			x = Cool.randomInt(this.x, this.x + this.w);
-			y = Cool.randomInt(this.y, this.y + this.h);
+	getCell(label) {
 
-
-			whileCount++;
-			if (whileCount > 10) {
-				debugger;
-				loadMap();
-				return;
+		// get available cells
+		const availableCells = [];
+		for (let x = this.x; x < this.x + this.w - 1; x++) {
+			for (let y = this.y; y < this.y + this.h - 1; y++) {
+				if (!this.takenCells.some(c => c.x == x && c.y == y)) 
+					availableCells.push({ x: x, y: y});
 			}
 		}
-		this.takenCells.push({ x: x, y: y });
-		return { x: x, y: y };
+		const c = Cool.random(availableCells);
+		this.takenCells.push({ ...c, label: label });
+		return c;
 	}
 
 	display() {

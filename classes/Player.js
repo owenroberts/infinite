@@ -92,7 +92,7 @@ class Player extends Sprite {
 	}
 
 	spawn() {
-		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell();
+		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell('player');
 		this.mapPosition.x = pos.x * cell.w; 
 		this.mapPosition.y = pos.y * cell.h;
 	}

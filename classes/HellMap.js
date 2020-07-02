@@ -26,6 +26,20 @@ class HellMap extends Map {
 		if (callback) callback();
 	}
 
+	addHellsGate() {
+		const location = Cool.random(this.nodes.filter(n => n.room).filter(n => !n.room.takenCells.some(c => c.label == 'player'))).room.getCell("hells_gate");
+		
+		const hg = new HellGate(
+			location.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
+			location.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
+			gme.anims.sprites.hells_gate,
+			['fart', 0, 0, 0, 0, 0, 0, 0, 0],
+			'gate'
+			);
+		this.items.add(hg);
+		console.log(hg);
+	}
+
 	prob(f) {
 		f = f.replace(/p(?![a-z])/g, Cool.map(gme.lvl, 0, 28, 0, 1));
 		// console.log(f);
@@ -69,8 +83,8 @@ class HellMap extends Map {
 			const node = Cool.random(this.nodes.filter(n => n.room));
 			const index = choices.pop();
 			const itemData = gme.data[type].entries[index];
-			const c = node.room.getCell();
-			const item = new MapItem(
+			const c = node.room.getCell(type);
+			const item = new PickupItem(
 				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
 				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
 				gme.anims[type][itemData[0]],

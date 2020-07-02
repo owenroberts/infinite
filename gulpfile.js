@@ -13,7 +13,9 @@ const hellFiles = [
 	'./map/Area.js', 
 	'./map/Node.js',
 	'./map/Map.js',
-	'./classes/Room.js', 
+	'./classes/Room.js',
+	'./classes/HellItem.js',
+	'./classes/MapItem.js',
 	'./classes/*.js',
 	'./hell.js'
 ];
@@ -67,7 +69,7 @@ function cacheBustTask(){
 // Watch task: watch SCSS and JS files for changes
 // If any change, run scss and js tasks simultaneously
 function watchTask(){
-	watch([...lnsFiles.base, ...lnsFiles.game, ...hellFiles],
+	watch([...lnsFiles.base, ...lnsFiles.animate, ...lnsFiles.interface, ...lnsFiles.game, ...hellFiles],
 		{interval: 1000, usePolling: true}, //Makes docker work
 		series(
 			parallel(jsTasks),

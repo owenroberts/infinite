@@ -1,9 +1,11 @@
 {
-    "player": {
-        "src": "drawings/sprites/skully_3f.json"
-
-    },
-    "god": {
-    	"src": "drawings/sprites/god.json"
-    }
+	"player": {
+		"src": "drawings/sprites/skully_3f.json"
+	},
+	"god": {
+		"src": "drawings/sprites/god.json"
+	},
+	"hells_gate": {
+		"src": "drawings/sprites/hells_gate.json"
+	}
 }

@@ -37,8 +37,9 @@ let apple;
 let mapAlpha = 0.5;
 let mapCellSize = 20;
 document.addEventListener('keydown', ev => {
-	if (ev.which == 187) mapAlpha = Math.min(1, mapAlpha + 0.5);
-	else if (ev.which == 189) mapAlpha = Math.max(0, mapAlpha - 0.5);
+	if (ev.code == 'Equal') mapAlpha = Math.min(1, mapAlpha + 0.5);
+	else if (ev.code == 'Minus') mapAlpha = Math.max(0, mapAlpha - 0.5);
+	else if (ev.code == 'Enter') ui.message.continue.onClick(); // to move message without mouse
 });
 
 function start() {
@@ -50,6 +51,7 @@ function start() {
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
+
 	inventory = new Inventory();
 
 	god = new Sprite(256, gme.height / 2);
@@ -122,6 +124,7 @@ function buildMap() {
 		console.timeEnd('map');
 		if (player.died) player.reborn();
 		player.spawn();
+		map.addHellsGate();
 	});
 }
 
