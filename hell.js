@@ -8,7 +8,7 @@ const gme = new HellGame({
 	checkRetina: true,
 	debug: true,
 	stats: true,
-	scenes: ['map', 'inventory', 'message', 'loading', 'win']
+	scenes: ['map', 'pack', 'message', 'loading', 'win']
 });
 
 gme.load(
@@ -22,10 +22,10 @@ gme.load(
 	}
 );
 
-let player, inventory;
+let player, pack;
 let ui;
 let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
-let grafWrap = 28, leftAlign = 6, centerAlign = 3 * 128 + 32, inventoryY = 260; // global ui?
+let grafWrap = 28, leftAlign = 6, centerAlign = 3 * 128 + 32, packY = 260; // global ui?
 let god;
 
 const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
@@ -34,7 +34,7 @@ const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \
 let wall;
 let apple;
 
-let mapAlpha = 0.5;
+let mapAlpha = 0;
 let mapCellSize = 20;
 document.addEventListener('keydown', ev => {
 	if (ev.code == 'Equal') mapAlpha = Math.min(1, mapAlpha + 0.5);
@@ -52,7 +52,7 @@ function start() {
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
 
-	inventory = new Inventory();
+	pack = new Pack();
 
 	god = new Sprite(256, gme.height / 2);
 	god.center = true;
@@ -61,15 +61,27 @@ function start() {
 
 	ui = {};
 	ui.metrics = {};
-	ui.metrics.level = new UIMetric(3, 6, () => {
-		return gme.lvlName; 
+
+	// display current level
+	ui.metrics.levelIcon = new UI({ x: 20, y: 22, animation: gme.anims.ui.hell_icon});
+	gme.scenes.add(ui.metrics.levelIcon, ['map', 'pack', 'message'], 'display'); // json data?
+	ui.metrics.level = new UIMetric(30, 8, () => {
+		return ''+gme.lvl; 
 	});
-	ui.metrics.morality = new UIMetric(270, 6, () => {
-		return `Morality ${player.morality}`;
-	});
-	ui.metrics.health = new UIMetric(540, 6, () => {
-		return `Health ${player.health}`;
-	});
+
+	// liked this as blue
+	ui.metrics.hunger = new UIMetric(96, 8, () => {
+		return player.hungerString;
+	}, );
+	ui.metrics.hunger.letters = gme.anims.lettering.messages; // use letters or lettering?
+
+
+	// ui.metrics.morality = new UIMetric(270, 6, () => {
+	// 	return `Morality ${player.morality}`;
+	// });
+	// ui.metrics.health = new UIMetric(540, 6, () => {
+	// 	return `Health ${player.health}`;
+	// });
 	// hunger is message ...
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
@@ -87,18 +99,16 @@ function start() {
 	ui.arrow = new Sprite(0, 0);
 	ui.arrow.addAnimation(gme.anims.ui.arrow);
 	ui.arrow.isActive = false;
-	gme.scenes.add(ui.arrow, ['map', 'inventory', 'message', 'win'], 'display');
+	gme.scenes.add(ui.arrow, ['map', 'pack', 'message', 'win'], 'display');
 
-	ui.inventoryOpen = new HellTextButton(750, 6, 'inventory', gme.anims.lettering.metrics, 'interact', function() {
-		gme.scene = 'inventory';
-	});
-	gme.scenes.add(ui.inventoryOpen, ['map'], 'ui');
-	
-	ui.inventoryExit = new HellTextButton(750, 6, 'exit', gme.anims.lettering.metrics, 'interact', function() {
-		gme.scene = 'map';
-		ui.message.set('');
-	});
-	gme.scenes.add(ui.inventoryExit, ['inventory'], 'ui');
+	ui.packToggle = new HellToggle({ x: 72, y: 22, animation: gme.anims.ui.pack_icon, onClick: toggled => {
+		if (toggled) gme.scene = 'pack';
+		else {
+			gme.scene = 'map';
+			ui.message.set('');
+		}
+	} });
+	gme.scenes.add(ui.packToggle, ['map', 'pack'], 'ui');
 
 	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.debug = true;

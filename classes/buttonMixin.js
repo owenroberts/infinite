@@ -1,5 +1,6 @@
 /*
 	default cursor states for buttons and interactives
+	used only in PackItem?
 */
 
 const buttonMixin = {

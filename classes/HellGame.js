@@ -10,6 +10,7 @@ class HellGame extends Game {
 			ui.cursor.state = 'interact';
 			switch(scene) {
 				case 'map':
+					ui.packToggle.toggle('off', false);
 					ui.cursor.state = 'walk';
 				break;
 				case 'loading':
@@ -17,9 +18,11 @@ class HellGame extends Game {
 					ui.cursor.state = 'loading';
 				break;
 				case 'message':
+					ui.packToggle.toggle('off', false);
 					ui.message.x = leftAlign;
 				break;
-				case 'inventory':
+				case 'pack':
+					ui.packToggle.toggle('on', false);
 					ui.message.x = centerAlign;
 				break;
 			}

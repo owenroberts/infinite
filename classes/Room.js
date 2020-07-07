@@ -46,9 +46,8 @@ class Room extends Area {
 		this.texture.display();
 		
 		if (this.debug && mapAlpha > 0) {
-			gme.ctx.globalAlpha = mapAlpha;
+			gme.ctx.globalAlpha = mapAlpha/2;
 			gme.ctx.fillStyle = this.c;
-			gme.ctx.strokeStyle = this.c;
 			gme.ctx.fillRect(this.x * mapCellSize, this.y * mapCellSize, this.w * mapCellSize, this.h * mapCellSize);
 
 			gme.ctx.fillStyle = 'white';

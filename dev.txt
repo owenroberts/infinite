@@ -328,11 +328,13 @@
 7.2.2020
 - map gets bigger -
 	- 5 nodes = max 3 rooms + gme.lvl
-- add exit
+- add exit -
 	- what happens when arriving on exit?
 	- option to enter?
 		- need to make consume and pickup specific to food/scripture items
 		- or part of data?
+
+7.7.2020
 - new data csv
 - add sinners
 - combine action food + sinner, scripture + sinner, food + scripture?
@@ -342,6 +344,9 @@
 	- item + item?
 	- special items?
 - redo ui, metrics, interface
+	- display bg or transparent bg or dont draw behind metrics?
+	- literary reference for pack?
+	- pack status set by scene, way to tie general ui to actions in game?
 - read and pick up icons (mouse cursor)
 	- icons for all actions
 - reveal hells gate by sinning? or some transformation? animal?
@@ -351,3 +356,6 @@
 - global "cell" should be "cellSize" and a map property?
 	- generally rewrite global and non-specific vars
 - gme vs GAME
+- player vs pilgrim
+	- player is dead? - dante is just a visitor
+	- why is he a skull and other npc's are cat things?

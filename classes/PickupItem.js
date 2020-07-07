@@ -6,7 +6,7 @@ class PickupItem extends MapItem {
 		this.pickup.isActive = false;
 
 		this.pickup.onClick = () => {
-			if (inventory.add(args, this.name)) {
+			if (pack.add(args, this.name)) {
 				ui.arrow.isActive = false; // global update for this? 
 				map.remove(this);
 			}

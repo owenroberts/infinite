@@ -1,16 +1,16 @@
-class Inventory {
+class Pack {
 	constructor() {
 		this.size = 3;
 		this.maxSize = 9;
 		this.x = 64;
-		this.y = inventoryY;
+		this.y = packY;
 		this.w = 128;
 		this.h = 128;
 
-		gme.scenes.inventory.addUI(this);
+		gme.scenes.pack.addUI(this);
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
-		this.label = new Text(3, 140, "Inventory", 9, gme.anims.lettering.metrics);
+		this.label = new Text(3, 140, "Pack", 9, gme.anims.lettering.metrics);
 		this.items = new SpriteCollection();
 		
 		/* not an item collection, only display bazed on size */
@@ -24,7 +24,7 @@ class Inventory {
 	}
 
 	add(itemParams, name) {
-		gme.scene = 'inventory';
+		gme.scene = 'pack';
 
 		if (this.items.length < this.size) {
 			this.items.add(new PackItem(...itemParams));

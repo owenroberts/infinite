@@ -5,8 +5,8 @@ class HellMessage extends Text {
 		this.list = [];
 		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', gme.anims.lettering.messages);
 
-		gme.scenes.add(this, ['message', 'loading', 'inventory', 'win'], 'display');
-		gme.scenes.add(this.continue, ['inventory', 'message', 'win'], 'ui');
+		gme.scenes.add(this, ['message', 'loading', 'pack', 'win'], 'display');
+		gme.scenes.add(this.continue, ['pack', 'message', 'win'], 'ui');
 
 		this.continue.onClick = () => {
 			if (this.list.length == 0) {

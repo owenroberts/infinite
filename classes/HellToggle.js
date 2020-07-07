@@ -1,5 +1,4 @@
-/* this is never used? */
-class HellButton extends Button {
+class HellToggle extends Toggle {
 	constructor(...args) {
 		super(...args);
 		Object.assign(this, buttonMixin);

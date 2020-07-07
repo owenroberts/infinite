@@ -30,6 +30,7 @@ class Player extends Sprite {
 		this.hunger = 0;
 		this.hungerRate = 0.5;
 		this.hungerLevel = 0;
+		this.hungerString = '';
 	}
 
 	inputKey(key, state) {
@@ -150,45 +151,39 @@ class Player extends Sprite {
 				this.speed.y -= 1;
 			}
 
-			gme.scene = 'message';
-
-			/* 
-				this is insane 
-				has to be set before going to switch and potentially dying
-				other option is a set of states in the hell message ... also not appealing
-				well ... if the character died, regardless, has to rebuild map ... 
-			*/	
-
+			
 			switch(this.hungerLevel) {
+				case 0:
+					this.hungerString = '';
 				case 1:
-					ui.message.set('You feel a slight pang of hunger.');
+					this.hungerString = 'You feel a pang of hunger.';
 				break;
 				case 2:
-					ui.message.set('Was that sound your stomach?');
+					this.hungerString = 'Was that sound your stomach?';
 				break;
 				case 3:
-					ui.message.set('Your stomach growled.');
+					this.hungerString = 'Your stomach growled.';
 				break;
 				case 4:
-					ui.message.set('Your stomach is twisting in pain.');
+					this.hungerString = 'Your stomach is twisting in pain.';
 				break;
 				case 5:
-					ui.message.set('You are starting to feel weak.');
+					this.hungerString = 'You feel weak.';
 				break;
 				case 6:
-					ui.message.set('You are beginning to feel light headed.');
+					this.hungerString = 'You feel light headed.';
 				break;
 				case 7:
-					ui.message.set('Your body is desparate for food.');
+					this.hungerString = 'Your body is desparate for food.';
 				break;
 				case 8:
+					gme.scene = 'message'; // set message before death
 					ui.message.set('You starved to death.');
 					this.died = true;
 					this.checkMorality();
 				break;
 			}
-
-			
+			ui.metrics.hunger.update(); // annoying for this to be here?
 		}
 	}
 
