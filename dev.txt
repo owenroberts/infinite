@@ -335,8 +335,12 @@
 		- or part of data?
 
 7.7.2020
-- new data csv
-- add sinners
+7.9.2020
+- new data csv-
+- add sinners -
+	- get sub classes right -
+	- give sinner an item
+
 - combine action food + sinner, scripture + sinner, food + scripture?
 	- player + item
 	- "world" metrics + item
@@ -347,6 +351,7 @@
 	- display bg or transparent bg or dont draw behind metrics?
 	- literary reference for pack?
 	- pack status set by scene, way to tie general ui to actions in game?
+	- move pack to the right and keep messages in the same place?
 - read and pick up icons (mouse cursor)
 	- icons for all actions
 - reveal hells gate by sinning? or some transformation? animal?
@@ -359,3 +364,5 @@
 - player vs pilgrim
 	- player is dead? - dante is just a visitor
 	- why is he a skull and other npc's are cat things?
+- lines - game renderer ? and data
+- change room and path graphics based on level

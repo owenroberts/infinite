@@ -16,8 +16,7 @@ gme.load(
 		ui: 'data/ui.json', 
 		sprites: 'data/sprites.json', 
 		textures: 'data/textures.json',
-		food: 'data/food.csv',
-		scripture: 'data/scripture.csv',
+		items: 'data/items.csv',
 		lettering: 'data/lettering.json'
 	}
 );

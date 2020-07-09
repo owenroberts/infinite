@@ -20,8 +20,9 @@ class HellMap extends Map {
 		
 		this.items = new SpriteCollection();
 		
-		this.addItems('food');
-		this.addItems('scripture');
+		this.addItems('food', PickupItem);
+		this.addItems('scripture', PickupItem);
+		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
 		
 		if (callback) callback();
 	}
@@ -37,7 +38,6 @@ class HellMap extends Map {
 			'gate'
 			);
 		this.items.add(hg);
-		console.log(hg);
 	}
 
 	prob(f) {
@@ -46,59 +46,45 @@ class HellMap extends Map {
 		return  Function('return ' + f)().clamp(0, 1);
 	}
 
-	addItems(type) {
-		const itemCount = random(1, this.roomCount);
-		const choices = [];
-		const indexes = [];
+	addItems(type, typeClass, count) {
+		const itemCount = count || random(1, this.roomCount);
+		const items = gme.data.items.entries.filter(item => item.type == type);
+		
+		const indexes = []; // list of possible items based on probability
+		const choices = []; // indexes of items to place in map
 
-		for (let i = 0; i < gme.data[type].entries.length; i++) {
-			const prob = this.prob(gme.data[type].entries[i][6]);
+		// add probabilities based on formulas
+		for (let i = 0; i < items.length; i++) {
+			const prob = this.prob(items[i].probability); // csv index changes ... 
 			if (prob == 1) choices.push(i);
 			else if (prob > 0) {
 				for (let j = 0; j < prob * 100; j++) {
 					indexes.push(i);
-				}
+				}	
 			}
 		}
 
-		let choicesWhileCount = 0;
+		
+		// fill remaining choices with new items		
 		while (choices.length < itemCount) {
-			const index = Cool.random(indexes);
-			if (!choices.includes(index)) choices.push(index);
-
-			// looking for crash
-			choicesWhileCount++;
-
-			if (choicesWhileCount > 10) {
-				console.log('fuck', choicesWhileCount);
-				console.log(choices);
-				console.log(indexes);
-				console.log(itemCount);
-				break;
-			}
+			choices.push(  Cool.random(indexes.filter(i => !choices.includes(i))) );
+			// potential crash? 
 		}
 
-		choicesWhileCount = 0;
 		while (choices.length > 0) {
 			const node = Cool.random(this.nodes.filter(n => n.room));
-			const index = choices.pop();
-			const itemData = gme.data[type].entries[index];
+			const itemData = items[choices.pop()];
 			const c = node.room.getCell(type);
-			const item = new PickupItem(
+			const item = new typeClass(
 				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
 				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
-				gme.anims[type][itemData[0]],
+				gme.anims.items[itemData.label],
 				itemData,
 				type
 			);
 			this.items.add(item);
 
 			// crash?
-			choicesWhileCount++;
-			if (choicesWhileCount > 10) {
-				console.log('fuck', choicesWhileCount);
-				break;
-			}
 		}
 	}
 

@@ -6,7 +6,7 @@ class PackItem extends HellItem {
 
 		Object.assign(this, buttonMixin); // adds default onOver, onOut, onDown
 
-		this.consume = new HellTextButton(centerAlign, packY - 35, `${this.consumeString} ${this.name}`, gme.anims.lettering.messages, this.type == 'food' ? 'eat' : 'interact');
+		this.consume = new HellTextButton(centerAlign, packY - 35, `${this.consumeString} ${this.label}`, gme.anims.lettering.messages, this.type == 'food' ? 'eat' : 'interact');
 		this.consume.isActive = false;
 
 		this.consume.onClick = () => {
@@ -14,7 +14,7 @@ class PackItem extends HellItem {
 			pack.remove(this);
 		};
 
-		this.drop = new HellTextButton(centerAlign, packY, `Drop ${this.name}`, gme.anims.lettering.messages);
+		this.drop = new HellTextButton(centerAlign, packY, `Drop ${this.label}`, gme.anims.lettering.messages);
 		this.drop.isActive = false;
 
 		this.drop.onClick = () => {
@@ -34,9 +34,18 @@ class PackItem extends HellItem {
 	}
 
 	onClick() {
-		const onOff = !this.displayPack;
-		pack.items.all(item => item.togglePackDisplay(false))
-		this.togglePackDisplay(onOff);
+		// give to npc
+		if (pack.state == 'npc') {
+			//
+			console.log('giving!');
+			// do the stuff here?
+			gme.scene = 'map';
+		}
+		else if (pack.state == 'player') {
+			const onOff = !this.displayPack;
+			pack.items.all(item => item.togglePackDisplay(false))
+			this.togglePackDisplay(onOff);
+		}
 	}
 
 	togglePackDisplay(onOff) {

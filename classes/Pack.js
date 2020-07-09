@@ -7,6 +7,11 @@ class Pack {
 		this.w = 128;
 		this.h = 128;
 
+		/*
+			pack open to give to player or npc
+		*/
+		this.state = 'player'; // npc
+
 		gme.scenes.pack.addUI(this);
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
@@ -23,12 +28,12 @@ class Pack {
 		}
 	}
 
-	add(itemParams, name) {
+	add(itemParams, label) {
 		gme.scene = 'pack';
 
 		if (this.items.length < this.size) {
 			this.items.add(new PackItem(...itemParams));
-			ui.message.set(`You picked up the ${name}.`);
+			ui.message.set(`You picked up the ${label}.`);
 
 			this.items.all((item, index) => {
 				item.position.x = this.x + this.w * index;
