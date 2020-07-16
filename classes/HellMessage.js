@@ -6,6 +6,7 @@ class HellMessage extends Text {
 		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', gme.anims.lettering.messages);
 
 		gme.scenes.add(this, ['message', 'loading', 'pack', 'win'], 'display');
+		// display continue?
 		gme.scenes.add(this.continue, ['pack', 'message', 'win'], 'ui');
 
 		this.continue.onClick = () => {
@@ -29,6 +30,7 @@ class HellMessage extends Text {
 		let nextBreak = this.wrap * 4;
 		let start = 0;
 
+		// console.log(msg);
 		for (let i = 0; i < msg.length; i++) {
 			if (i == start + nextBreak || waitForSpace) {
 				if (msg[i].match(/[\n\r\s]/g)) {
@@ -64,5 +66,12 @@ class HellMessage extends Text {
 	display() {
 		super.display();
 		// this.continue.display();
+	}
+
+	// set msg to empty string, unset next function
+	// next function is like important game mech. function
+	reset() {
+		this.set('');
+		this.next = undefined;
 	}
 }

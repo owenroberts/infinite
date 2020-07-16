@@ -33,6 +33,8 @@ class Pack {
 
 		if (this.items.length < this.size) {
 			this.items.add(new PackItem(...itemParams));
+
+			// subsitute data value for the?
 			ui.message.set(`You picked up the ${label}.`);
 
 			this.items.all((item, index) => {

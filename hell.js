@@ -7,7 +7,7 @@ const gme = new HellGame({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: true,
+	stats: false,
 	scenes: ['map', 'pack', 'message', 'loading', 'win']
 });
 
@@ -21,18 +21,15 @@ gme.load(
 	}
 );
 
-let player, pack;
+// global sinner var ... 
+let player, god, pack, sinner;
 let ui;
 let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
 let grafWrap = 28, leftAlign = 6, centerAlign = 3 * 128 + 32, packY = 260; // global ui?
-let god;
 
 const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
 
 /* debugging */
-let wall;
-let apple;
-
 let mapAlpha = 0;
 let mapCellSize = 20;
 document.addEventListener('keydown', ev => {
@@ -50,7 +47,6 @@ function start() {
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
-
 	pack = new Pack();
 
 	god = new Sprite(256, gme.height / 2);
@@ -62,26 +58,37 @@ function start() {
 	ui.metrics = {};
 
 	// display current level
-	ui.metrics.levelIcon = new UI({ x: 20, y: 22, animation: gme.anims.ui.hell_icon});
-	gme.scenes.add(ui.metrics.levelIcon, ['map', 'pack', 'message'], 'display'); // json data?
+	ui.metrics.levelIcon = new UI({ x: 20, y: 22, animation: gme.anims.ui.hell_icon });
+	gme.scenes.addToDisplay(ui.metrics.levelIcon, ['map', 'pack', 'message']); // json data?
+	
 	ui.metrics.level = new UIMetric(30, 8, () => {
 		return ''+gme.lvl; 
 	});
 
-	// liked this as blue
-	ui.metrics.hunger = new UIMetric(96, 8, () => {
+	ui.metrics.moralityIcon = new UI({ x: 90, y: 22, animation: gme.anims.ui.morality_icon });
+	gme.scenes.addToDisplay(ui.metrics.moralityIcon, ['map', 'pack', 'message']);
+	ui.metrics.moralityIcon.animation.state = 'neutral';
+	
+	ui.metrics.morality = new UIMetric(104, 8, () => {
+		if (player.moralityScore == 0) ui.metrics.moralityIcon.animation.state = 'neutral';
+		else if (player.moralityScore < 0) ui.metrics.moralityIcon.animation.state = 'bad';
+		else if (player.moralityScore > 0) ui.metrics.moralityIcon.animation.state = 'good';
+		return ''+player.moralityScore;
+	});
+
+	ui.metrics.hunger = new UIMetric(140, 8, () => {
 		return player.hungerString;
-	}, );
+	});
 	ui.metrics.hunger.letters = gme.anims.lettering.messages; // use letters or lettering?
 
-
-	// ui.metrics.morality = new UIMetric(270, 6, () => {
-	// 	return `Morality ${player.morality}`;
-	// });
-	// ui.metrics.health = new UIMetric(540, 6, () => {
-	// 	return `Health ${player.health}`;
-	// });
-	// hunger is message ...
+	ui.packToggle = new HellToggle({ x: -32, y: 22, animation: gme.anims.ui.pack_icon, onClick: toggled => {
+		if (toggled) gme.scene = 'pack';
+		else {
+			gme.scene = 'map';
+			ui.message.set('');
+		}
+	} });
+	gme.scenes.add(ui.packToggle, ['map', 'pack'], 'ui');
 
 	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
 	// like Manager with callback ... 
@@ -100,17 +107,7 @@ function start() {
 	ui.arrow.isActive = false;
 	gme.scenes.add(ui.arrow, ['map', 'pack', 'message', 'win'], 'display');
 
-	ui.packToggle = new HellToggle({ x: 72, y: 22, animation: gme.anims.ui.pack_icon, onClick: toggled => {
-		if (toggled) gme.scene = 'pack';
-		else {
-			gme.scene = 'map';
-			ui.message.set('');
-		}
-	} });
-	gme.scenes.add(ui.packToggle, ['map', 'pack'], 'ui');
-
 	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, gme.anims.lettering.messages);
-	ui.message.debug = true;
 	ui.message.set(welcomeMessage);
 	gme.scene = 'message';
 

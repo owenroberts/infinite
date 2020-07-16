@@ -339,19 +339,40 @@
 - new data csv-
 - add sinners -
 	- get sub classes right -
-	- give sinner an item
+	- give sinner an item -
 
-- combine action food + sinner, scripture + sinner, food + scripture?
+7.10.2020
+7.13.2020
+7.14.2020
+- lines - retire drawings? can do it with timeline... - 
+	- removing only layer with drawing and then readding drawing ...
+		- drawing doesn't know the layer properties ...
+		- just add current props?
+		- save old props in some other structure?
+		- search for props like in drawings ...
+		- hiding layers and then deleting them later?
+		- 
+	- dont retire, better to have a separate panel
+- combine action food + sinner, scripture + sinner, food + scripture? -
 	- player + item
 	- "world" metrics + item
 	- npc + item
 	- item + item?
 	- special items?
+	- remove continue from give ... 
+
+7.16.2020
+- "world" metrics
+	- move to global
+	- some message like, the world is more lustful, or you must avoid lust
+
+
 - redo ui, metrics, interface
 	- display bg or transparent bg or dont draw behind metrics?
 	- literary reference for pack?
 	- pack status set by scene, way to tie general ui to actions in game?
 	- move pack to the right and keep messages in the same place?
+
 - read and pick up icons (mouse cursor)
 	- icons for all actions
 - reveal hells gate by sinning? or some transformation? animal?

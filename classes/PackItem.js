@@ -36,10 +36,26 @@ class PackItem extends HellItem {
 	onClick() {
 		// give to npc
 		if (pack.state == 'npc') {
-			//
-			console.log('giving!');
-			// do the stuff here?
+			pack.remove(this);
+			ui.message.reset();
+
+			// world morality isn't really more sophisticated than just adding/subtracting to character
+			// maybe just make global list of morals ... 
+			for (const moral in player.world) {
+				sinner[moral] += +this[moral];
+
+				// 0 is up from -1, after that?
+				// should only correct sin help sinner?
+				if (sinner.moralityScore >= 0) {
+					player.morality.adjust++;
+				} else {
+					player.morality.adjust--;
+				}
+			}
+
 			gme.scene = 'map';
+			ui.metrics.morality.update();
+			sinner = undefined;
 		}
 		else if (pack.state == 'player') {
 			const onOff = !this.displayPack;

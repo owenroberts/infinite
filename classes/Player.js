@@ -26,11 +26,35 @@ class Player extends Sprite {
 		this.metricCount = 0;
 		this.died = false;
 		this.health = 100;
-		this.morality = 0;
 		this.hunger = 0;
-		this.hungerRate = 0.5;
+		this.hungerRate = 0.05;
 		this.hungerLevel = 0;
 		this.hungerString = '';
+
+		this.morality = {
+			gluttony: 0,
+			sloth: 0,
+			lust: 0,
+			pride: 0,
+			greed: 0,
+			envy: 0,
+			wrath: 0,
+			adjust: 0
+		};
+
+		this.world = {
+			gluttony: 1,
+			sloth: 1,
+			lust: 1,
+			pride: 1,
+			greed: 1,
+			envy: 1,
+			wrath: 1
+		};
+	}
+
+	get moralityScore() {
+		return Object.values(this.morality).reduce((t, n) => t + n);		
 	}
 
 	inputKey(key, state) {
@@ -100,8 +124,7 @@ class Player extends Sprite {
 
 	reborn() {
 		this.health = 100;
-		this.metricCount = 0;
-		ui.metrics.health.update();
+		
 		ui.metrics.level.update();
 		this.died = false;
 		this.speed.x = 8;
@@ -111,16 +134,17 @@ class Player extends Sprite {
 	}
 
 	checkMorality() {
-		if (this.morality == 0) {
+		if (this.moralityScore == 0) {
 			ui.message.add(`You hath been morally neutral.`);
 			ui.message.add(`You will remain in ${gme.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
 		}
-		else if (this.morality > 0) {
+		else if (this.moralityScore > 0) {
 			if (gme.lvl <= 0) {
 				gme.lvl == 0;
 				gme.scene = 'win';
-				ui.message.set('Play again');
-				ui.message.next = loadMap;
+				// ui.message.set('Play again');
+				ui.message.continue.setMsg('Play again');
+				ui.message.next = loadNextMap;
 			} else {
 				gme.lvl -= 1;
 				ui.message.add(`You hath acted morally.`);
@@ -132,20 +156,13 @@ class Player extends Sprite {
 			ui.message.add(`You will descend further into hell.`);
 			gme.lvl += 1;
 		}
-	}
-
-	checkHealth() {
-		ui.metrics.health.update();
-		if (this.health <= 0) {
-			ui.message.add(`You hath died.`);
-			this.died = true;
-			this.checkMorality();
-		}
+		ui.metrics.morality.update();
 	}
 
 	checkHunger() {
-		if (Math.floor(player.hunger/10) > this.hungerLevel) {
-			this.hungerLevel = Math.floor(player.hunger/10);
+		console.log(player.hunger, this.hungerLevel)
+		if (Math.floor(this.hunger) > this.hungerLevel) {
+			this.hungerLevel = Math.floor(this.hunger);
 			if (this.hungerLevel > 2) {
 				this.speed.x -= 1;
 				this.speed.y -= 1;
@@ -205,29 +222,27 @@ class Player extends Sprite {
 		this.speed.x = 8;
 		this.speed.y = 8;
 
-		ui.message.set(`You ${this.typeString} the ${item.name}.`);
-		ui.message.add(item.quote);
+		ui.message.set(`You ${this.typeString} the ${item.label}.`);
+		ui.message.add(item.source);
 		
-		this.health = Math.min(100, this.health + item.health);
-		if (item.health != 0) 
-			ui.message.add(`Your health hath ${item.health > 0 ? 'increased' : 'decreased'}.`);
-		
-		this.hunger = Math.max(0, this.hunger - item.hunger);
-		if (item.hunger > 0)
-			ui.message.add(`Your hunger hath abated.`);
+		console.log(this.hunger, +item.hunger);
+		this.hunger = Math.max(0, this.hunger + +item.hunger);
+		// if (item.hunger > 0) ui.message.add(`Your hunger hath abated.`);
 
-		this.hungerRate = Math.max(0.1, this.hungerRate + item.hungerRate);
+		this.hungerRate = Math.max(0.1, this.hungerRate + +item.hungerRate);
 		
-		this.morality += item.morality;
-		if (item.morality != 0)
-			ui.message.add(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
+		for (const key in this.world) {
+			if (type == 'food') this.morality[key] += +item[key];
+			else if (type == 'scripture') this.world[key] += +item[key];
+		}
+		
+		// if (item.morality != 0) ui.message.add(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
 		
 		this.speed.x += item.speed;
 		this.speed.y += item.speed;
 
 		ui.metrics.morality.update();
 		
-		this.checkHealth();
 	}
 
 	display() {
