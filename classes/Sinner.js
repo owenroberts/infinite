@@ -3,8 +3,11 @@ class Sinner extends MapItem {
 		super(...args);
 		this.c = 'purple';
 
-		this.give = new HellTextButton(this.position.x + this.width/2, this.position.y, `Give ${this.label} an item.`, gme.anims.lettering.messages);
+		this.give = new HellTextButton(this.position.x, this.position.y - this.height, `Give ${this.label} an item.`, gme.anims.lettering.messages);
 		this.give.isActive = false;
+		this.give.updatePosition = () => {
+			this.give.setPosition(this.position.x - this.width, this.position.y - this.height * 3/4);
+		};
 
 		this.give.onClick = () => {
 			gme.scene = 'pack';

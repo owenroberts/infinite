@@ -148,19 +148,19 @@ class Player extends Sprite {
 			} else {
 				gme.lvl -= 1;
 				ui.message.add(`You hath acted morally.`);
-				ui.message.add(`You will move up to a previous ring of hell.`);
+				// ui.message.add(`You will move up to a previous ring of hell.`);
 			}
 		}
 		else {
 			ui.message.add(`You are a sinner.`);
-			ui.message.add(`You will descend further into hell.`);
+			ui.message.add(`You descend further into hell.`);
 			gme.lvl += 1;
 		}
 		ui.metrics.morality.update();
 	}
 
 	checkHunger() {
-		console.log(player.hunger, this.hungerLevel)
+		// console.log(player.hunger, this.hungerLevel)
 		if (Math.floor(this.hunger) > this.hungerLevel) {
 			this.hungerLevel = Math.floor(this.hunger);
 			if (this.hungerLevel > 2) {

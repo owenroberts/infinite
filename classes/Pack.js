@@ -2,7 +2,7 @@ class Pack {
 	constructor() {
 		this.size = 3;
 		this.maxSize = 9;
-		this.x = 64;
+		this.x = centerAlign;
 		this.y = packY;
 		this.w = 128;
 		this.h = 128;
@@ -15,14 +15,14 @@ class Pack {
 		gme.scenes.pack.addUI(this);
 		Object.assign(this, itemMixin); // adds over, out, down, up
 
-		this.label = new Text(3, 140, "Pack", 9, gme.anims.lettering.metrics);
+		this.label = new Text(this.x, 140, "Pack", 9, gme.anims.lettering.metrics);
 		this.items = new SpriteCollection();
 		
 		/* not an item collection, only display bazed on size */
 		this.labels = [];
 		for (let i = 0; i < this.maxSize; i++) {
 			this.labels[i] = new Text(
-				this.x + this.w * i - this.w/2, 
+				this.x + this.w * i, 
 				this.y + Math.floor(i/3) * this.h - this.h/2, 
 				`${i+1}`, 1, gme.anims.lettering.metrics);
 		}
@@ -38,7 +38,7 @@ class Pack {
 			ui.message.set(`You picked up the ${label}.`);
 
 			this.items.all((item, index) => {
-				item.position.x = this.x + this.w * index;
+				item.position.x = this.x + this.w * index + this.w/2;
 				item.position.y = this.y + Math.floor(index/3) * this.h;
 			});
 			return true;

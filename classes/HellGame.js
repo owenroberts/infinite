@@ -14,16 +14,16 @@ class HellGame extends Game {
 					ui.cursor.state = 'walk';
 				break;
 				case 'loading':
-					ui.message.x = leftAlign;
+					// ui.message.x = leftAlign;
 					ui.cursor.state = 'loading';
 				break;
 				case 'message':
 					ui.packToggle.toggle('off', false);
-					ui.message.x = leftAlign;
+					// ui.message.x = leftAlign;
 				break;
 				case 'pack':
 					ui.packToggle.toggle('on', false);
-					ui.message.x = centerAlign;
+					// ui.message.x = centerAlign;
 				break;
 			}
 			ui.arrow.isActive = false;

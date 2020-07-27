@@ -366,15 +366,17 @@
 	- move to global
 	- some message like, the world is more lustful, or you must avoid lust
 
-
-- redo ui, metrics, interface
+7.27.2020
+- redo ui, metrics, interface - 
 	- display bg or transparent bg or dont draw behind metrics?
 	- literary reference for pack?
 	- pack status set by scene, way to tie general ui to actions in game?
-	- move pack to the right and keep messages in the same place?
+	- move pack to the right and keep messages in the same place? - 
+	- text placement of hell game and sinners - 
 
 - read and pick up icons (mouse cursor)
 	- icons for all actions
+	
 - reveal hells gate by sinning? or some transformation? animal?
 - something better than ui for pickups?
 - moving arrow keys leaves map ui visible
@@ -387,3 +389,6 @@
 	- why is he a skull and other npc's are cat things?
 - lines - game renderer ? and data
 - change room and path graphics based on level
+- add some randomness to the scores assigned by sins/good acts
+- add color to hell's gate
+- explain sin of giving food to sinner

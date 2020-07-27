@@ -25,7 +25,7 @@ gme.load(
 let player, god, pack, sinner;
 let ui;
 let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
-let grafWrap = 28, leftAlign = 6, centerAlign = 3 * 128 + 32, packY = 260; // global ui?
+let grafWrap = 28, leftAlign = 6, centerAlign = grafWrap * 18, packY = 260; // global ui?
 
 const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
 
@@ -62,7 +62,7 @@ function start() {
 	gme.scenes.addToDisplay(ui.metrics.levelIcon, ['map', 'pack', 'message']); // json data?
 	
 	ui.metrics.level = new UIMetric(30, 8, () => {
-		return ''+gme.lvl; 
+		return gme.lvl.toString();
 	});
 
 	ui.metrics.moralityIcon = new UI({ x: 90, y: 22, animation: gme.anims.ui.morality_icon });
@@ -73,7 +73,7 @@ function start() {
 		if (player.moralityScore == 0) ui.metrics.moralityIcon.animation.state = 'neutral';
 		else if (player.moralityScore < 0) ui.metrics.moralityIcon.animation.state = 'bad';
 		else if (player.moralityScore > 0) ui.metrics.moralityIcon.animation.state = 'good';
-		return ''+player.moralityScore;
+		return player.moralityScore.toString();
 	});
 
 	ui.metrics.hunger = new UIMetric(140, 8, () => {

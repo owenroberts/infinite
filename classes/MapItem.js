@@ -19,8 +19,7 @@ class MapItem extends HellItem {
 		super.update(offset);
 		if (this.collide(player)) {
 			this.ui.all((ui, index) => {
-				const y = -35 + index * 35;
-				ui.setPosition(this.position.x + this.width/2, this.position.y - 35 + index * 35);
+				ui.updatePosition();
 				ui.isActive = true;
 			});
 		} else {
