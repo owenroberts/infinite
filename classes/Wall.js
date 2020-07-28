@@ -1,6 +1,6 @@
 class Wall extends Sprite {
 	constructor(x, y, debug) {
-		super(x * cell.w, y * cell.h, cell.w, cell.h);
+		super(x * cellSize.w, y * cellSize.h, cellSize.w, cellSize.h);
 		this.center = true;
 		// this.debug = true;
 		this.origin = new Cool.Vector(x, y);
@@ -24,8 +24,8 @@ class Wall extends Sprite {
 		for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
 			this.texture.addLocation(
 				Cool.random(indexes),
-				x + Cool.random(-cell.w/3, cell.w/3),
-				y + Cool.random(-cell.h/3, cell.h/3)
+				x + Cool.random(-cellSize.w/3, cellSize.w/3),
+				y + Cool.random(-cellSize.h/3, cellSize.h/3)
 			);
 		}
 	}

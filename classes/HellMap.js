@@ -9,8 +9,8 @@ class HellMap extends Map {
 		const maxNodes = 5 + gme.lvl; // move up faster?
 		super.build({
 			// cell buffer
-			w: Math.ceil(gme.width/2/cell.w),
-			h: Math.ceil(gme.height/2/cell.h)
+			w: Math.ceil(gme.width / 2 / cellSize.w),
+			h: Math.ceil(gme.height / 2 / cellSize.h)
 		}, maxNodes);
 		
 		this.roomCount = 0;
@@ -31,8 +31,8 @@ class HellMap extends Map {
 		const location = Cool.random(this.nodes.filter(n => n.room).filter(n => !n.room.takenCells.some(c => c.label == 'player'))).room.getCell("hells_gate");
 		
 		const hg = new HellGate(
-			location.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
-			location.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
+			location.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
+			location.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
 			gme.anims.sprites.hells_gate,
 			['fart', 0, 0, 0, 0, 0, 0, 0, 0],
 			'gate'
@@ -76,8 +76,8 @@ class HellMap extends Map {
 			const itemData = items[choices.pop()];
 			const c = node.room.getCell(type);
 			const item = new typeClass(
-				c.x * cell.w + Cool.random(-cell.w/4, cell.w/4),
-				c.y * cell.h + Cool.random(-cell.h/4, cell.h/4),
+				c.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
+				c.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
 				gme.anims.items[itemData.label],
 				itemData,
 				type

@@ -118,8 +118,8 @@ class Player extends Sprite {
 
 	spawn() {
 		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell('player');
-		this.mapPosition.x = pos.x * cell.w; 
-		this.mapPosition.y = pos.y * cell.h;
+		this.mapPosition.x = pos.x * cellSize.w; 
+		this.mapPosition.y = pos.y * cellSize.h;
 	}
 
 	reborn() {
@@ -252,7 +252,7 @@ class Player extends Sprite {
 		if (mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha;
 			gme.ctx.fillStyle = 'blue';
-			gme.ctx.fillRect(this.mapPosition.x / cell.w * mapCellSize, this.mapPosition.y / cell.h * mapCellSize, 8, 8);
+			gme.ctx.fillRect(this.mapPosition.x / cellSize.w * mapCellSize, this.mapPosition.y / cellSize.h * mapCellSize, 8, 8);
 
 			gme.ctx.globalAlpha = 1.0;
 		}

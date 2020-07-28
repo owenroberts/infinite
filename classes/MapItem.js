@@ -10,7 +10,7 @@ class MapItem extends HellItem {
 		if (mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha;
 			gme.ctx.fillStyle = this.c;
-			gme.ctx.fillRect(this.origin.x / cell.w * mapCellSize, this.origin.y / cell.h * mapCellSize, 8, 8);
+			gme.ctx.fillRect(this.origin.x / cellSize.w * mapCellSize, this.origin.y / cellSize.h * mapCellSize, 8, 8);
 			gme.ctx.globalAlpha = 1.0;
 		}
 	}

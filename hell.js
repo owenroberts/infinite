@@ -21,10 +21,14 @@ gme.load(
 	}
 );
 
-// global sinner var ... 
+// global sinner for keeping track of sinner when giving an item
 let player, god, pack, sinner;
+
+// map globals ... 
+let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cellSize = { w: 256, h: 256 };
+
+// ui globals - grafwrap is for main message
 let ui;
-let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cell = { w: 256, h: 256 };
 let grafWrap = 28, leftAlign = 6, centerAlign = grafWrap * 18, packY = 260; // global ui?
 
 const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
@@ -42,8 +46,8 @@ function start() {
 
 	gme.setBounds('top', gme.height / 2);
 	gme.setBounds('left', gme.width / 2);
-	gme.setBounds('right', cols * cell.w - gme.width / 2);
-	gme.setBounds('bottom', rows * cell.h - gme.height / 2);
+	gme.setBounds('right', cols * cellSize.w - gme.width / 2);
+	gme.setBounds('bottom', rows * cellSize.h - gme.height / 2);
 	
 	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
