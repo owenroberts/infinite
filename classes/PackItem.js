@@ -6,7 +6,11 @@ class PackItem extends HellItem {
 
 		Object.assign(this, buttonMixin); // adds default onOver, onOut, onDown
 
-		this.consume = new HellTextButton(leftAlign, packY - 35, `${this.consumeString} ${this.label}`, gme.anims.lettering.messages, this.type == 'food' ? 'eat' : 'interact');
+		let cursorType = 'interact';
+		if (this.type == 'food') cursorType = 'eat';
+		else if (this.type == 'scripture') cursorType = 'read';
+
+		this.consume = new HellTextButton(leftAlign, packY - 35, `${this.consumeString} ${this.label}`, gme.anims.lettering.messages, cursorType);
 		this.consume.isActive = false;
 
 		this.consume.onClick = () => {
@@ -14,7 +18,7 @@ class PackItem extends HellItem {
 			pack.remove(this);
 		};
 
-		this.drop = new HellTextButton(leftAlign, packY, `Drop ${this.label}`, gme.anims.lettering.messages);
+		this.drop = new HellTextButton(leftAlign, packY, `Drop ${this.label}`, gme.anims.lettering.messages, 'drop');
 		this.drop.isActive = false;
 
 		this.drop.onClick = () => {

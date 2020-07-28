@@ -98,7 +98,11 @@ function start() {
 		'interact': 'css/pointer.gif',
 		'click': 'css/click.gif',
 		'eat': 'css/mouth.gif',
-		'loading': 'css/loader.gif'
+		'loading': 'css/loader.gif',
+		'read': 'css/read.gif',
+		'pack': 'css/pack.gif',
+		'drop': 'css/drop.gif',
+		'offer': 'css/offer.gif'
 	});
 	ui.cursor.state = 'walk';
 

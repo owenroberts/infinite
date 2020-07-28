@@ -374,9 +374,16 @@
 	- move pack to the right and keep messages in the same place? - 
 	- text placement of hell game and sinners - 
 
+7.28.2020
 - read and pick up icons (mouse cursor)
 	- icons for all actions
-	
+		- read
+		- pick up
+		- give
+		- drop
+	- convert -delay 40 -loop 0 -alpha set -dispose previous *.png read.gif
+
+
 - reveal hells gate by sinning? or some transformation? animal?
 - something better than ui for pickups?
 - moving arrow keys leaves map ui visible
@@ -392,3 +399,6 @@
 - add some randomness to the scores assigned by sins/good acts
 - add color to hell's gate
 - explain sin of giving food to sinner
+
+- lines
+	- don't capture onion skin
