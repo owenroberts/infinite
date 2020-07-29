@@ -21,7 +21,7 @@ class Wall extends Sprite {
 			}
 		}
 
-		for (let i = 0, numItems = Cool.random(2,5); i < numItems; i++) {
+		for (let i = 0, numItems = Cool.random([1,2,2,2,3,3,4]); i < numItems; i++) {
 			this.texture.addLocation(
 				Cool.random(indexes),
 				x + Cool.random(-cellSize.w/3, cellSize.w/3),

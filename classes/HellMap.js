@@ -17,7 +17,59 @@ class HellMap extends Map {
 		this.nodes.forEach(node => {
 			if (node.room) this.roomCount++;
 		});
-		
+
+		const bgColors = [
+			'#ffffff',
+			'#F8F8F8',
+			'#F0F0F0',
+			'#E8E8E8',
+			'#E0E0E0',
+			'#D8D8D8',
+			'#D0D0D0',
+			'#C8C8C8',
+			'#C0C0C0',
+			'#B8B8B8',
+			'#B0B0B0',
+			'#A8A8A8',
+			'#A0A0A0',
+			'#989898',
+			'#909090',
+			'#888888',
+			'#808080',
+			'#787878',
+			'#707070',
+			'#686868',
+			'#606060',
+			'#585858',
+			'#505050',
+			'#484848',
+			'#404040',
+			'#383838',
+			'#303030',
+			'#282828',
+			'#202020',
+			'#181818',
+			'#101010',
+			'#080808'
+		];
+		const bgColor = bgColors[Math.min(gme.lvl, bgColors.length - 1)];
+
+		this.walls.forEach(wall => {
+			wall.texture.animation.over = { c: bgColor };
+		});
+
+		this.nodes.forEach(node => {
+			if (node.room) {
+				node.room.texture.animation.over = { c: bgColor };
+			}
+			if (node.paths) {
+				node.paths.forEach(path => {
+					path.texture.animation.over = { c: bgColor };
+				});
+			}
+		});
+		console.log('bgColor', bgColor);
+
 		this.items = new SpriteCollection();
 		
 		this.addItems('food', PickupItem);

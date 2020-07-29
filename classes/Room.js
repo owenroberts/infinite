@@ -2,22 +2,37 @@ class Room extends Area {
 	constructor(...args) {
 		super(...args);
 
-		const locations = [];
-		for (let _x = this.x; _x < this.x + this.w; _x++) {
-			for (let _y = this.y; _y < this.y + this.h; _y++) {
-				locations.push({
-					x: _x * cellSize.w,
-					y: _y * cellSize.h
-				});
-			}
-		}
-
 		this.texture = new Texture({
 			frame: 'randomIndex',
 			center: true
-		}, true);
+		}, false);
 		this.addTextureAnimation();
-		this.texture.addLocations(locations);
+
+
+		let indexes = [];
+		for (let i = gme.lvl, len = gme.lvl + Cool.random(4, 8); i < len; i++) {
+			const p = 1 - (i - gme.lvl) / len;
+			for (let j = 0; j < Math.floor(p * 10); j++) {
+				indexes.push(i);
+			}
+		}
+
+		console.log(indexes);
+
+		const locations = [];
+		for (let _x = this.x; _x < this.x + this.w; _x++) {
+			for (let _y = this.y; _y < this.y + this.h; _y++) {
+				this.texture.addLocation(
+					Cool.random(indexes),
+					_x * cellSize.w,
+					_y * cellSize.h
+				);
+			}
+		}
+
+		console.log(this.texture.locations);
+		
+		// this.texture.addLocations(locations);
 
 		this.debug = true;
 		this.takenCells = [];

@@ -385,31 +385,43 @@
 
 - reveal hells gate by sinning? or some transformation? animal?
 	- hells gate just being there makes sense because the player has to make a choice ...
-
 - something better than ui for pickups?
 	- could click on map items and bring up message prompt....
 	- ? mark icon and then eat or put in pack?
 	- this would fit ui somewhat
 	- revisit this
-
 - moving arrow keys leaves map ui visible
 	- either fix this or remove arrow keys for "release"
 	- not sure if this is still an issue
-
 - global "cell" should be "cellSize" and a map property?
 	- generally rewrite global and non-specific vars
-
-
-	
 - gme vs GAME
+	- fine for now
 - player vs pilgrim
 	- player is dead? - dante is just a visitor
 	- why is he a skull and other npc's are cat things?
+	- fine for now, refer to "pilgrim" in writing if needed
 - lines - game renderer ? and data
+	- good for now
+
+7.29.2020
 - change room and path graphics based on level
+	- texture displayed by room, not added to scene 
+	- this might be different in other games ...
+
+- close pack, close ui text buttons
+
 - add some randomness to the scores assigned by sins/good acts
 - add color to hell's gate
 - explain sin of giving food to sinner
 
+- slowing down with wide screen
+	- draw less things
+	- restrict canvas size
+
 - lines
 	- don't capture onion skin
+	- color chooser takes multiple clicks?
+	- palette fix build button, unbuild (clear)
+	- auto timeline adjust
+	- remove Func for layers
