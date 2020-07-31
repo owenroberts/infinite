@@ -46,7 +46,20 @@ class PackItem extends HellItem {
 			// world morality isn't really more sophisticated than just adding/subtracting to character
 			// maybe just make global list of morals ... 
 			for (const moral in player.world) {
-				sinner[moral] += +this[moral];
+
+				// apply sin to sinner
+				if (+this[moral] != 0) {
+					sinner[moral] += Math.round(+this[moral] + player.world[moral] * random(2, 4));
+
+					gme.scene = 'message';
+					ui.message.set(+this[moral] < 0 ? `You have casued ${sinner.label} to sin with ${moral}` : `${sinner.label} is saved from ${moral}` );
+
+					// effect your morality score
+				}
+
+
+
+				// show sinner's score
 
 				// 0 is up from -1, after that?
 				// should only correct sin help sinner?
@@ -57,7 +70,7 @@ class PackItem extends HellItem {
 				}
 			}
 
-			gme.scene = 'map';
+			// gme.scene = 'map';
 			ui.metrics.morality.update();
 			sinner = undefined;
 			pack.state = 'player';

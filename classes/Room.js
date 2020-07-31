@@ -10,7 +10,7 @@ class Room extends Area {
 
 
 		let indexes = [];
-		for (let i = gme.lvl, len = gme.lvl + Cool.random(4, 8); i < len; i++) {
+		for (let i = gme.lvl, len = gme.lvl + Cool.random(5, 10); i < len; i++) {
 			const p = 1 - (i - gme.lvl) / len;
 			for (let j = 0; j < Math.floor(p * 10); j++) {
 				indexes.push(i);

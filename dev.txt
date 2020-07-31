@@ -410,9 +410,14 @@
 	- this might be different in other games ...
 
 7.31.2020
-- close pack, close ui text buttons
+- close pack, close ui text buttons - 
 
 - add some randomness to the scores assigned by sins/good acts
+	- applying sins to sinners must have some positive effect that's different from player
+		- maybe player can test items on sinners?
+		- why would something be a sin for a sinner and not the player?
+		
+
 - add color to hell's gate
 - explain sin of giving food to sinner
 

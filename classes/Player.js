@@ -43,13 +43,13 @@ class Player extends Sprite {
 		};
 
 		this.world = {
-			gluttony: 1,
-			sloth: 1,
-			lust: 1,
-			pride: 1,
-			greed: 1,
-			envy: 1,
-			wrath: 1
+			gluttony: -1,
+			sloth: -1,
+			lust: -1,
+			pride: -1,
+			greed: -1,
+			envy: -1,
+			wrath: -1
 		};
 	}
 
@@ -206,13 +206,13 @@ class Player extends Sprite {
 
 	consume(item, type) {
 
-		this.typeString;
+		let typeString;
 		switch(type) {
 			case 'food':
-				this.typeString = 'ate';
+				typeString = 'ate';
 			break;
 			case 'scripture':
-				this.typeString = 'read';
+				typeString = 'read';
 			break;
 		}
 
@@ -222,18 +222,30 @@ class Player extends Sprite {
 		this.speed.x = 8;
 		this.speed.y = 8;
 
-		ui.message.set(`You ${this.typeString} the ${item.label}.`);
+		ui.message.set(`You ${typeString} the ${item.label}.`);
 		ui.message.add(item.source);
 		
-		console.log(this.hunger, +item.hunger);
+		console.log(this.hunger, item.hunger, +item.hunger, this.hunger + +item.hunger);
 		this.hunger = Math.max(0, this.hunger + +item.hunger);
 		// if (item.hunger > 0) ui.message.add(`Your hunger hath abated.`);
 
 		this.hungerRate = Math.max(0.1, this.hungerRate + +item.hungerRate);
 		
 		for (const key in this.world) {
-			if (type == 'food') this.morality[key] += +item[key];
-			else if (type == 'scripture') this.world[key] += +item[key];
+			if (+item[key] != 0) {
+
+				if (type == 'food') {
+					
+					// calculate based on formula
+					this.morality[key] += Math.round(+item[key] + this.world[key] * random(2, 4));
+					ui.message.add(+item[key] < 0 ? 'You hath sinned' : 'You hath acted morally');
+				}
+
+				else if (type == 'scripture') {
+					this.world[key] += +item[key];
+					ui.message.add(+item[key] < 0 ? `With this knowledge you must avoid ${key}` : `In this world ${key} is less sinful` );
+				}
+			}
 		}
 		
 		// if (item.morality != 0) ui.message.add(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
@@ -242,7 +254,6 @@ class Player extends Sprite {
 		this.speed.y += item.speed;
 
 		ui.metrics.morality.update();
-		
 	}
 
 	display() {
@@ -257,5 +268,4 @@ class Player extends Sprite {
 			gme.ctx.globalAlpha = 1.0;
 		}
 	}
-
 }
