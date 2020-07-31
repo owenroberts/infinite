@@ -64,7 +64,7 @@ class PackItem extends HellItem {
 		}
 		else if (pack.state == 'player') {
 			const onOff = !this.displayPack;
-			pack.items.all(item => item.togglePackDisplay(false))
+			pack.items.all(item => item.togglePackDisplay(false));
 			this.togglePackDisplay(onOff);
 		}
 	}

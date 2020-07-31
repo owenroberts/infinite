@@ -10,6 +10,8 @@ class HellGame extends Game {
 			ui.cursor.state = 'interact';
 			switch(scene) {
 				case 'map':
+					// turn off pack ui
+					pack.items.all(item => item.togglePackDisplay(false));
 					ui.packToggle.toggle('off', false);
 					ui.cursor.state = 'walk';
 				break;

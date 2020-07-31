@@ -409,6 +409,7 @@
 	- texture displayed by room, not added to scene 
 	- this might be different in other games ...
 
+7.31.2020
 - close pack, close ui text buttons
 
 - add some randomness to the scores assigned by sins/good acts
@@ -419,9 +420,5 @@
 	- draw less things
 	- restrict canvas size
 
-- lines
-	- don't capture onion skin
-	- color chooser takes multiple clicks?
-	- palette fix build button, unbuild (clear)
-	- auto timeline adjust
-	- remove Func for layers
+- sins for blasphemy, fraud
+
