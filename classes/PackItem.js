@@ -52,7 +52,7 @@ class PackItem extends HellItem {
 					sinner[moral] += Math.round(+this[moral] + player.world[moral] * random(2, 4));
 
 					gme.scene = 'message';
-					ui.message.set(+this[moral] < 0 ? `You have casued ${sinner.label} to sin with ${moral}` : `${sinner.label} is saved from ${moral}` );
+					ui.message.set(+this[moral] < 0 ? `You have caused ${sinner.label} to sin with ${moral}` : `${sinner.label} is saved from ${moral}` );
 
 					// effect your morality score
 				}

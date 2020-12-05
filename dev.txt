@@ -416,10 +416,13 @@
 	- applying sins to sinners must have some positive effect that's different from player
 		- maybe player can test items on sinners?
 		- why would something be a sin for a sinner and not the player?
+	- move sin application to player class
 		
 
 - add color to hell's gate
 - explain sin of giving food to sinner
+	- simplify this? giving food is always good, giving a text is always bad?
+
 
 - slowing down with wide screen
 	- draw less things
@@ -427,3 +430,21 @@
 
 - sins for blasphemy, fraud
 
+12.4.2020
+- observations coming back after a while
+	- clicking sucks, make keyboard and option (what about for navigating menu and such?)
+		- just do enter for map items, no menu
+	- not sure if sin is being added to player correclty
+	- move over pang of hunger message if you keep it
+	- same with adding sins from sinners
+	- accidentally clicked the gates of hell - have some confirmation?
+	- pang of hunger not going away
+	- levels seem too big
+	- make trunk main branch?
+
+12.5.20202
+- for proc jam
+	- music
+	- need to figure out game mechanics
+	- instructions
+	- icon centered vertically over text so its not just on top when it changes

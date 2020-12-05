@@ -80,7 +80,7 @@ function start() {
 		return player.moralityScore.toString();
 	});
 
-	ui.metrics.hunger = new UIMetric(140, 8, () => {
+	ui.metrics.hunger = new UIMetric(180, 8, () => {
 		return player.hungerString;
 	});
 	ui.metrics.hunger.letters = gme.anims.lettering.messages; // use letters or lettering?

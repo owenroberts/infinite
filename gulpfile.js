@@ -8,7 +8,6 @@ const uglify = require('gulp-uglify-es').default;
 const server = require('gulp-webserver');
 const merge = require('merge-stream');
 
-
 const hellFiles = [
 	'./map/Area.js', 
 	'./map/Node.js',
@@ -19,7 +18,6 @@ const hellFiles = [
 	'./classes/*.js',
 	'./hell.js'
 ];
-
 
 // JS task: concatenates and uglifies JS files to script.js
 function jsTask(files, name, dir){
