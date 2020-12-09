@@ -11,13 +11,13 @@ class HellMap extends Map {
 	}
 
 	build(callback) {
-		this.update(
+		this.updateSize(
 			this.startCols + gme.lvl * 2,
 			this.startRows + gme.lvl * 2,
 			this.startMinNodeSize + gme.lvl,
 			this.startMaxNodeSize + gme.lvl * 2
 		);
-		const maxNodes = 
+		
 		super.build({
 			// cell buffer
 			w: Math.ceil(gme.width / 2 / cellSize.w),

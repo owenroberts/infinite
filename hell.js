@@ -139,11 +139,10 @@ function loadNextMap() {
 	ui.message.continue.setMsg('Continue');
 	gme.scene = 'loading';
 	ui.message.set(`Building ${gme.lvlName} ...`);
-	setTimeout(buildMap, 100);
+	setTimeout(buildMap, 250);
 }
 
 function buildMap() {
-	console.time('map');
 	map.build(function() {
 		ui.message.set('');
 		gme.scene = 'map';
