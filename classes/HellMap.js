@@ -68,7 +68,7 @@ class HellMap extends Map {
 				});
 			}
 		});
-		console.log('bgColor', bgColor);
+		// console.log('bgColor', bgColor);
 
 		this.items = new SpriteCollection();
 		

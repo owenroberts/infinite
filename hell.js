@@ -3,7 +3,7 @@ window.random = Cool.random; /* for p5 based map */
 const gme = new HellGame({
 	width: window.innerWidth,
 	height: window.innerHeight,
-	lps: 10,
+	lps: 24,
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,

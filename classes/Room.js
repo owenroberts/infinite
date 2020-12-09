@@ -23,9 +23,9 @@ class Room extends Area {
 		for (let _x = this.x; _x < this.x + this.w; _x++) {
 			for (let _y = this.y; _y < this.y + this.h; _y++) {
 				this.texture.addLocation(
-					Cool.random(indexes),
 					_x * cellSize.w,
-					_y * cellSize.h
+					_y * cellSize.h,
+					Cool.random(indexes)
 				);
 			}
 		}

@@ -14,7 +14,7 @@ class Player extends Sprite {
 		this.center = true; /* need better name */
 
 		this.debug = debug || false;
-		this.speed = new Cool.Vector(8, 8);
+		this.speed = new Cool.Vector(6, 6);
 
 		this.addAnimation(animation);
 		this.animation.state = 'idle';
@@ -64,6 +64,7 @@ class Player extends Sprite {
 	setTarget(x, y) {
 		this.target = { x: x, y: y};
 		this.hunger += this.hungerRate; // what about key presses .... 
+		// abstract to a move function and put this there
 	}
 
 	update() {
