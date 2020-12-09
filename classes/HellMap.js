@@ -1,17 +1,28 @@
 class HellMap extends Map {
-	constructor(...args) {	
-		super(...args);
+	constructor(cols, rows, minNodeSize, maxNodeSize) {	
+		super(cols, rows, minNodeSize, maxNodeSize);
+		this.startCols = cols;
+		this.startRows = rows;
+		this.startMinNodeSize = minNodeSize;
+		this.startMaxNodeSize = maxNodeSize;
 		gme.scenes.map.add(this);
+		this.items = new SpriteCollection();
 		Object.assign(this, itemMixin); // adds over, out, down, up
 	}
 
 	build(callback) {
-		const maxNodes = 5 + gme.lvl; // move up faster?
+		this.update(
+			this.startCols + gme.lvl * 2,
+			this.startRows + gme.lvl * 2,
+			this.startMinNodeSize + gme.lvl,
+			this.startMaxNodeSize + gme.lvl * 2
+		);
+		const maxNodes = 
 		super.build({
 			// cell buffer
 			w: Math.ceil(gme.width / 2 / cellSize.w),
 			h: Math.ceil(gme.height / 2 / cellSize.h)
-		}, maxNodes);
+		}, 6 + gme.lvl); // max nodes --  move up faster?
 		
 		this.roomCount = 0;
 		this.nodes.forEach(node => {
@@ -80,8 +91,22 @@ class HellMap extends Map {
 	}
 
 	addHellsGate() {
-		const location = Cool.random(this.nodes.filter(n => n.room).filter(n => !n.room.takenCells.some(c => c.label == 'player'))).room.getCell("hells_gate");
-		
+		const nodes = this.nodes.filter(n => n.room);
+		const noPlayer = shuffle(nodes.filter(n => !n.room.takenCells.some(c => c.label == 'player')));
+		let location;
+		for (let i = 0; i < noPlayer.length; i++) {
+			location = noPlayer[i].room.getCell("hells_gate");
+			if (location) break;
+		}
+		if (!location) {
+			for (let i = 0; i < nodes.length; i++) {
+				location = noPlayer[i].room.getCell("hells_gate");
+				if (location) break;
+			}
+		}
+		if (!location) {
+			console.log(noPlayer, nodes);
+		}
 		const hg = new HellGate(
 			location.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
 			location.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
@@ -124,18 +149,23 @@ class HellMap extends Map {
 		}
 
 		while (choices.length > 0) {
-			const node = Cool.random(this.nodes.filter(n => n.room));
 			const itemData = items[choices.pop()];
-			const c = node.room.getCell(type);
-			const item = new typeClass(
-				c.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
-				c.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
-				gme.anims.items[itemData.label],
-				itemData,
-				type
-			);
-			this.items.add(item);
-
+			const nodes = shuffle(this.nodes.filter(n => n.room));
+			for (let i = 0; i < nodes.length; i++) {
+				const node = nodes[i];
+				const c = node.room.getCell(type);
+				if (c) {
+					const item = new typeClass(
+						c.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
+						c.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
+						gme.anims.items[itemData.label],
+						itemData,
+						type
+					);
+					this.items.add(item);
+					break;
+				}
+			}
 			// crash?
 		}
 	}

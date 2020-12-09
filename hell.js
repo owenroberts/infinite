@@ -21,11 +21,28 @@ gme.load(
 	}
 );
 
+
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+	let currentIndex = array.length, temporaryValue, randomIndex;
+	while (0 !== currentIndex) {
+	  randomIndex = Math.floor(Math.random() * currentIndex);
+	  currentIndex -= 1;
+	  temporaryValue = array[currentIndex];
+	  array[currentIndex] = array[randomIndex];
+	  array[randomIndex] = temporaryValue;
+	}
+	return array;
+}
+
 // global sinner for keeping track of sinner when giving an item
 let player, god, pack, sinner;
 
 // map globals ... 
-let map, cols = 30, rows = 30, minNodeSize = 8, maxNodeSize = 14, cellSize = { w: 256, h: 256 };
+let mapSize = 12;
+let ratio = window.innerWidth / window.innerHeight;
+
+let map, cellSize = { w: 256, h: 256 };
 
 // ui globals - grafwrap is for main message
 let ui;
@@ -43,13 +60,8 @@ document.addEventListener('keydown', ev => {
 });
 
 function start() {
-
-	gme.setBounds('top', gme.height / 2);
-	gme.setBounds('left', gme.width / 2);
-	gme.setBounds('right', cols * cellSize.w - gme.width / 2);
-	gme.setBounds('bottom', rows * cellSize.h - gme.height / 2);
 	
-	map = new HellMap(cols, rows, minNodeSize, maxNodeSize);
+	map = new HellMap(Math.round(mapSize * ratio), mapSize, mapSize / 4, mapSize / 2 - 1);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
 	pack = new Pack();
 
@@ -139,6 +151,10 @@ function buildMap() {
 		if (player.died) player.reborn();
 		player.spawn();
 		map.addHellsGate();
+		gme.setBounds('top', gme.height / 2);
+		gme.setBounds('left', gme.width / 2);
+		gme.setBounds('right', map.cols * cellSize.w - gme.width / 2);
+		gme.setBounds('bottom', map.rows * cellSize.h - gme.height / 2);
 	});
 }
 

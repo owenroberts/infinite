@@ -528,3 +528,44 @@
 		- make layers keep all the random values etc?
 		- integrate layers into drawing
 		- ugh - prob makes sense ... drawing.layers
+
+12.8.2020
+- resizing map
+	- there is a size that's too small for items to be placed...
+	- it would be nice to figure out mathematically what that is ...
+	- first off, we need more columns than rows or ratio for screen size ...
+	- problem i think is having room with width of 1, that means there are no available cells
+	- either need min room width of 2 or allow items places in all cells
+
+- okay maybe ...
+	- fight sinners (get morality points ... )
+	- no pack, no "gifting"
+	- just fuckin explore and die
+	- don't have to delete the pack code etc just adjust for the jam
+
+- wtf- 
+	- current dynamics assume each item has one moral quality
+	- black and white morality makes no sense
+
+
+- for proc jam
+	- music
+		- does tone.js have a chorus synth? - i may have already this with catslair
+	- need to figure out game mechanics
+	- instructions
+	- change mouse anims ... that code prob exists somehwere ...
+
+- issues
+	- icon centered vertically over text so its not just on top when it changes
+	- selection arrow travels with character/map
+	- glitching textures ... 
+	- make hells gate a color (red?)
+	- fuck me lines frame animation is glitchy again ... 
+	- block under text for readability????
+	- so many map based position bugs ... fix them all??? or just detect broken ones and rebuild?
+	- easy wins - 
+		- play again button?
+		- nothing that wins with charon in there?
+		- books come after level 1
+	- score not being added wtffff
+	- map not placed correctly

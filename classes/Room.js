@@ -46,14 +46,14 @@ class Room extends Area {
 
 		// get available cells
 		const availableCells = [];
-		for (let x = this.x; x < this.x + this.w - 1; x++) {
-			for (let y = this.y; y < this.y + this.h - 1; y++) {
-				if (!this.takenCells.some(c => c.x == x && c.y == y)) 
+		for (let x = this.x; x < this.x + this.w; x++) {
+			for (let y = this.y; y < this.y + this.h; y++) {
+				if (!this.takenCells.some(c => c.x == x && c.y == y))
 					availableCells.push({ x: x, y: y});
 			}
 		}
 		const c = Cool.random(availableCells);
-		this.takenCells.push({ ...c, label: label });
+		if (c) this.takenCells.push({ ...c, label: label });
 		return c;
 	}
 

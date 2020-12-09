@@ -14,7 +14,7 @@ class Player extends Sprite {
 		this.center = true; /* need better name */
 
 		this.debug = debug || false;
-		this.speed = new Cool.Vector(6, 6);
+		this.speed = new Cool.Vector(8, 8);
 
 		this.addAnimation(animation);
 		this.animation.state = 'idle';
@@ -26,6 +26,7 @@ class Player extends Sprite {
 		this.metricCount = 0;
 		this.died = false;
 		this.health = 100;
+
 		this.hunger = 0;
 		this.hungerRate = 0.05;
 		this.hungerLevel = 0;
@@ -43,13 +44,13 @@ class Player extends Sprite {
 		};
 
 		this.world = {
-			gluttony: -1,
-			sloth: -1,
-			lust: -1,
-			pride: -1,
-			greed: -1,
-			envy: -1,
-			wrath: -1
+			gluttony: 0,
+			sloth: 0,
+			lust: 0,
+			pride: 0,
+			greed: 0,
+			envy: 0,
+			wrath: 0
 		};
 	}
 
@@ -118,9 +119,14 @@ class Player extends Sprite {
 	}
 
 	spawn() {
-		const pos = Cool.random(map.nodes.filter(node => node.room)).room.getCell('player');
-		this.mapPosition.x = pos.x * cellSize.w; 
-		this.mapPosition.y = pos.y * cellSize.h;
+		const nodes = shuffle(map.nodes.filter(node => node.room));
+		let location;
+		for (let i = 0; i < nodes.length; i++) {
+			location = nodes[i].room.getCell('player');
+			if (location) break;
+		}
+		this.mapPosition.x = location.x * cellSize.w; 
+		this.mapPosition.y = location.y * cellSize.h;
 	}
 
 	reborn() {
@@ -168,41 +174,25 @@ class Player extends Sprite {
 				this.speed.x -= 1;
 				this.speed.y -= 1;
 			}
-
-			
-			switch(this.hungerLevel) {
-				case 0:
-					this.hungerString = '';
-				case 1:
-					this.hungerString = 'You feel a pang of hunger.';
-				break;
-				case 2:
-					this.hungerString = 'Was that sound your stomach?';
-				break;
-				case 3:
-					this.hungerString = 'Your stomach growled.';
-				break;
-				case 4:
-					this.hungerString = 'Your stomach is twisting in pain.';
-				break;
-				case 5:
-					this.hungerString = 'You feel weak.';
-				break;
-				case 6:
-					this.hungerString = 'You feel light headed.';
-				break;
-				case 7:
-					this.hungerString = 'Your body is desparate for food.';
-				break;
-				case 8:
-					gme.scene = 'message'; // set message before death
-					ui.message.set('You starved to death.');
-					this.died = true;
-					this.checkMorality();
-				break;
-			}
-			ui.metrics.hunger.update(); // annoying for this to be here?
+		} else if (this.hunger == 0) {
+			this.hungerLevel = 0;
 		}
+		
+		if (this.hungerLevel == 0) this.hungerString = '';
+		else if (this.hungerLevel == 1) this.hungerString = 'You feel a pang of hunger.';
+		else if (this.hungerLevel == 2) this.hungerString = 'Was that sound your stomach?';
+		else if (this.hungerLevel == 3) this.hungerString = 'Your stomach growled.';
+		else if (this.hungerLevel == 4) this.hungerString = 'Your stomach is twisting in pain.';
+		else if (this.hungerLevel == 5) this.hungerString = 'You feel weak.';
+		else if (this.hungerLevel == 6) this.hungerString = 'You feel light headed.';
+		else if (this.hungerLevel == 7) this.hungerString = 'Your body is desparate for food.';
+		else if (this.hungerLevel == 8) {
+			gme.scene = 'message'; // set message before death
+			ui.message.set('You starved to death.');
+			this.died = true;
+			this.checkMorality();
+		}
+		ui.metrics.hunger.update(); // annoying for this to be here?
 	}
 
 	consume(item, type) {
@@ -219,40 +209,43 @@ class Player extends Sprite {
 
 		gme.scene = 'message';
 
-		// reset speed immediately, make this more complicated later
-		this.speed.x = 8;
-		this.speed.y = 8;
-
+		
 		ui.message.set(`You ${typeString} the ${item.label}.`);
 		ui.message.add(item.source);
 		
-		console.log(this.hunger, item.hunger, +item.hunger, this.hunger + +item.hunger);
-		this.hunger = Math.max(0, this.hunger + +item.hunger);
+		// console.log(this.hunger, item.hunger, +item.hunger, this.hunger + +item.hunger);
+		// this.hunger = Math.max(0, this.hunger + +item.hunger);
 		// if (item.hunger > 0) ui.message.add(`Your hunger hath abated.`);
+		// this.hungerRate = Math.max(0.1, this.hungerRate + +item.hungerRate);
+		// simplify
 
-		this.hungerRate = Math.max(0.1, this.hungerRate + +item.hungerRate);
+		if (type == 'food') {
+			this.hunger = 0;
+			ui.message.add(`Your hunger hath abated.`);
+			this.checkHunger();
+			this.speed.x = 8; // reset speed
+			this.speed.y = 8;
+		}
 		
 		for (const key in this.world) {
 			if (+item[key] != 0) {
-
 				if (type == 'food') {
-					
 					// calculate based on formula
-					this.morality[key] += Math.round(+item[key] + this.world[key] * random(2, 4));
+					this.morality[key] += +item[key] + this.world[key]; // this is fucked
 					ui.message.add(+item[key] < 0 ? 'You hath sinned' : 'You hath acted morally');
 				}
 
 				else if (type == 'scripture') {
 					this.world[key] += +item[key];
-					ui.message.add(+item[key] < 0 ? `With this knowledge you must avoid ${key}` : `In this world ${key} is less sinful` );
+					ui.message.add(+item[key] < 0 ? 
+						`With gain knowledge of ${key}` : 
+						`You learn ${key}` );
 				}
 			}
 		}
 		
-		// if (item.morality != 0) ui.message.add(`You hath ${item.morality > 0 ? 'acted morally' : 'sinned'}.`);
-		
-		this.speed.x += item.speed;
-		this.speed.y += item.speed;
+		this.speed.x += +item.speed;
+		this.speed.y += +item.speed;
 
 		ui.metrics.morality.update();
 	}
