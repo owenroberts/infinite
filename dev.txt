@@ -569,3 +569,31 @@
 		- books come after level 1
 	- score not being added wtffff
 	- map not placed correctly
+
+12.9.2020
+- desperate times call for despearate measures
+	- im taking all the mouse/ui stuff
+	- you read you eat you fight you sacrifice
+	- ill make it more complicated later if i feel like it
+	- no inventory
+	- draw ui border??
+	- add consume string to data
+	- maybe bring pack back???? - reading books ups your morality blah blah
+
+	- things i removed
+		- pack
+		- global sinner value
+		- mouse events
+		- arrow, interactive ui
+		- item ui and ui events
+		- pickup item so much ui shit ...
+		- class/PickupItem.js
+		- classes/HellTextButton.js
+		- pack stuff in sinner
+		- classes/PackItem.js
+		- classes/buttonMixin
+		- classes/Cursor.js
+		- classes/Hellbuton.js
+		- classes/HellTextButton
+		- classes/itemMixin
+		- classes/HellToggle

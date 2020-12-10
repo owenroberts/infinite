@@ -1,28 +1,20 @@
 class HellMessage extends Text {
 	constructor(x, y, msg, wrap, letters) {
 		super(x, y, msg, wrap, letters);
-		
+		gme.scenes.addToDisplay(this, ['message']);
 		this.list = [];
-		this.continue = new HellTextButton(this.x, this.y, 'Click Here To Explore Purgatory', gme.anims.lettering.messages);
+		this.continue = new Text(this.x, this.y, '', 100, gme.anims.lettering.messages);
+	}
 
-		gme.scenes.add(this, ['message', 'loading', 'pack', 'win'], 'display');
-		// display continue?
-		gme.scenes.add(this.continue, ['pack', 'message', 'win'], 'ui');
-
-		this.continue.onClick = () => {
-			if (this.list.length == 0) {
-				this.set('');
-
-				if (player.died) loadNextMap();
-				else if (this.next) this.next();
-				else gme.scene = 'map';
-
-				this.next = undefined;
-			} else {
-				this.set(this.list.shift());
-				this.continue.check();
-			}
-		};
+	next() {
+		if (this.list.length == 0) {
+			this.set('');
+			if (player.died) loadNextMap();
+			// else if (this.next) this.next();
+			else gme.scene = 'map';
+		} else {
+			this.set(this.list.shift());
+		}
 	}
 
 	add(msg) {
@@ -51,27 +43,26 @@ class HellMessage extends Text {
 
 	set(msg) {
 		super.setMsg(msg);
+
 		if (msg) {
-			this.isActive = true;
 			const returns = msg.match(/[\n\r]/g);
 			const y = this.y + (this.breaks.length + 2 + (returns ? returns.length : 0)) * 35;
 			this.continue.setPosition(this.x, y);
-			this.continue.isActive = true;
-		} else {
-			this.active = false;
-			this.continue.isActive = false;
+			this.continue.setMsg('Press X to continue');
+			ui.console.xKey = () => {
+				this.next();
+			};
 		}
 	}
 
 	display() {
 		super.display();
-		// this.continue.display();
+		this.continue.display();
 	}
 
 	// set msg to empty string, unset next function
 	// next function is like important game mech. function
 	reset() {
 		this.set('');
-		this.next = undefined;
 	}
 }

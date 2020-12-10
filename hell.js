@@ -8,7 +8,7 @@ const gme = new HellGame({
 	checkRetina: true,
 	debug: true,
 	stats: false,
-	scenes: ['map', 'pack', 'message', 'loading', 'win']
+	scenes: ['map', 'message', 'loading', 'win']
 });
 
 gme.load(
@@ -36,7 +36,7 @@ function shuffle(array) {
 }
 
 // global sinner for keeping track of sinner when giving an item
-let player, god, pack, sinner;
+let player, god;
 
 // map globals ... 
 let mapSize = 12;
@@ -56,87 +56,61 @@ let mapCellSize = 20;
 document.addEventListener('keydown', ev => {
 	if (ev.code == 'Equal') mapAlpha = Math.min(1, mapAlpha + 0.5);
 	else if (ev.code == 'Minus') mapAlpha = Math.max(0, mapAlpha - 0.5);
-	else if (ev.code == 'Enter') ui.message.continue.onClick(); // to move message without mouse
+	// else if (ev.code == 'Enter') ui.message.continue.onClick(); // to move message without mouse
 });
 
 function start() {
 	
 	map = new HellMap(Math.round(mapSize * ratio), mapSize, mapSize / 4, mapSize / 2 - 1);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
-	pack = new Pack();
 
 	god = new Sprite(256, gme.height / 2);
 	god.center = true;
 	god.addAnimation(gme.anims.sprites.god);
 	gme.scenes.add(god, 'win', 'display');
 
-	ui = {};
+	ui = new Scene();
 	ui.metrics = {};
 
 	// display current level
-	ui.metrics.levelIcon = new UI({ x: 20, y: 22, animation: gme.anims.ui.hell_icon });
-	gme.scenes.addToDisplay(ui.metrics.levelIcon, ['map', 'pack', 'message']); // json data?
+	const levelIcon = new UI({ x: -200, y: 22, animation: gme.anims.ui.hell_icon });
+	ui.addToDisplay(levelIcon);
 	
-	ui.metrics.level = new UIMetric(30, 8, () => {
+	ui.metrics.level = new UIMetric(levelIcon.x + 40, 8, () => {
 		return gme.lvl.toString();
 	});
 
-	ui.metrics.moralityIcon = new UI({ x: 90, y: 22, animation: gme.anims.ui.morality_icon });
-	gme.scenes.addToDisplay(ui.metrics.moralityIcon, ['map', 'pack', 'message']);
-	ui.metrics.moralityIcon.animation.state = 'neutral';
+	const moralityIcon = new UI({ x: -100, y: 22, animation: gme.anims.ui.morality_icon });
+	moralityIcon.animation.state = 'neutral';
+	ui.addToDisplay(moralityIcon);
 	
-	ui.metrics.morality = new UIMetric(104, 8, () => {
-		if (player.moralityScore == 0) ui.metrics.moralityIcon.animation.state = 'neutral';
-		else if (player.moralityScore < 0) ui.metrics.moralityIcon.animation.state = 'bad';
-		else if (player.moralityScore > 0) ui.metrics.moralityIcon.animation.state = 'good';
+	ui.metrics.morality = new UIMetric(moralityIcon.x + 40, 4, () => {
+		if (player.moralityScore == 0) moralityIcon.animation.state = 'neutral';
+		else if (player.moralityScore < 0) moralityIcon.animation.state = 'bad';
+		else if (player.moralityScore > 0) moralityIcon.animation.state = 'good';
 		return player.moralityScore.toString();
 	});
 
-	ui.metrics.hunger = new UIMetric(180, 8, () => {
+	// this is where all messages go now ... 
+	ui.metrics.hunger = new UIMetric(20, 28, () => {
 		return player.hungerString;
 	});
 	ui.metrics.hunger.letters = gme.anims.lettering.messages; // use letters or lettering?
 
-	ui.packToggle = new HellToggle({ x: -32, y: 22, animation: gme.anims.ui.pack_icon, onClick: toggled => {
-		if (toggled) gme.scene = 'pack';
-		else {
-			gme.scene = 'map';
-			ui.message.set('');
-		}
-	} });
-	gme.scenes.add(ui.packToggle, ['map', 'pack'], 'ui');
+	// this is where all messages go now ... 
+	ui.console = new Text(leftAlign, 8, '', grafWrap * 2, gme.anims.lettering.messages);
+	ui.addToDisplay(ui.console);
+	ui.console.xKey = undefined; // god damn it
 
-	// ui.cursor = { x: 0, y: 0, down: false, state: 'walk' };
-	// like Manager with callback ... 
-	// cursor generic function and HellCursor?
-	ui.cursor = new Cursor({
-		'walk': 'css/walk.gif',
-		'interact': 'css/pointer.gif',
-		'click': 'css/click.gif',
-		'eat': 'css/mouth.gif',
-		'loading': 'css/loader.gif',
-		'read': 'css/read.gif',
-		'pack': 'css/pack.gif',
-		'drop': 'css/drop.gif',
-		'offer': 'css/offer.gif'
-	});
-	ui.cursor.state = 'walk';
-
-	ui.arrow = new Sprite(0, 0);
-	ui.arrow.addAnimation(gme.anims.ui.arrow);
-	ui.arrow.isActive = false;
-	gme.scenes.add(ui.arrow, ['map', 'pack', 'message', 'win'], 'display');
-
-	ui.message = new HellMessage(6, 6 + 32 * 3, '', grafWrap, gme.anims.lettering.messages);
+	ui.message = new HellMessage(6, 40, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.set(welcomeMessage);
+	ui.message.continue.setMsg('Press X to begin');
 	gme.scene = 'message';
-
-	ui.message.next = loadNextMap;
-	// loadNextMap();
+	
+	ui.console.xKey = loadNextMap;
 }
 
 function loadNextMap() {
-	ui.message.continue.setMsg('Continue');
 	gme.scene = 'loading';
 	ui.message.set(`Building ${gme.lvlName} ...`);
 	setTimeout(buildMap, 250);
@@ -165,6 +139,11 @@ function update() {
 function draw() {
 	gme.scenes.current.display();
 	player.display();
+
+	// ui background
+	gme.ctx.fillStyle = '#2c2c2c';
+	gme.ctx.fillRect(0, 0, gme.width, 40);
+	ui.display();
 }
 
 function sizeCanvas() {
@@ -180,79 +159,63 @@ function sizeCanvas() {
 
 	player.position.x = gme.width/2;
 	player.position.y = gme.height/2;
+
+	// update ui?
 }
 
 /* remove key presses */
 function keyDown(key) {
 	switch (key) {
-		case 'a':
+		// case 'a':
 		case 'left':
 			player.inputKey('left', true);
 			break;
-		case 'w':
+		// case 'w':
 		case 'up':
 			player.inputKey('up', true);
 			break;
-		case 'd':
+		// case 'd':
 		case 'right':
 			player.inputKey('right', true);
 			break;
-		case 's':
+		// case 's':
 		case 'down':
 			player.inputKey('down', true);
 			break;
 
-		case 'e':
-			// socket.emit('key interact', true);
+		case 'x':
+			ui.console.xKeyDown = true;
 			break;
 	}
 }
 
 function keyUp(key) {
 	switch (key) {
-		case 'a':
+		// case 'a':
 		case 'left':
 			player.inputKey('left', false);
 			break;
-		case 'w':
+		// case 'w':
 		case 'up':
 			player.inputKey('up', false);
 			break;
-		case 'd':
+		// case 'd':
 		case 'right':
 			player.inputKey('right', false);
 			break;
-		case 's':
+		// case 's':
 		case 'down':
 			player.inputKey('down', false);
 			break;
 
-		case 'e':
-			// socket.emit('key interact', false);
+		case 'x':
+			if (ui.console.xKeyDown && ui.console.xKey) {
+				const temp = ui.console.xKey; // is this nuts?
+				ui.console.xKey = undefined;
+				temp();
+				ui.console.setMsg('');
+				ui.console.xKeyDown = false;
+			}
 			break;
 	}
-}
-
-function mouseMoved(x, y) {
-	ui.cursor.x = x; // for ui taps
-	ui.cursor.y = y;
-	gme.scenes.current.mouseMoved(x, y);
-
-	// css image cursor
-	cursor.style.left = `${x}px`;
-	cursor.style.top = `${y}px`;
-}
-
-function mouseDown(x, y) {
-	ui.cursor.down();
-	gme.scenes.current.mouseDown(x, y);
-
-	// cursor changes after uiDown from scene, prevents character from walking when ui clicked
-	if (ui.cursor.state == 'walk')
-		player.setTarget(x - player.position.x, y - player.position.y);
-}
-
-function mouseUp(x, y) {
-	ui.cursor.up();
-	gme.scenes.current.mouseUp(x, y);
 }

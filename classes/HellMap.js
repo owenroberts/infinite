@@ -11,6 +11,7 @@ class HellMap extends Map {
 	}
 
 	build(callback) {
+		console.time('map');
 		this.updateSize(
 			this.startCols + gme.lvl * 2,
 			this.startRows + gme.lvl * 2,
@@ -83,8 +84,8 @@ class HellMap extends Map {
 
 		this.items = new SpriteCollection();
 		
-		this.addItems('food', PickupItem);
-		this.addItems('scripture', PickupItem);
+		this.addItems('food', MapItem);
+		this.addItems('scripture', MapItem);
 		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
 		
 		if (callback) callback();
@@ -99,7 +100,7 @@ class HellMap extends Map {
 			if (location) break;
 		}
 		if (!location) {
-			for (let i = 0; i < nodes.length; i++) {
+			for (let i = 0; i < noPlayer.length; i++) {
 				location = noPlayer[i].room.getCell("hells_gate");
 				if (location) break;
 			}

@@ -1,11 +1,16 @@
 class MapItem extends HellItem {
 	constructor(...args) {
 		super(...args);
+		this.isColliding = false;
+		this.consoleMessage = `${this.consumeString} ${this.label}`;
+		this.xKey = () => {
+			map.remove(this);
+			player.consume(this, this.type);
+		};
 	}
 
 	display() {
 		super.display();
-		this.ui.display();
 
 		if (mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha;
@@ -17,29 +22,19 @@ class MapItem extends HellItem {
 
 	update(offset) {
 		super.update(offset);
-		if (this.collide(player)) {
-			this.ui.all((ui, index) => {
-				ui.updatePosition();
-				ui.isActive = true;
-			});
-		} else {
-			this.ui.all(ui => { ui.isActive = false; });
+		if (this.collide(player) && !this.isColliding && !player.isColliding) {
+			ui.console.setMsg(`Press X to ${this.consoleMessage}`);
+			this.isColliding = true;
+			player.isColliding = true;
+			ui.console.xKey = () => {
+				this.isColliding = false;
+				player.isColliding = false;
+				this.xKey();
+			};
+		} else if (!this.collide(player) && this.isColliding) {
+			ui.console.setMsg('');
+			this.isColliding = false;
+			player.isColliding = false;
 		}
-	}
-
-	over(x, y) {
-		this.ui.all(ui => ui.over(x, y));
-	}
-
-	out(x, y) {
-		this.ui.all(ui => ui.out(x, y));
-	}
-
-	down(x, y) {
-		this.ui.all(ui => ui.down(x, y));
-	}
-
-	up(x, y) {
-		this.ui.all(ui => ui.up(x, y));
 	}
 }

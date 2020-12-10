@@ -3,9 +3,7 @@ class UIMetric extends Text {
 		const msg = callback();
 		super(x, y, msg, msg.length, gme.anims.lettering.metrics);
 		this.callback = callback;
-
-		// for UI that aren't interactive
-		gme.scenes.addToDisplay(this, ['map', 'pack', 'message']);
+		ui.addToDisplay(this);
 	}
 
 	update() {

@@ -209,7 +209,6 @@ class Player extends Sprite {
 
 		gme.scene = 'message';
 
-		
 		ui.message.set(`You ${typeString} the ${item.label}.`);
 		ui.message.add(item.source);
 		
