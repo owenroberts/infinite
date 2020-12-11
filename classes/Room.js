@@ -17,7 +17,7 @@ class Room extends Area {
 			}
 		}
 
-		console.log(indexes);
+		// console.log(indexes);
 
 		const locations = [];
 		for (let _x = this.x; _x < this.x + this.w; _x++) {
@@ -30,7 +30,7 @@ class Room extends Area {
 			}
 		}
 
-		console.log(this.texture.locations);
+		// console.log(this.texture.locations);
 		
 		// this.texture.addLocations(locations);
 

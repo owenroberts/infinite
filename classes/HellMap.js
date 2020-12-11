@@ -1,4 +1,4 @@
-class HellMap extends Map {
+class HellMap extends BSPMap {
 	constructor(cols, rows, minNodeSize, maxNodeSize) {	
 		super(cols, rows, minNodeSize, maxNodeSize);
 		this.startCols = cols;
@@ -7,7 +7,6 @@ class HellMap extends Map {
 		this.startMaxNodeSize = maxNodeSize;
 		gme.scenes.map.add(this);
 		this.items = new SpriteCollection();
-		Object.assign(this, itemMixin); // adds over, out, down, up
 	}
 
 	build(callback) {
@@ -25,9 +24,13 @@ class HellMap extends Map {
 			h: Math.ceil(gme.height / 2 / cellSize.h)
 		}, 6 + gme.lvl); // max nodes --  move up faster?
 		
-		this.roomCount = 0;
-		this.nodes.forEach(node => {
-			if (node.room) this.roomCount++;
+		this.roomCount = this.nodes.filter(n => n.room).length;
+		this.cellCount = this.nodes.filter(n => n.room).map(n => n.room.w * n.room.h).reduce((s, n) => s + n);
+		
+		// debug see the rooms
+		this.nodes.forEach(n => {
+			// console.log('node', n.x, n.y, n.w, n.h);
+			if (n.room) console.log('room', n.room.x, n.room.y, n.room.w, n.room.h);
 		});
 
 		const bgColors = [
@@ -82,16 +85,14 @@ class HellMap extends Map {
 		});
 		// console.log('bgColor', bgColor);
 
-		this.items = new SpriteCollection();
-		
-		this.addItems('food', MapItem);
-		this.addItems('scripture', MapItem);
-		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
 		
 		if (callback) callback();
 	}
 
-	addHellsGate() {
+	addAllMapItems() {
+
+		this.items.clear();
+
 		const nodes = this.nodes.filter(n => n.room);
 		const noPlayer = shuffle(nodes.filter(n => !n.room.takenCells.some(c => c.label == 'player')));
 		let location;
@@ -116,6 +117,11 @@ class HellMap extends Map {
 			'gate'
 			);
 		this.items.add(hg);
+
+		this.cellCount -= 2; // subtract player, gate
+		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
+		this.addItems('food', MapItem);
+		this.addItems('scripture', MapItem);
 	}
 
 	prob(f) {
@@ -133,7 +139,7 @@ class HellMap extends Map {
 
 		// add probabilities based on formulas
 		for (let i = 0; i < items.length; i++) {
-			const prob = this.prob(items[i].probability); // csv index changes ... 
+			const prob = this.prob(items[i].probability); // csv index changes ...
 			if (prob == 1) choices.push(i);
 			else if (prob > 0) {
 				for (let j = 0; j < prob * 100; j++) {
@@ -142,14 +148,13 @@ class HellMap extends Map {
 			}
 		}
 
-		
 		// fill remaining choices with new items		
 		while (choices.length < itemCount) {
 			choices.push(  Cool.random(indexes.filter(i => !choices.includes(i))) );
 			// potential crash? 
 		}
 
-		while (choices.length > 0) {
+		while (choices.length > 0 && this.cellCount > 0) {
 			const itemData = items[choices.pop()];
 			const nodes = shuffle(this.nodes.filter(n => n.room));
 			for (let i = 0; i < nodes.length; i++) {
@@ -164,6 +169,7 @@ class HellMap extends Map {
 						type
 					);
 					this.items.add(item);
+					this.cellCount--;
 					break;
 				}
 			}

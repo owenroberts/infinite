@@ -237,7 +237,7 @@ class Player extends Sprite {
 				else if (type == 'scripture') {
 					this.world[key] += +item[key];
 					ui.message.add(+item[key] < 0 ? 
-						`With gain knowledge of ${key}` : 
+						`You gain knowledge of ${key}` : 
 						`You learn ${key}` );
 				}
 			}

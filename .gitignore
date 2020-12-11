@@ -8,3 +8,4 @@ audio/
 *.zip
 node_modules/
 src_maps/
+sampler/

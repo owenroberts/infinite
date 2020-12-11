@@ -1,26 +1,5 @@
+Tone.context.resume();
 window.random = Cool.random; /* for p5 based map */
-
-const gme = new HellGame({
-	width: window.innerWidth,
-	height: window.innerHeight,
-	lps: 24,
-	mixedColors: true,
-	checkRetina: true,
-	debug: true,
-	stats: false,
-	scenes: ['map', 'message', 'loading', 'win']
-});
-
-gme.load(
-	{ 
-		ui: 'data/ui.json', 
-		sprites: 'data/sprites.json', 
-		textures: 'data/textures.json',
-		items: 'data/items.csv',
-		lettering: 'data/lettering.json'
-	}
-);
-
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
@@ -35,7 +14,30 @@ function shuffle(array) {
 	return array;
 }
 
+const gme = new HellGame({
+	width: window.innerWidth,
+	height: window.innerHeight,
+	lps: 24,
+	mixedColors: true,
+	checkRetina: true,
+	debug: true,
+	stats: false,
+	scenes: ['music', 'instructions', 'map', 'message', 'loading', 'win']
+});
+
+gme.load(
+	{ 
+		ui: 'data/ui.json', 
+		sprites: 'data/sprites.json', 
+		textures: 'data/textures.json',
+		items: 'data/items.csv',
+		lettering: 'data/lettering.json'
+	}
+);
+
+
 // global sinner for keeping track of sinner when giving an item
+let sound;
 let player, god;
 
 // map globals ... 
@@ -57,6 +59,8 @@ document.addEventListener('keydown', ev => {
 	if (ev.code == 'Equal') mapAlpha = Math.min(1, mapAlpha + 0.5);
 	else if (ev.code == 'Minus') mapAlpha = Math.max(0, mapAlpha - 0.5);
 	// else if (ev.code == 'Enter') ui.message.continue.onClick(); // to move message without mouse
+	else if (ev.code == 'Digit1') sound.playTheme();
+
 });
 
 function start() {
@@ -73,14 +77,14 @@ function start() {
 	ui.metrics = {};
 
 	// display current level
-	const levelIcon = new UI({ x: -200, y: 22, animation: gme.anims.ui.hell_icon });
+	const levelIcon = new UI({ x: -180, y: 22, animation: gme.anims.ui.hell_icon });
 	ui.addToDisplay(levelIcon);
 	
 	ui.metrics.level = new UIMetric(levelIcon.x + 40, 8, () => {
 		return gme.lvl.toString();
 	});
 
-	const moralityIcon = new UI({ x: -100, y: 22, animation: gme.anims.ui.morality_icon });
+	const moralityIcon = new UI({ x: -90, y: 22, animation: gme.anims.ui.morality_icon });
 	moralityIcon.animation.state = 'neutral';
 	ui.addToDisplay(moralityIcon);
 	
@@ -105,9 +109,31 @@ function start() {
 	ui.message = new HellMessage(6, 40, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.set(welcomeMessage);
 	ui.message.continue.setMsg('Press X to begin');
+
+	/* set up music ui */
+	const welcome = new Text(leftAlign, 40, 'Welcome to Infinite Hell', grafWrap, gme.anims.lettering.messages);
+	gme.scenes.music.addToDisplay(welcome);
+
+	const yesSound = new Text(leftAlign, 80, 'Press X to start game with sound', grafWrap, gme.anims.lettering.messages);
+	gme.scenes.music.addToDisplay(yesSound);
+
+	const noSound = new Text(leftAlign, 120, 'Press Z to start game silently', grafWrap, gme.anims.lettering.messages);
+	gme.scenes.music.addToDisplay(noSound);
+
+	ui.console.xKey = () => { startMusic(true) };
+	ui.console.zKey = () => { startMusic(false) };
+
+	gme.scene = 'music';
+}
+
+function startMusic(withMusic) {
+
 	gme.scene = 'message';
-	
+	if (withMusic) {
+		sound = new Sound();
+	}
 	ui.console.xKey = loadNextMap;
+	ui.console.zKey = undefined;
 }
 
 function loadNextMap() {
@@ -123,7 +149,8 @@ function buildMap() {
 		console.timeEnd('map');
 		if (player.died) player.reborn();
 		player.spawn();
-		map.addHellsGate();
+		map.addAllMapItems();
+		// add items after 
 		gme.setBounds('top', gme.height / 2);
 		gme.setBounds('left', gme.width / 2);
 		gme.setBounds('right', map.cols * cellSize.w - gme.width / 2);
@@ -186,6 +213,10 @@ function keyDown(key) {
 		case 'x':
 			ui.console.xKeyDown = true;
 			break;
+
+		case 'z':
+			ui.console.zKeyDown = true;
+			break;
 	}
 }
 
@@ -215,6 +246,16 @@ function keyUp(key) {
 				temp();
 				ui.console.setMsg('');
 				ui.console.xKeyDown = false;
+			}
+			break;
+
+		case 'z':
+			if (ui.console.zKeyDown && ui.console.zKey) {
+				const temp = ui.console.zKey; // is this nuts?
+				ui.console.zKey = undefined;
+				temp();
+				ui.console.setMsg('');
+				ui.console.zKeyDown = false;
 			}
 			break;
 	}
