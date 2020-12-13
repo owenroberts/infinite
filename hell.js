@@ -40,10 +40,6 @@ gme.load(
 let sound;
 let player, god;
 
-// map globals ... 
-let mapSize = 12;
-let ratio = window.innerWidth / window.innerHeight;
-
 let map, cellSize = { w: 256, h: 256 };
 
 // ui globals - grafwrap is for main message
@@ -64,7 +60,7 @@ document.addEventListener('keydown', ev => {
 
 function start() {
 	
-	map = new HellMap(Math.round(mapSize * ratio), mapSize, mapSize / 4, mapSize / 2 - 1);
+	map = new HellMap(12);
 	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
 
 	god = new Sprite(256, gme.height / 2);

@@ -1,28 +1,24 @@
 class HellMap extends BSPMap {
-	constructor(cols, rows, minNodeSize, maxNodeSize) {	
-		super(cols, rows, minNodeSize, maxNodeSize);
-		this.startCols = cols;
-		this.startRows = rows;
-		this.startMinNodeSize = minNodeSize;
-		this.startMaxNodeSize = maxNodeSize;
+	constructor(size) {
+		const buffer = {
+			w: Math.ceil(gme.width / 2 / cellSize.w),
+			h: Math.ceil(gme.height / 2 / cellSize.h)
+		};
+		super(size + buffer.w, size + buffer.h, size / 4, size / 2 - 1);
+		this.size = 12;
+		this.buffer = buffer;
+
 		gme.scenes.map.add(this);
 		this.items = new SpriteCollection();
 	}
 
 	build(callback) {
 		console.time('map');
-		this.updateSize(
-			this.startCols + gme.lvl * 2,
-			this.startRows + gme.lvl * 2,
-			this.startMinNodeSize + gme.lvl,
-			this.startMaxNodeSize + gme.lvl * 2
-		);
+
+		let newSize = this.size + gme.lvl * 2;
+		this.updateSize(newSize + this.buffer.w, newSize + this.buffer.h, newSize / 4, newSize / 2 - 1);
 		
-		super.build({
-			// cell buffer
-			w: Math.ceil(gme.width / 2 / cellSize.w),
-			h: Math.ceil(gme.height / 2 / cellSize.h)
-		}, 6 + gme.lvl); // max nodes --  move up faster?
+		super.build(this.buffer, 6 + gme.lvl); // max nodes --  move up faster?
 		
 		this.roomCount = this.nodes.filter(n => n.room).length;
 		this.cellCount = this.nodes.filter(n => n.room).map(n => n.room.w * n.room.h).reduce((s, n) => s + n);
@@ -67,6 +63,7 @@ class HellMap extends BSPMap {
 			'#101010',
 			'#080808'
 		];
+		// 0x080808 + 0x080808
 		const bgColor = bgColors[Math.min(gme.lvl, bgColors.length - 1)];
 
 		this.walls.forEach(wall => {

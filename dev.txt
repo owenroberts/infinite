@@ -602,3 +602,6 @@
 - figuring out map
 - also maybe add a new build and tag the procjam??
 - music
+
+12.12.2020
+- searchin for shit: /Users/owenroberts/gd/art/infinite_hell, -*.min.js, -*.min.js.map, -/node_modules

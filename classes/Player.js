@@ -238,7 +238,7 @@ class Player extends Sprite {
 					this.world[key] += +item[key];
 					ui.message.add(+item[key] < 0 ? 
 						`You gain knowledge of ${key}` : 
-						`You learn ${key}` );
+						`You are learned of ${key}` );
 				}
 			}
 		}
