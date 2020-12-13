@@ -9,3 +9,4 @@ audio/
 node_modules/
 src_maps/
 sampler/
+tone/Tone.js.map

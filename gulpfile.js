@@ -16,6 +16,8 @@ const hellFiles = [
 	'./classes/HellItem.js',
 	'./classes/MapItem.js',
 	'./classes/*.js',
+	'./tone/Tone.js',
+	'./sound.js',
 	'./hell.js'
 ];
 

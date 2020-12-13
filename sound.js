@@ -6,6 +6,8 @@
 	The Gregorian chant began to evolve around 700. From 700 - 900, composers would write a line in parallel motion to the chant at a fixed interval of a fifth or a fourth above the original line. This technique evolved further from 900 - 1200. During this period, the upper line moved independently of the original chant. After 1100, upper lines even began gaining rhythmic independence.
 */
 
+// https://github.com/saebekassebil/teoria
+
 function Sound() {
 
 	var MIDI_NUM_NAMES = [
@@ -21,88 +23,193 @@ function Sound() {
 		"C8", "C#8", "D8", "D#8", "E8", "F8", "F#8", "G8", "G#8", "A8", "A#8", "B8",
 		"C9", "C#9", "D9", "D#9", "E9", "F9", "F#9", "G9"];
 
-	const themes = [
-		[ 
-			['F3', 'A#3'], ['G3'], ['A3'], ['D4', 'A#3'],
-			['D4'], ['F4', 'A#4'], ['D4', 'A#4'], ['F3', 'A4'], ['G3'], ['A3']
-		],
-		[
-			['F3', 'A#3'], ['D3', 'A3'], ['F3', 'A#3'], ['D3', 'A3'],
-			['F3', 'D4'], ['D3', 'A3'], ['F3', 'F4'], ['D3', 'A3', 'F4'], 
-		],
-		[
-			['F3', 'A#3'], ['D3', 'A3'], ['F3', 'A#3', 'D4'], ['D3', 'A3', 'F4'],
-			['F3', 'D4'], ['D3', 'A3', 'G4']
-		],
-		[
-			['F4', 'A#4'], ['F4', 'A#4'], ['F4', 'A#4'],
-			['G4', 'A#4'], ['G4', 'A#4'], ['G4', 'A#4'],
-			['A4', 'A#4'], ['A4', 'A#4'], ['A4', 'A#4'],
-			['D4', 'G4'], ['D4', 'G4'], ['D4', 'G4'], 
-			['D4', 'G4'], ['D4', 'G4'], ['D4', 'G4'], 
-		],
-		[
-			['D#3', 'A#3'], ['D#3', 'A#3'], ['D#3', 'A#3'], ['D#3', 'A#3'], 
-			['D3', 'A#3'], ['D3', 'A#3'],
-			['D#3', 'A#3'], ['D#3', 'A#3'], ['D#3', 'A#3'], ['D#3', 'A#3'], 
-			['D3', 'A#3'], ['D3', 'A#3'],
-			['D3', 'A#3'], ['D3', 'A#3'], ['D3', 'A#3'], ['D3', 'A#3'],
-			['D3', 'A#3'], ['D3', 'A#3'], ['D3', 'A#3']
-		],
-		[
-			['D#3', 'A#3'], ['D#3', 'A#3'], ['D#3', 'A#3'], ['D#3', 'A#3'],
-			'D#3', 'A#3', 'D#3', 'A#3', 'D#3', 'A#3', 'D#3', 'A#3',
-			['F3', 'A3'], ['F3', 'A3'], ['F3', 'A3'], ['F3', 'A3'], ['F3', 'A3'],
-			'F3', 'A3', 'F3', 'A3'
-		]
-	];
-
-	let playing = false;
-	let mutations = 0;
-	let choirSamples;
-	let loops = [];
-	let loopNum = { min: 2, max: 4 };
-	let durs = [1, 2, 4, 8];
-	let startDelays = [0, '1n', '2n', '4n', '8n', '1m', '2m'];
-	let longDelays = ['3m', '4m', '5m', '6m'];
-	let indexJump = { min: -1, max: 1 }
-	let attackStart = { min: 0.25, max: 0.75 };
-	let attackJump = { min: -0.2, max: 0.2 };
-
-
-	// const melody = ['C4', 'A3', 'G3', 'D4', 'E4', 'G4', 'A4', 'C5', 'C4', 'D5', 'C5', 'D5'];
 	const major = [0, 2, 4, 5, 7, 9, 11];
-	let tonic = 60; // C4
+	let tonic = 54; // C4 is 60
 	// const midi = [60, 57, 55, 62, 64, 67, 69, 72, 60, 74, 72, 74];
-	// let intervals = [0, -3, -5, 2, 4, 7, 9, 12, 0, 14, 12, 14];
-	let intervals = [
-		-7, -3, 0, null, 9, 5, 4, null, -7, -3, 0, -3, 2, 0, 4, 9,
-		-7, -3, 0, null, 9, 4, 2, null, -7, -3, 0, -3, 2, 0, 4, 9
-	];
-	// convert melody to intervals ... 
-	// or use teo
-
-
+	
+	// const melody = ['C4', 'A3', 'G3', 'D4', 'E4', 'G4', 'A4', 'C5', 'C4', 'D5', 'C5', 'D5'];
+	let intervals = [0, -3, -5, 2, 4, 7, 9, 12, 0, 14, 12, 14];
+	// better var name here?
+	
 	// melody 
 	// F3 A3 C4 . A4 F4 E4 . F3 A3 C4 A3 D4 C4 E4 A4
 	// F3 A3 C4 . A4 E4 D4 .
+	// let intervals = [
+		// -7, -3, 0, null, 9, 5, 4, null, -7, -3, 0, -3, 2, 0, 4, 9,
+		// -7, -3, 0, null, 9, 4, 2, null, -7, -3, 0, -3, 2, 0, 4, 9
+	// ];
+	
+	// convert melody to intervals ... 
+	// or use teo
+
+	// debugging
+	document.addEventListener('keydown', ev => {
+		if (ev.code == 'Digit1') playTheme();
+		if (ev.code == 'Digit2') mutate();
+
+	});
+
+	function chance(n) {
+		return Cool.random(1) < n;
+	}
+
+	let noteNames = [];
+	let choirSamples;
+	let loops = [];
+
+	let mutations = 0;
+	let lastGameLevel = 0; // change tonic based on game level
+	
+	let loopNum = { min: 1, max: 1 };  // starts at 1
+	let startIndex = { min: 0, max: 0};
+
+	let lens = [1];
+
+	let durs = [1];
+	let addDurs = [1, 4, 8];
+	let durJumps = [1];
+	let addDurJumps = [0.5, 2];
+
+	let startDelays = [0, '1n', '2n', '4n', '8n', '1m', '2m'];
+	let longDelays = ['3m', '4m', '5m', '6m'];
+	
+	let indexJump = { min: 0, max: 0 };
+	let attackStart = { min: 0.25, max: 0.75 };
+	let attackJump = { min: -0.2, max: 0.2 };
+	let harmonyChoices = [4, 5];
+	let addHarmonyChoices = shuffle([2, 3, 6, 7]);
+
 
 	function mutate() {
-		// change melody
-		// change key ??
+
+		// tonic moves up or down each level - do it randomly ??? 
+		if (tonic > 17 && gme.lvl !== lastGameLevel) { // 17 is lowest note can be played
+			// jump by 1 2 or 3
+			tonic += (lastGameLevel - gme.lvl) * Cool.random([1,2,3]);
+			lastGameLevel = gme.lvl;
+		}
+
+		// change number of loops
+		if (mutations == 0) {
+			loopNum.max = 2; // after first play add a harmony
+		} else {
+			// its okay if they swap
+			if (chance(0.05)) loopNum.min += 1;
+			if (chance(0.01)) loopNum.max += 1;
+		}
+
+		// random start index
+		if (chance(0.25) && mutations > 2 && startIndex.max < intervals.length) {
+			startIndex.max++;
+		}
+
+		if (mutations > 3) {
+
+			// add harmony parts
+			if (chance(0.25) && addHarmonyChoices.length > 0) {
+				harmonyChoices.push(addHarmonyChoices.pop());
+			}
+
+			if (chance(0.25)) {
+				indexJump.min--;
+				// maybe += chance(0.5) ? 1 : -1;
+			}
+
+			if (chance(0.25)) {
+				indexJump.max++;
+			}
+
+			if (chance(0.25) && addDurs.length > 0) durs.push(addDurs.pop());
+
+			if (chance(0.25)) lens.push(Cool.random(lens) * Cool.random([0.5, 2]));
+
+			if (chance(0.25)) {
+				let slice = intervals.slice(Cool.random(intervals.length), Cool.random(intervals.length));
+				intervals.push(...slice);
+			}
+
+			if (chance(0.25)) intervals.shift();
+		}
+
+		mutations++;
+
+		console.log('mutations', mutations, 'tonic', tonic);
+		// console.log('harmonies', harmonyChoices);
+		// console.log('loopNum', loopNum);
+		// console.log('startIndex', startIndex);
+		// console.log('lens', lens);
+	}
+
+	function playTheme() {
+		Tone.Transport.bpm.value = player.speed.x * 16;
+		console.log('bpm', Tone.Transport.bpm.value);
+
+		loops.forEach(loop => loop.stop());
+		Tone.Transport.stop();
+		
+
+		let num = Cool.randomInt(loopNum.min, loopNum.max); // number of loops
+		// how many loops is too many loops?
+		let dur = Cool.random(durs); // start duration
+		let len = Cool.random(lens);
+		let idx = Cool.randomInt(startIndex.min, startIndex.max); // start index
+		let delay = mutations == 0 ? 0 : Cool.random(startDelays);
+
+		loops.push(makeLoop(dur, len, idx, delay, getMelody(tonic))); 
+		for (let i = 1; i < num; i++) {
+			let mel = (chance(0.5) || num == 2) ?
+				getHarmony(tonic, Cool.random(harmonyChoices)) :
+				getMelody(tonic);
+
+			idx = Cool.random([idx, idx + indexJump.min, idx - indexJump.max]);
+			dur = dur * Cool.random(durJumps);
+			if (mutations > 3) {
+				delay = Cool.random([...startDelays, ...longDelays]);
+				if (chance(0.1)) delay += 't';
+				if (chance(0.25) && delay != 0) delay += '.';
+			}
+			loops.push(makeLoop(dur, 1, idx, delay, mel));
+		}
+		
+		Tone.Transport.start('+0.1');
+		mutate();
+	}
+
+	function makeLoop(dur, len, idx, delay, melody) {
+		const sampler = getSampler();
+		let count = idx || 0;
+		let attack = Cool.random(attackStart.min, attackStart.max);
+		const loop = new Tone.Loop((time) => {
+			// console.log(count, attack, dur, len, idx, delay);
+			const randomRest = false; // Cool.random(1) > 0.95;
+			const note = randomRest ? null : melody[count % melody.length];
+			if (note) {
+				sampler.triggerAttackRelease(note, `${dur}n`, undefined, attack);
+			}
+			attack += Cool.random(attackJump.min, attackJump.max);
+			attack.clamp(0.1, 1);
+			count++;
+			if (count >= melody.length * len + idx) {
+				loop.stop();
+				if (loops.every(loop => { return loop.state == 'stopped'})) {
+					playTheme();
+				}
+			}
+		}, `${dur}n`).start(delay);
+		return loop;
 	}
 
 	function getMelody(startNote) {
 		let melody = [];
 		for (let i = 0; i < intervals.length; i++) {
-			if (intervals[i] != null) {
+			if (intervals[i] !== null) {
 				const note = startNote + intervals[i];
 				melody.push(MIDI_NUM_NAMES[note]);
 			} else {
 				melody.push(null);
 			}
 		}
-		console.log(melody);
+		// console.log(melody);
 		return melody;
 	}
 
@@ -111,7 +218,7 @@ function Sound() {
 		let harmony = [];
 		for (let i = 0; i < intervals.length; i++) {
 			const int = intervals[i];
-			if (int != null) {
+			if (int !== null) {
 
 				// find where in the scale this note goes
 				let index;
@@ -130,104 +237,82 @@ function Sound() {
 				harmony.push(null);
 			}
 		}
-		console.log(harmony);
+		// console.log(harmony);
 		return harmony;
 	}
 
-	function makeLoop(dur, len, idx, delay, melody) {
-		const sampler = getSampler();
-		let count = idx || 0;
-		let attack = Cool.random(attackStart.min, attackStart.max);
-		const loop = new Tone.Loop((time) => {
-			// console.log(count, attack, dur, len, idx, delay);
-			const randomRest = false; // Cool.random(1) > 0.95;
-			const note = randomRest ? null : melody[count % melody.length];
-			if (note) {
-				sampler.triggerAttackRelease(note, `${dur/2}n`, undefined, attack);
-			}
-			attack += Cool.random(attackJump.min, attackJump.max);
-			attack.clamp(0.1, 1);
-			count++;
-			if (count >= melody.length * len + idx) {
-				loop.stop();
-				if (loops.every(loop => { return loop.state == 'stopped'})) {
-					// playTheme();
-				}
-			}
-		}, `${dur}n`).start(delay);
-		return loop;
-	}
-
-	function playTheme() {
-		Tone.Transport.bpm.value = player.speed.x * 16;
-		console.log('bpm', Tone.Transport.bpm.value);
-		if (playing) Tone.Transport.stop();
-
-		loops = [];
-
-		loops.push( makeLoop(4, 1, 0, 0, getMelody(tonic)) );
-		if (Cool.random([1])) {
-			loops.push( makeLoop(4, 1, 0, 0, getHarmony(tonic, 3)) );
-		}
-		mutations++;
-
-		// let num = Cool.random(loopNum.min, loopNum.max); // number of loops
-		// let dur = Cool.random(durs); // start duration
-		// let idx = Cool.randomInt(melody.length); // start index
-		// let delay = Cool.random(startDelays);
-
-		// // set longer delays
-		// // len rel to dur
-		// // console.log('begin values', dur, num);
-		// for (let i = 0; i < num; i++) {
-		// 	loops.push( makeLoop(dur, 1, idx, delay) );
-		// 	dur = Cool.random([dur/2, dur*2, dur]);
-		// 	// if (Cool.random(1) > 0.9) delay += 't';
-		// 	idx = Cool.random([idx, idx + indexJump.min, idx - indexJump.max]);
-		// 	delay = Cool.random([...startDelays, ...longDelays]);
-		// 	if (Cool.random(1) > 0.75 && delay != 0) delay += '.';
-		// 	// console.log('new values', dur, delay);
-		// }
-		
-		Tone.Transport.start('+0.1');
-	};
-	
-
 	function getSampler() {
+		const voice = 'U'; // Cool.random('AEIOU'.split(''));
+		const samples = {};
+		for (let i = 0; i < noteNames.length; i++) {
+			const note = noteNames[i];
+			samples[note] = choirSamples.get(`${voice}-${note}`);
+		}
+
+		// samples = {
+		// 	C4: choirSamples.get('C4');
+		// 	A3: choirSamples.get(A3);
+		// 	G3: choirSamples.get(G3);
+		// 	'Eb4': choirSamples.get('Eb4');
+		// };
+
 		const sampler = new Tone.Sampler({
-			urls: {
-				C4: choirSamples.get('C4'),
-				A3: choirSamples.get('A3'),
-				G3: choirSamples.get('G3'),
-				'Eb4': choirSamples.get('Eb4') // replace with E4
-			},
+			urls: samples,
 			volume: -6
 		}).toDestination();
 
-		// const distortion = new Tone.Distortion(0.1).toDestination();
-		// const chorus = new Tone.Chorus(4, 2.5, 0.5);
 		// const freeverb = new Tone.Freeverb().toDestination();
-		// freeverb.dampening = 1000;
-		// const crusher = new Tone.BitCrusher(4).toDestination();
-		const freq = Cool.random(0.5, 1);
-		const depth = Cool.random(0.1, 1);
-		const tremolo = new Tone.Tremolo(freq, depth).toDestination().start();
+		// freeverb.dampening = 2000;
 
-		sampler.connect(tremolo);
+		const reverb = new Tone.Reverb({ decay: 5 }).toDestination();
+		sampler.connect(reverb);
+
+		if (mutations > 10) {
+			let effect;
+			if (chance(0.25)) effect = new Tone.Distortion(0.1).toDestination();
+			else if (chance(0.25)) effect = new Tone.Chorus(4, 2.5, 0.5);
+			else if (chance(0.25)) effect = new Tone.BitCrusher(4).toDestination();
+			else if (chance(0.25)) {
+				const freq = Cool.random(0.5, 1);
+				const depth = Cool.random(0.1, 1);
+				effect = new Tone.Tremolo(freq, depth).toDestination().start();
+			}
+			if (effect) sampler.connect(effect);
+		}
+		
 		return sampler;
 	}
 
 	function setup(callback) {
+
+		for (let i = 2; i <= 4; i++) {
+			'ABCDEFG'.split('').forEach(letter => {
+				noteNames.push(`${letter}${i}`);
+			});
+		}
+
+		let urls = {};
+		for (let i = 0; i < noteNames.length; i++) {
+			'AEIOU'.split('').forEach(voice => {
+				const note = noteNames[i];
+				urls[`${voice}-${note}`] = `${voice}/CH-${voice}${voice}-${note}.mp3`;
+			});
+		}
+
+		// urls = {
+		// 	C4: "uu_c4.mp3",
+		// 	A3: "uu_a3.mp3",
+		// 	G3: "uu_g3.mp3",
+		// 	'Eb4': "uu_eb4.mp3"
+		// };
+
 		// add ee and aa
+		console.time('load samples');
 		choirSamples = new Tone.ToneAudioBuffers({
-			urls: {
-				C4: "uu_c4.mp3",
-				A3: "uu_a3.mp3",
-				G3: "uu_g3.mp3",
-				'Eb4': "uu_eb4.mp3"
-			},
+			urls: urls,
 			baseUrl: "./audio/choir/",
 			onload: () => {
+				console.timeEnd('load samples');
 				callback();
 			}
 		});
