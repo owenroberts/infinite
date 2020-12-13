@@ -39,9 +39,10 @@ class Player extends Sprite {
 			pride: 0,
 			greed: 0,
 			envy: 0,
-			wrath: 0,
-			adjust: 0
+			wrath: 0
 		};
+
+		this.moralityAdjust = 0;
 
 		this.world = {
 			gluttony: 0,
@@ -55,7 +56,7 @@ class Player extends Sprite {
 	}
 
 	get moralityScore() {
-		return Object.values(this.morality).reduce((t, n) => t + n);		
+		return Object.values(this.morality).reduce((t, n) => t + n) + this.moralityAdjust;		
 	}
 
 	inputKey(key, state) {
@@ -195,21 +196,11 @@ class Player extends Sprite {
 		ui.metrics.hunger.update(); // annoying for this to be here?
 	}
 
-	consume(item, type) {
-
-		let typeString;
-		switch(type) {
-			case 'food':
-				typeString = 'ate';
-			break;
-			case 'scripture':
-				typeString = 'read';
-			break;
-		}
+	action(item) {
 
 		gme.scene = 'message';
 
-		ui.message.set(`You ${typeString} the ${item.label}.`);
+		ui.message.set(`You ${item.action} the ${item.label}.`);
 		ui.message.add(item.source);
 		
 		// console.log(this.hunger, item.hunger, +item.hunger, this.hunger + +item.hunger);
@@ -218,7 +209,7 @@ class Player extends Sprite {
 		// this.hungerRate = Math.max(0.1, this.hungerRate + +item.hungerRate);
 		// simplify
 
-		if (type == 'food') {
+		if (item.type == 'food') {
 			this.hunger = 0;
 			ui.message.add(`Your hunger hath abated.`);
 			this.checkHunger();
@@ -228,13 +219,15 @@ class Player extends Sprite {
 		
 		for (const key in this.world) {
 			if (+item[key] != 0) {
-				if (type == 'food') {
+				if (item.type == 'food') {
 					// calculate based on formula
+					console.log(key, item, item[key], this.world[key]);
 					this.morality[key] += +item[key] + this.world[key]; // this is fucked
 					ui.message.add(+item[key] < 0 ? 'You hath sinned' : 'You hath acted morally');
 				}
 
-				else if (type == 'scripture') {
+				else if (item.type == 'scripture' || type == 'animal') {
+					console.log(item[key], this.world[key]);
 					this.world[key] += +item[key];
 					ui.message.add(+item[key] < 0 ? 
 						`You gain knowledge of ${key}` : 
@@ -242,9 +235,15 @@ class Player extends Sprite {
 				}
 			}
 		}
+
+		if (item.special) {
+			let [n, prop] = item.special.split('/');
+			this[prop] += n;
+			ui.message.add(`You gained ${n} of ${prop}`);
+		}
 		
-		this.speed.x += +item.speed;
-		this.speed.y += +item.speed;
+		// this.speed.x += +item.speed;
+		// this.speed.y += +item.speed;
 
 		ui.metrics.morality.update();
 	}

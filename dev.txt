@@ -547,7 +547,6 @@
 	- current dynamics assume each item has one moral quality
 	- black and white morality makes no sense
 
-
 - for proc jam
 	- music
 		- does tone.js have a chorus synth? - i may have already this with catslair
@@ -569,6 +568,7 @@
 		- books come after level 1
 	- score not being added wtffff
 	- map not placed correctly
+	- lines still having color toggle issues
 
 12.9.2020
 - desperate times call for despearate measures
@@ -597,6 +597,8 @@
 		- classes/HellTextButton
 		- classes/itemMixin
 		- classes/HellToggle
+		- classes/Pack
+		- classes/PackItem
 
 12.10.2020
 - figuring out map
@@ -605,3 +607,17 @@
 
 12.12.2020
 - searchin for shit: /Users/owenroberts/gd/art/infinite_hell, -*.min.js, -*.min.js.map, -/node_modules
+
+- strings for data
+	- consume - eat, read, sacrifice, fight "action"
+	- player - scripture
+		`You gain knowledge of ${key}` : 
+			`You are learned of ${key}` );
+	- ate/read `You ${typeString} the ${item.label}.`
+
+	- sinner
+		`You and ${this.label} are equals in sin.`
+		`The ${this.label} defeated you with sin.`
+		`You defeated the ${this.label} with righteousness.`
+
+		`fight ${this.label}`;

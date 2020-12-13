@@ -2,10 +2,10 @@ class MapItem extends HellItem {
 	constructor(...args) {
 		super(...args);
 		this.isColliding = false;
-		this.consoleMessage = `${this.consumeString} ${this.label}`;
+		this.consoleMessage = `${this.actionString} ${this.label}`;
 		this.xKey = () => {
 			map.remove(this);
-			player.consume(this, this.type);
+			player.action(this);
 		};
 	}
 
