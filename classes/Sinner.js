@@ -19,7 +19,7 @@ class Sinner extends MapItem {
 			else if (score < 0) ui.message.set(`You were defated by the sin of ${this.fightString}`);
 			else if (score > 0) ui.message.set(`You defeated ${this.fightString} with righteousness.`);
 			
-			player.moralityAdjust += score; // this might be too much ... 
+			player.morality.adjust += score; // this might be too much ... 
 			if (score > 0) map.remove(this);
 			ui.metrics.morality.update();
 		};

@@ -8,6 +8,9 @@ class HellGame extends Game {
 		if (scene != this.scenes._current) {
 			this.scenes.current = scene;
 		}
+
+		ui.console.isActive = scene == 'message' ? false : true;
+
 	}
 
 	get currentScene() {

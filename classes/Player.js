@@ -39,10 +39,9 @@ class Player extends Sprite {
 			pride: 0,
 			greed: 0,
 			envy: 0,
-			wrath: 0
+			wrath: 0,
+			adjust: 0
 		};
-
-		this.moralityAdjust = 0;
 
 		this.world = {
 			gluttony: 0,
@@ -56,17 +55,11 @@ class Player extends Sprite {
 	}
 
 	get moralityScore() {
-		return Object.values(this.morality).reduce((t, n) => t + n) + this.moralityAdjust;		
+		return Object.values(this.morality).reduce((t, n) => t + n);		
 	}
 
 	inputKey(key, state) {
 		this.input[key] = state;
-	}
-
-	setTarget(x, y) {
-		this.target = { x: x, y: y};
-		this.hunger += this.hungerRate; // what about key presses .... 
-		// abstract to a move function and put this there
 	}
 
 	update() {
@@ -77,39 +70,43 @@ class Player extends Sprite {
 		let state = this.animation.stateName.includes('idle') ?
 			this.animation.stateName :
 			Cool.random(['idle']);
+
+		let canMove = gme.currentSceneName == 'map';
 			
 		if (this.input.up || this.target.y < 0) {
-			if (this.target.y < 0) this.target.y += this.speed.y;
-			if (this.mapPosition.y > gme.bounds.top)
+			if (this.mapPosition.y > gme.bounds.top && canMove) {
 				this.mapPosition.y -= this.speed.y;
+				this.hunger += this.hungerRate;
+			}
 			state = 'right';
-			this.hunger += this.hungerRate;
+			
 		}
 		if (this.input.down || this.target.y > 0) {
-			if (this.target.y > 0) this.target.y -= this.speed.y;
-			if (this.mapPosition.y < gme.bounds.bottom)
+			if (this.mapPosition.y < gme.bounds.bottom && canMove) {
 				this.mapPosition.y += this.speed.y;
+				this.hunger += this.hungerRate;
+			}
 			state = 'left';
-			this.hunger += this.hungerRate;
+			
 		}
 		if (this.input.right || this.target.x > 0) {
-			if (this.target.x > 0) this.target.x -= this.speed.x;
-			if (this.mapPosition.x < gme.bounds.right)
+			if (this.mapPosition.x < gme.bounds.right && canMove) {
 				this.mapPosition.x += this.speed.x;
+				this.hunger += this.hungerRate;
+			}
 			state = 'right';
-			this.hunger += this.hungerRate;
 		}
 
 		if (this.input.left || this.target.x < 0) {
-			if (this.target.x < 0) this.target.x += this.speed.x;
-			if (this.mapPosition.x > gme.bounds.left)
+			if (this.mapPosition.x > gme.bounds.left && canMove) {
 				this.mapPosition.x -= this.speed.x;
+				this.hunger += this.hungerRate;
+			}
 			state = 'left';
-			this.hunger += this.hungerRate;
 		}
 		this.animation.state = state;
 
-		if (!this.died) {
+		if (!this.died && canMove) {
 			if (this.metricCount == 100) {
 				this.checkHunger();
 				this.metricCount = 0;
@@ -239,15 +236,22 @@ class Player extends Sprite {
 			}
 		}
 
+		console.log(item.special);
 		if (item.special) {
-			let [n, prop] = item.special.split('/');
-			this[prop] += +n;
-			ui.message.add(`You gained ${n} of ${prop}`);
+			let specials = item.special.split('&');
+			for (let i = 0; i < specials.length; i++) {
+				let [n, prop] = item.special.split('/');
+				if (prop.includes('m-')) {
+					prop = prop.split('-')[1];
+					this.morality[prop] += +n;
+				} else {
+					this[prop] += +n;
+				}
+				if (prop == 'adjust') prop = 'moral feeling';
+				ui.message.add(`You gained ${n} of ${prop}`);
+			}
 		}
 		
-		// this.speed.x += +item.speed;
-		// this.speed.y += +item.speed;
-
 		ui.metrics.morality.update();
 	}
 

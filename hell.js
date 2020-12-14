@@ -1,4 +1,4 @@
-Tone.context.resume();
+// Tone.context.resume();
 window.random = Cool.random; /* for p5 based map */
 
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
@@ -15,9 +15,9 @@ function shuffle(array) {
 }
 
 const gme = new HellGame({
+	dps: 24,
 	width: window.innerWidth,
 	height: window.innerHeight,
-	lps: 24,
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
@@ -25,15 +25,13 @@ const gme = new HellGame({
 	scenes: ['music', 'instructions', 'map', 'message', 'loading', 'win']
 });
 
-gme.load(
-	{ 
-		ui: 'data/ui.json', 
-		sprites: 'data/sprites.json', 
-		textures: 'data/textures.json',
-		items: 'data/items.csv',
-		lettering: 'data/lettering.json'
-	}
-);
+gme.load({ 
+	ui: 'data/ui.json', 
+	sprites: 'data/sprites.json', 
+	textures: 'data/textures.json',
+	items: 'data/items.csv',
+	lettering: 'data/lettering.json'
+});
 
 
 // global sinner for keeping track of sinner when giving an item
@@ -151,17 +149,17 @@ function buildMap() {
 
 function update() {
 	player.update();
-	gme.scenes.current.update();
+	// gme.scenes.current.update();
 }
 
 function draw() {
-	gme.scenes.current.display();
+	// gme.scenes.current.display();
 	player.display();
 
 	// ui background
-	gme.ctx.fillStyle = '#2c2c2c';
-	gme.ctx.fillRect(0, 0, gme.width, 40);
-	ui.display();
+	// gme.ctx.fillStyle = '#2c2c2c';
+	// gme.ctx.fillRect(0, 0, gme.width, 40);
+	// ui.display();
 }
 
 function sizeCanvas() {

@@ -599,6 +599,7 @@
 		- classes/HellToggle
 		- classes/Pack
 		- classes/PackItem
+		- player target stuff
 
 12.10.2020
 - figuring out map
@@ -626,8 +627,26 @@
 - final to do list
 	- add hunger back in -
 	- determiners... -
-	- instructions 
-	- special and time out ?
+	- instructions -
+	- special and time out ? - 
+		- no time out for now, maybe after
+		- redo hunger as just counting not hunger level
+			- i think this is fine, make sense for changing speed incrementally
+	- lines frame rate issue 
+		- animate updates right after draw
+		- game is updating faster, drawing half speed
+		- don't really need to do this anymore since the lines are different
+		- should the linesanimation call its own draw?
+		- seems like it only drops one frame ... maybe live with it???
+		- *** last frame is always short changed because skipping back to 1 cuts off the remaining time ...
+		- also using different frame rates would probably help
+		- ummm. shit what if we use the lines count approach, just calculate how many frames it should be and count them .... 
+		- holy fucking hellllll
+	- ui border
+	- sfx, footsteps and action sounds (by type?)
+		- https://freesound.org/people/MWLANDI/sounds/85858/
+		- https://freesound.org/people/InspectorJ/sounds/345560/
+	- texture glitch?
 	- actually test and play the game
 		- look for - 
 		- bg color changing
@@ -636,14 +655,12 @@
 		- sound changing
 		- how many items get added?
 	- itch io stuff, icon, screen shots, description
-	- lines frame rate issue
 	- bugs?
-	- ui border
-	- sfx, footsteps and action sounds (by type?)
-	- mini map
-	- texture glitch?
 	- add more stuff ... 
-	- punctuation?	
+		- go through rest of literary references page
+	- punctuation?
+	- cat pilgrim?
+	- mini map
 
 - issues
 	- something is fucked up with map generation, lots and lots of paths
@@ -653,3 +670,4 @@
 	- fight same sinner more than once? - no because you can spam the score ... 
 	- lines - points saved with decimals again ... 
 		- also in w and h
+	- lines - delay in timeline scrubbing now

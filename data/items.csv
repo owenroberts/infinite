@@ -133,15 +133,15 @@ sodomite,sinner,"prob = Math.pow(1.5, (p)) - 1",-1,,-2,1,,,,fight,,the,"Those wh
   And those were less who lay down to their torment,
   But had their tongues more loosed to lamentation."
 blasphemer,sinner,"prob = Math.pow(1.9, (p)) - 1",,,,-2,,-1,-1,fight,,the,"One who blasphemes the name of the Lord shall be put to death; the whole congregation shall stone the blasphemer. Aliens as well as citizens, when they blaspheme the Name, shall be put to death."
-bugle,special,prob = 0.05,,,,,,,,play,,the,I have lost my bugle-horn.
-flower_twirl,special,prob = 0.05,,,,,,,,twirl,,the,"At the turning of a flower
+bugle,special,prob = 0.05,,,,,,,,play,2/speed,the,I have lost my bugle-horn.
+flower_twirl,special,prob = 0.05,,,,,,,,twirl,1/m-wrath,the,"At the turning of a flower
 His disguise was exposed.
 No one in heaven or earth can surpass
 Maha-Kashapa's wrinkled face."
-holy_water,special,prob = 0.05,,,,,,,,drink,1/moralityAdjust,the,"Then the priest was summoned, and he at once, having heard the story, said there was witchcraft in it; and he proceeded to pray, and to exorcise the evil spirit in the woman. Besides this he made her be placed in a hot bath, into which he poured some holy water."
-moon_shield,special,prob = 0.05,,,,,,,,touch,,the,Then the moon went up out of the shield into the sky and there it has remained ever since.
-precious_stones,special,prob = 0.05,,,,,,,,touch,,the,"The stones glittered green and crimson, and the apes devoured them with an insatiable hunger. I knew that I saw the Celtic Hell, and my own Hell, the Hell of the artist, and that all who sought after beautiful and wonderful things with too avid a thirst, lost peace and form and became shapeless and common."
-cosmic_tree,special,prob = 0.05,,,,,,,,touch,,the,"And when his head was put in the fork of the tree, the tree bore fruit. "
+holy_water,special,prob = 0.05,,,,,,,,drink,1/m-adjust,the,"Then the priest was summoned, and he at once, having heard the story, said there was witchcraft in it; and he proceeded to pray, and to exorcise the evil spirit in the woman. Besides this he made her be placed in a hot bath, into which he poured some holy water."
+moon_shield,special,prob = 0.05,,,,,,,,hold,1/m-wrath,the,Then the moon went up out of the shield into the sky and there it has remained ever since.
+precious_stones,special,prob = 0.05,,,,,,,,touch,10/hunger&1/m-greed,the,"The stones glittered green and crimson, and the apes devoured them with an insatiable hunger. I knew that I saw the Celtic Hell, and my own Hell, the Hell of the artist, and that all who sought after beautiful and wonderful things with too avid a thirst, lost peace and form and became shapeless and common."
+cosmic_tree,special,prob = 0.05,,,,,,,,touch,1/lust,the,"And when his head was put in the fork of the tree, the tree bore fruit. "
 black_lamb,animal,prob = 0.05,,-1,,,,1,,sacrifice,,the,"Neither was the body of the dead lamb found in the grave when they searched for it, though it had been laid by their own hands deep in the earth, and covered with clay."
 crane,animal,prob = 0.05,,,,,-1,1,,sacrifice,,the,"Instead, he tightened his grip, and so powerful were his claws that the crane's neck was severed. And the tree-God could not help exclaiming, 'Well done, crayfish!'"
 devil_cat,animal,prob = 0.05,1,,,,,,-1,sacrifice,,the,"Yet it is singular that the blood of the black cat is esteemed of wonderful power when mixed with herbs, for charms; and also of great efficacy in potions for the cure of disease; but three drops of f-he blood are sufficient, and it is generally obtained by nipping off a small piece of the tail."

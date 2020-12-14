@@ -113,9 +113,10 @@ class HellMap extends BSPMap {
 		this.cellCount -= 2; // subtract player, gate
 		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
 		this.addItems('food', MapItem);
+		this.addItems('special', MapItem);
 		if (gme.lvl > 0) this.addItems('scripture', MapItem);
 		if (gme.lvl > 1) this.addItems('animal', MapItem);
-		if (gme.lvl > 3) this.addItems('special', MapItem);
+		// if (gme.lvl > 3) this.addItems('special', MapItem);
 	}
 
 	prob(f) {
