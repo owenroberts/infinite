@@ -236,7 +236,6 @@ class Player extends Sprite {
 			}
 		}
 
-		console.log(item.special);
 		if (item.special) {
 			let specials = item.special.split('&');
 			for (let i = 0; i < specials.length; i++) {
@@ -245,7 +244,12 @@ class Player extends Sprite {
 					prop = prop.split('-')[1];
 					this.morality[prop] += +n;
 				} else {
-					this[prop] += +n;
+					if (prop == 'speed') {
+						this.speed.x += +n;
+						this.speed.y += +n;
+					} else {
+						this[prop] += +n;
+					}
 				}
 				if (prop == 'adjust') prop = 'moral feeling';
 				ui.message.add(`You gained ${n} of ${prop}`);

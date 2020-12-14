@@ -632,7 +632,7 @@
 		- no time out for now, maybe after
 		- redo hunger as just counting not hunger level
 			- i think this is fine, make sense for changing speed incrementally
-	- lines frame rate issue 
+	- lines frame rate issue -
 		- animate updates right after draw
 		- game is updating faster, drawing half speed
 		- don't really need to do this anymore since the lines are different
@@ -643,6 +643,8 @@
 		- ummm. shit what if we use the lines count approach, just calculate how many frames it should be and count them .... 
 		- holy fucking hellllll
 	- ui border
+	- cosmic tree color
+		- all the special drawings are too big ... 
 	- sfx, footsteps and action sounds (by type?)
 		- https://freesound.org/people/MWLANDI/sounds/85858/
 		- https://freesound.org/people/InspectorJ/sounds/345560/

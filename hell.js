@@ -149,17 +149,17 @@ function buildMap() {
 
 function update() {
 	player.update();
-	// gme.scenes.current.update();
+	gme.scenes.current.update();
 }
 
 function draw() {
-	// gme.scenes.current.display();
+	gme.scenes.current.display();
 	player.display();
 
 	// ui background
-	// gme.ctx.fillStyle = '#2c2c2c';
-	// gme.ctx.fillRect(0, 0, gme.width, 40);
-	// ui.display();
+	gme.ctx.fillStyle = '#2c2c2c';
+	gme.ctx.fillRect(0, 0, gme.width, 40);
+	ui.display();
 }
 
 function sizeCanvas() {
