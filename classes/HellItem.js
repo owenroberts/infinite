@@ -7,7 +7,7 @@ class HellItem extends Entity {
 			this[key] = data[key] || 0;
 		}
 
-		if (this.action) this.actionString = `${this.action}${type !== 'scripture' ? ' the' : ''}`;
+		if (this.action) this.actionString = `${this.action}${this.dt ? ' ' + this.dt: ''} ${this.label}`;
 
 		// debug colors
 		if (type == 'food') this.c = 'red';

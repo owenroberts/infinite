@@ -1,9 +1,5 @@
 {
-	"cursor": { "src": "drawings/ui/cursor.json" },
-	"arrow": { "src": "drawings/ui/arrow.json" },
-	"inventory": { "src": "drawings/ui/inventory-toggle.json" },
-	"exit": { "src": "drawings/ui/inventory-exit.json" },
 	"hell_icon": { "src": "drawings/ui/hell_icon_32.json" },
-	"pack_icon": { "src": "drawings/ui/pack_icon.json" },
-	"morality_icon": { "src": "drawings/ui/morality_icon.json" }
+	"morality_icon": { "src": "drawings/ui/morality_icon.json" },
+	"instructions_movement": { "src": "drawings/ui/instructions_movement.json" }
 }

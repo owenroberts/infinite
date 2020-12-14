@@ -28,7 +28,7 @@ class Player extends Sprite {
 		this.health = 100;
 
 		this.hunger = 0;
-		this.hungerRate = 0.05;
+		this.hungerRate = 0.005;
 		this.hungerLevel = 0;
 		this.hungerString = '';
 
@@ -83,18 +83,21 @@ class Player extends Sprite {
 			if (this.mapPosition.y > gme.bounds.top)
 				this.mapPosition.y -= this.speed.y;
 			state = 'right';
+			this.hunger += this.hungerRate;
 		}
 		if (this.input.down || this.target.y > 0) {
 			if (this.target.y > 0) this.target.y -= this.speed.y;
 			if (this.mapPosition.y < gme.bounds.bottom)
 				this.mapPosition.y += this.speed.y;
 			state = 'left';
+			this.hunger += this.hungerRate;
 		}
 		if (this.input.right || this.target.x > 0) {
 			if (this.target.x > 0) this.target.x -= this.speed.x;
 			if (this.mapPosition.x < gme.bounds.right)
 				this.mapPosition.x += this.speed.x;
 			state = 'right';
+			this.hunger += this.hungerRate;
 		}
 
 		if (this.input.left || this.target.x < 0) {
@@ -102,11 +105,12 @@ class Player extends Sprite {
 			if (this.mapPosition.x > gme.bounds.left)
 				this.mapPosition.x -= this.speed.x;
 			state = 'left';
+			this.hunger += this.hungerRate;
 		}
 		this.animation.state = state;
 
 		if (!this.died) {
-			if (this.metricCount == 200) {
+			if (this.metricCount == 100) {
 				this.checkHunger();
 				this.metricCount = 0;
 			}
@@ -143,8 +147,8 @@ class Player extends Sprite {
 
 	checkMorality() {
 		if (this.moralityScore == 0) {
-			ui.message.add(`You hath been morally neutral.`);
-			ui.message.add(`You will remain in ${gme.lvl == 0 ? 'purgatory' : 'this ring of hell'}.`);
+			ui.message.add(`You hath been morally neutral`);
+			ui.message.add(`You will remain in ${gme.lvl == 0 ? 'purgatory' : 'this ring of hell'}`);
 		}
 		else if (this.moralityScore > 0) {
 			if (gme.lvl <= 0) {
@@ -155,13 +159,13 @@ class Player extends Sprite {
 				ui.message.next = loadNextMap;
 			} else {
 				gme.lvl -= 1;
-				ui.message.add(`You hath acted morally.`);
+				ui.message.add(`You hath acted morally`);
 				// ui.message.add(`You will move up to a previous ring of hell.`);
 			}
 		}
 		else {
-			ui.message.add(`You are a sinner.`);
-			ui.message.add(`You descend further into hell.`);
+			ui.message.add(`You are a sinner`);
+			ui.message.add(`You descend further into hell`);
 			gme.lvl += 1;
 		}
 		ui.metrics.morality.update();
@@ -180,27 +184,27 @@ class Player extends Sprite {
 		}
 		
 		if (this.hungerLevel == 0) this.hungerString = '';
-		else if (this.hungerLevel == 1) this.hungerString = 'You feel a pang of hunger.';
+		else if (this.hungerLevel == 1) this.hungerString = 'You feel a pang of hunger';
 		else if (this.hungerLevel == 2) this.hungerString = 'Was that sound your stomach?';
-		else if (this.hungerLevel == 3) this.hungerString = 'Your stomach growled.';
-		else if (this.hungerLevel == 4) this.hungerString = 'Your stomach is twisting in pain.';
-		else if (this.hungerLevel == 5) this.hungerString = 'You feel weak.';
-		else if (this.hungerLevel == 6) this.hungerString = 'You feel light headed.';
-		else if (this.hungerLevel == 7) this.hungerString = 'Your body is desparate for food.';
+		else if (this.hungerLevel == 3) this.hungerString = 'Your stomach growled';
+		else if (this.hungerLevel == 4) this.hungerString = 'Your stomach is twisting in pain';
+		else if (this.hungerLevel == 5) this.hungerString = 'You feel weak';
+		else if (this.hungerLevel == 6) this.hungerString = 'You feel light headed';
+		else if (this.hungerLevel == 7) this.hungerString = 'Your body is desparate for food';
 		else if (this.hungerLevel == 8) {
 			gme.scene = 'message'; // set message before death
-			ui.message.set('You starved to death.');
+			ui.message.set('You starved to death');
 			this.died = true;
 			this.checkMorality();
 		}
-		ui.metrics.hunger.update(); // annoying for this to be here?
+		if (!this.died && this.hungerString && !ui.console.msg) ui.console.setMsg(this.hungerString);
 	}
 
 	action(item) {
 
 		gme.scene = 'message';
 
-		ui.message.set(`You ${item.action} the ${item.label}.`);
+		ui.message.set(`You ${item.actionString}`);
 		ui.message.add(item.source);
 		
 		// console.log(this.hunger, item.hunger, +item.hunger, this.hunger + +item.hunger);
@@ -211,7 +215,7 @@ class Player extends Sprite {
 
 		if (item.type == 'food') {
 			this.hunger = 0;
-			ui.message.add(`Your hunger hath abated.`);
+			ui.message.add(`Your hunger hath abated`);
 			this.checkHunger();
 			this.speed.x = 8; // reset speed
 			this.speed.y = 8;
@@ -221,12 +225,11 @@ class Player extends Sprite {
 			if (+item[key] != 0) {
 				if (item.type == 'food') {
 					// calculate based on formula
-					console.log(key, item, item[key], this.world[key]);
 					this.morality[key] += +item[key] + this.world[key]; // this is fucked
 					ui.message.add(+item[key] < 0 ? 'You hath sinned' : 'You hath acted morally');
 				}
 
-				else if (item.type == 'scripture' || type == 'animal') {
+				else if (item.type == 'scripture' || item.type == 'animal') {
 					console.log(item[key], this.world[key]);
 					this.world[key] += +item[key];
 					ui.message.add(+item[key] < 0 ? 
@@ -238,7 +241,7 @@ class Player extends Sprite {
 
 		if (item.special) {
 			let [n, prop] = item.special.split('/');
-			this[prop] += n;
+			this[prop] += +n;
 			ui.message.add(`You gained ${n} of ${prop}`);
 		}
 		

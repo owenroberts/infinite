@@ -1,7 +1,7 @@
 class HellMessage extends Text {
 	constructor(x, y, msg, wrap, letters) {
 		super(x, y, msg, wrap, letters);
-		gme.scenes.addToDisplay(this, ['message']);
+		gme.scenes.addToDisplay(this, ['message', 'instructions']);
 		this.list = [];
 		this.continue = new Text(this.x, this.y, '', 100, gme.anims.lettering.messages);
 	}

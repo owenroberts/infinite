@@ -621,3 +621,35 @@
 		`You defeated the ${this.label} with righteousness.`
 
 		`fight ${this.label}`;
+
+12.13.2020
+- final to do list
+	- add hunger back in -
+	- determiners... -
+	- instructions 
+	- special and time out ?
+	- actually test and play the game
+		- look for - 
+		- bg color changing
+		- game mechanics changing
+		- items added changing
+		- sound changing
+		- how many items get added?
+	- itch io stuff, icon, screen shots, description
+	- lines frame rate issue
+	- bugs?
+	- ui border
+	- sfx, footsteps and action sounds (by type?)
+	- mini map
+	- texture glitch?
+	- add more stuff ... 
+	- punctuation?	
+
+- issues
+	- something is fucked up with map generation, lots and lots of paths
+	- cellSize global property
+	- sinner pope is very hard to see
+		- capitalize pope?
+	- fight same sinner more than once? - no because you can spam the score ... 
+	- lines - points saved with decimals again ... 
+		- also in w and h

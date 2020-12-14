@@ -2,7 +2,7 @@ class HellGate extends MapItem {
 	constructor(...args) {
 		super(...args);
 		this.c = 'orange';
-		this.consoleMessage = `Enter Judgement's Gate`;
+		this.actionString = `Enter Judgement's Gate`;
 
 		this.xKey = () => {
 			gme.scene = 'message'; // happens first?

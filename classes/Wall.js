@@ -14,7 +14,7 @@ class Wall extends Sprite {
 
 		// indexes based on probably move through animation frames, higher frame number deeper in hell 
 		let indexes = [];
-		for (let i = gme.lvl * 2, len = gme.lvl + Cool.random(5, 10); i < len; i++) {
+		for (let i = Math.floor(gme.lvl / 2), len = gme.lvl + Cool.random(5, 10); i < len; i++) {
 			const p = 1 - (i - gme.lvl)/len; // probability
 			for (let j = 0; j < Math.floor(p*10); j++) {
 				indexes.push(i);

@@ -1,5 +1,5 @@
-label,type,probability,gluttony,sloth,lust,pride,greed,envy,wrath,action,special,source
-apple,food,p > 0 ? 0 : 1,,,,-1,,,,eat,,"Him by fraud I have seduc'd
+label,type,probability,gluttony,sloth,lust,pride,greed,envy,wrath,action,special,dt,source
+apple,food,p > 0 ? 0 : 1,,,,-1,,,,eat,,the,"Him by fraud I have seduc'd
 From his Creator, and the more to increase
 Your wonder, with an Apple; he thereat
 Offended, worth your laughter, hath giv'n up
@@ -8,33 +8,33 @@ To Sin and Death a prey, and so to us,
 Without our hazard, labour or allarme,
 To range in, and to dwell, and over Man
 To rule, as over all he should have rul'd."
-beer,food,"Math.pow(p, 5)",-1,,,,,,,eat,-1/speed,"It is not for kings, Lemuel—it is not for kings to drink wine, not for rulers to crave beer, lest they drink and forget what has been decreed, and deprive all the oppressed of their rights. Let beer be for those who are perishing, wine for those who are in anguish!"
-christopsomo,food,0.9 - p,,,,-1,,,,eat,,"""And when He had dipped the bread, He gave it to Judas Iscariot, the Son of Simon. And after the bread, then entered Satan into him."" For they say, Was this the worth of Christ's bread, given from Christ's own table, that after it Satan should enter into His disciple?"
-dates,food,"Math.pow(p, 2)",-1,,,,,,,eat,1/speed,"The Messenger of Allah would break his fast with ripe dates before he would pray.  If those were not available, he would eat dried dates.  If those were not available, he would drink some water."
-eggs,food,"p < 0.5 ? Math.pow(60, -p) - 0.1 : Math.pow(p, 3) - 0.1",,-1,,,,,,eat,,"For she leaves her eggs to the earth and lets them be warmed on the ground, forgetting that a foot may crush them and that the wild beast may trample them."
-french_fries,food,"Math.pow(p - 0.3, 3) * 5",-1,,,,,,,eat,,"Hunger was shred into atomics in every farthing porringer of husky chips of potato, fried with some reluctant drops of oil."
-gourd,food,Math.sin(p*3) - 0.05,-1,,,,,,,eat,,"So one went out into the field to gather herbs, and found a wild vine, and gathered from it a lapful of wild gourds, and came and sliced them into the pot of stew, though they did not know what they were."
-hamantash,food,"Math.pow(p, 4)",-1,,,,,,,eat,,So the king and Haman went in to feast with Queen Esther.
-iced_coffee,food,Math.sin(p * 100),,,,,,,-1,eat,2/speed,"Awake, awake! Rise up, Jerusalem, you who have drunk from the hand of the LORD the cup of his wrath, you who have drained to its dregs the goblet that makes people stagger."
-java,food,"1 - Math.pow(3, -p)",,,,-1,,,,eat,2/speed,"Well, one can die after all: it is but dying; and in the next world, thank God! there is no drinking of coffee, and consequently no – waiting for it."
-krispee_kreme,food,Math.cos(p) - 0.5,-1,,,,,,,eat,,"If he offer it for a thanksgiving, then he shall offer with the sacrifice of thanksgiving unleavened cakes mingled with oil, and unleavened wafers anointed with oil, and cakes mingled with oil, of fine flour, fried."
-lamb,food,Math.sin(p*2 + 0.5) - 0.5,,,,-1,,,,eat,,"And Isaac said to his father Abraham, “My father!” And he said, “Here am I, my son.” He said, “Behold, the fire and the wood, but where is the lamb for a burnt offering?”"
-mc_big_mac,food,p,,,,,,-1,,eat,-1/speed,"I knew the diet coke was jealous of the fries
+beer,food,"Math.pow(p, 5)",-1,,,,,,,eat,-1/speed,the,"It is not for kings, Lemuel—it is not for kings to drink wine, not for rulers to crave beer, lest they drink and forget what has been decreed, and deprive all the oppressed of their rights. Let beer be for those who are perishing, wine for those who are in anguish!"
+christopsomo,food,0.9 - p,,,,-1,,,,eat,,the,"""And when He had dipped the bread, He gave it to Judas Iscariot, the Son of Simon. And after the bread, then entered Satan into him."" For they say, Was this the worth of Christ's bread, given from Christ's own table, that after it Satan should enter into His disciple?"
+dates,food,"Math.pow(p, 2)",-1,,,,,,,eat,1/speed,the,"The Messenger of Allah would break his fast with ripe dates before he would pray.  If those were not available, he would eat dried dates.  If those were not available, he would drink some water."
+eggs,food,"p < 0.5 ? Math.pow(60, -p) - 0.1 : Math.pow(p, 3) - 0.1",,-1,,,,,,eat,,the,"For she leaves her eggs to the earth and lets them be warmed on the ground, forgetting that a foot may crush them and that the wild beast may trample them."
+french_fries,food,"Math.pow(p - 0.3, 3) * 5",-1,,,,,,,eat,,the,"Hunger was shred into atomics in every farthing porringer of husky chips of potato, fried with some reluctant drops of oil."
+gourd,food,Math.sin(p*3) - 0.05,-1,,,,,,,eat,,the,"So one went out into the field to gather herbs, and found a wild vine, and gathered from it a lapful of wild gourds, and came and sliced them into the pot of stew, though they did not know what they were."
+hamantash,food,"Math.pow(p, 4)",-1,,,,,,,eat,,the,So the king and Haman went in to feast with Queen Esther.
+iced_coffee,food,Math.sin(p * 100),,,,,,,-1,eat,2/speed,the,"Awake, awake! Rise up, Jerusalem, you who have drunk from the hand of the LORD the cup of his wrath, you who have drained to its dregs the goblet that makes people stagger."
+java,food,"1 - Math.pow(3, -p)",,,,-1,,,,eat,2/speed,the,"Well, one can die after all: it is but dying; and in the next world, thank God! there is no drinking of coffee, and consequently no – waiting for it."
+krispee_kreme,food,Math.cos(p) - 0.5,-1,,,,,,,eat,,the,"If he offer it for a thanksgiving, then he shall offer with the sacrifice of thanksgiving unleavened cakes mingled with oil, and unleavened wafers anointed with oil, and cakes mingled with oil, of fine flour, fried."
+lamb,food,Math.sin(p*2 + 0.5) - 0.5,,,,-1,,,,eat,,the,"And Isaac said to his father Abraham, “My father!” And he said, “Here am I, my son.” He said, “Behold, the fire and the wood, but where is the lamb for a burnt offering?”"
+mc_big_mac,food,p,,,,,,-1,,eat,-1/speed,the,"I knew the diet coke was jealous of the fries
 I knew the mcnuggets was jealous of the fries"
-melon,food,Math.sin(p * 90),,,,,,-1,,eat,,"Don’t just mirror me
+melon,food,Math.sin(p * 90),,,,,,-1,,eat,,the,"Don’t just mirror me
 as if we were both two halves
 of the same melon."
-noodles,food,"Math.pow((p - 0.1), 2)",,,,-1,,,,eat,,"At your birth when they first hung out the bow, I was the most honored guest at the birthday feast.  Weilding my chopsticks I ate boiled noodles, and composed a congratulatory poem on a heavenly unicorn."
-oyster,food,"Math.pow((p - 0.4), 2)",,,-1,,,,,eat,,"But anything in the seas or the rivers that has not fins and scales, of the swarming creatures in the waters and of the living creatures that are in the waters, is detestable to you."
-offal,food,"0.2 - Math.pow((p - 0.4), 2)",,,1,,,,,eat,,But burn the bull's flesh and its hide and its intestines outside the camp. It is a sin offering.
-peanuts,food,"0.2 - Math.pow((p/2 - 0.4), 2)",,,-1,,,,,eat,,"He is on the way out of darkness,
+noodles,food,"Math.pow((p - 0.1), 2)",,,,-1,,,,eat,,the,"At your birth when they first hung out the bow, I was the most honored guest at the birthday feast.  Weilding my chopsticks I ate boiled noodles, and composed a congratulatory poem on a heavenly unicorn."
+oyster,food,"Math.pow((p - 0.4), 2)",,,-1,,,,,eat,,the,"But anything in the seas or the rivers that has not fins and scales, of the swarming creatures in the waters and of the living creatures that are in the waters, is detestable to you."
+offal,food,"0.2 - Math.pow((p - 0.4), 2)",,,1,,,,,eat,,the,But burn the bull's flesh and its hide and its intestines outside the camp. It is a sin offering.
+peanuts,food,"0.2 - Math.pow((p/2 - 0.4), 2)",,,-1,,,,,eat,,the,"He is on the way out of darkness,
 before brightening the sky.
 Nechbet , the white of Nechen ,
 their emergence occurs in the eastern horizon.
 Re emerges from her groove.
 So he goes to earth, appeared and born.
 So he opens his mother Nut's thighs."
-quinoa,food,Math.sin(p * 50),,,,,,-1,,eat,,"The grains are white,
+quinoa,food,Math.sin(p * 50),,,,,,-1,,eat,,the,"The grains are white,
 O Tuyallay,
 So sweet for food,
 The fruit is sweet,
@@ -51,12 +51,12 @@ She is cut up,
 For stealing grain,
 See the fate,
 Of robber birds,"
-rabbit,food,"0.5 - Math.pow(p, 2)",-1,,,,,,,eat,,"And the hare, because it chews the cud but does not part the hoof, is unclean to you."
-stringbeans,food,0.1,,-1,,,,,,eat,,"You stupid scarecrow!
+rabbit,food,"0.5 - Math.pow(p, 2)",-1,,,,,,,eat,,the,"And the hare, because it chews the cud but does not part the hoof, is unclean to you."
+stringbeans,food,0.1,,-1,,,,,,eat,,the,"You stupid scarecrow!
 Under your very stick-feet
 Birds are stealing beans!"
-tofu,food,"Math.pow(2, -p) - 0.5",,,,,,,-1,eat,,"As soon as the possessed has been freed from the possessor, he falls down senseless, and remains for a long time prostrate. And it is said, also, that he who has once been possessed by a fox will never again be able to eat tofu, aburage, azukimeshi, or any of those things which foxes like."
-upside_down_cake,food,p * (1 - p),,,,,-1,,,eat,,"Sweet little upside down cake
+tofu,food,"Math.pow(2, -p) - 0.5",,,,,,,-1,eat,,the,"As soon as the possessed has been freed from the possessor, he falls down senseless, and remains for a long time prostrate. And it is said, also, that he who has once been possessed by a fox will never again be able to eat tofu, aburage, azukimeshi, or any of those things which foxes like."
+upside_down_cake,food,p * (1 - p),,,,,-1,,,eat,,the,"Sweet little upside down cake
 Cares and woes you got 'em 
 Poor little upside down cake
 Your top is on your bottom 
@@ -64,29 +64,29 @@ Alas, little upside down cake
 Your troubles never stop
 Because little upside down cake
 Your bottom's on your top"
-veal,food,Math.sin(p * 10) - 0.5,-1,,,,,,,eat,,"Ah! says Mrs. Veal, these poets have such names for heaven. "
-waffle,food,Math.sin(p * 20) - 0.5,,,,1,,,,eat,,"""When d'ye wiffle-waffle (whet), mate?"" ""Waffle!"" said the farmer, with a well feigned stare of amazement, ""oh, about noon, mebby."" ""Then,"" said the despairing Bogie, ""I've lost my land!"" So saying be disappeared, and the farmer reaped the reward of his artifice by ever afterwards continuing the undisputed possessor of the soil."
-xiaolongbao,food,Math.sin(p * 30) - 0.5,,,,,-1,,,eat,,"Very soon they saw a monkey lying by the road, gasping as if in pain. Peach Darling stopped to see what was the matter and heard him saying: ""Oh, if I only had a bite of something, l should not die."" So Peach Darling took another dumpling from his pouch and gave it to the monkey."
-yucca,food,Math.sin(p * 60) - 0.5,,,,,,,-1,eat,,"He climbed to the top of White Mountain and looked about in all the different directions in vain. There were no monsters. Then he threw away his staff. ""You will get your living by means of this,"" he said, and right where he threw it, it became a yucca."
-coke_zero,food,Math.sin(p * 70) - 0.5,-1,,,,,,,eat,2/speed,"Maybe a sin, indecent for sure - dope,
+veal,food,Math.sin(p * 10) - 0.5,-1,,,,,,,eat,,the,"Ah! says Mrs. Veal, these poets have such names for heaven. "
+waffle,food,Math.sin(p * 20) - 0.5,,,,1,,,,eat,,the,"""When d'ye wiffle-waffle (whet), mate?"" ""Waffle!"" said the farmer, with a well feigned stare of amazement, ""oh, about noon, mebby."" ""Then,"" said the despairing Bogie, ""I've lost my land!"" So saying be disappeared, and the farmer reaped the reward of his artifice by ever afterwards continuing the undisputed possessor of the soil."
+xiaolongbao,food,Math.sin(p * 30) - 0.5,,,,,-1,,,eat,,the,"Very soon they saw a monkey lying by the road, gasping as if in pain. Peach Darling stopped to see what was the matter and heard him saying: ""Oh, if I only had a bite of something, l should not die."" So Peach Darling took another dumpling from his pouch and gave it to the monkey."
+yucca,food,Math.sin(p * 60) - 0.5,,,,,,,-1,eat,,the,"He climbed to the top of White Mountain and looked about in all the different directions in vain. There were no monsters. Then he threw away his staff. ""You will get your living by means of this,"" he said, and right where he threw it, it became a yucca."
+coke_zero,food,Math.sin(p * 70) - 0.5,-1,,,,,,,eat,2/speed,the,"Maybe a sin, indecent for sure - dope,
 The storekeeper called it."
-An_Alchemical_Mass,scripture,"Math.pow(2, -p) - 0.5",1,,,,,,,read,,"O blessed creator of the earth, whiter than snow, sweeter than sweetness, fragrant at the bottom of the vessel like balsam. O salutary medicine for men, that cureth every weakness of the body: O sublime fount whence gushes forth truly the true water of life into the garden of thy faithful."
-Book_of_Shadows,scripture,"Math.pow(1.5, -p) - 0.5",,,,-1,,,,read,,"1.Many have failed to see the True Nature of Mankind.
+An_Alchemical_Mass,scripture,"Math.pow(2, -p) - 0.5",1,,,,,,,read,,,"O blessed creator of the earth, whiter than snow, sweeter than sweetness, fragrant at the bottom of the vessel like balsam. O salutary medicine for men, that cureth every weakness of the body: O sublime fount whence gushes forth truly the true water of life into the garden of thy faithful."
+Book_of_Shadows,scripture,"Math.pow(1.5, -p) - 0.5",,,,-1,,,,read,,,"1.Many have failed to see the True Nature of Mankind.
 2. For mankind know not the true Splendor that is me.
 3. I give this message unto you so that you can pass it onto the Children of
 the Beast.
 4. For He is a lie, He is a sin.
 5. Mankind knows naught but shame."
-The_Celtic_Twilight,scripture,"Math.pow(2, -(p + 0.1)) - 0.5",,,,,1,,,read,,"But now and then a landlord or an agent or a gauger will go by begging his bread, to show how God divides the righteous from the unrighteous."
-Book_of_the_Damned,scripture,"Math.pow(2, -(p - 0.1)) - 0.5",,,,,-1,,,read,,"Would we, if we could, educate and sophisticate pigs, geese, cattle?
+The_Celtic_Twilight,scripture,"Math.pow(2, -(p + 0.1)) - 0.5",,,,,1,,,read,,,"But now and then a landlord or an agent or a gauger will go by begging his bread, to show how God divides the righteous from the unrighteous."
+Book_of_the_Damned,scripture,"Math.pow(2, -(p - 0.1)) - 0.5",,,,,-1,,,read,,,"Would we, if we could, educate and sophisticate pigs, geese, cattle?
 Would it be wise to establish diplomatic relation with the hen that now functions, satisfied with mere sense of achievement by way of compensation?
 I think we're property."
-The_Evil_Eye,scripture,"Math.pow(1.5, (p)) - 1.0",,,,,,-1,,read,,"THERE be none of the affections which have been noted to fascinate or to bewitch, but love and envy; they both have vehement wishes, they frame themselves readily into imaginations and suggestions, and they come easily into the eye, especially upon the presence of the objects which are the points that conduce to fascination, if any such there be. We see likewise the Scripture calleth envy an evil eye."
-The_Fu_Hexagram,scripture,"Math.pow(1.4, (p)) - 1.0",,,,,,,-1,read,,"The fourth SIX, divided, shows its subject moving right in the centre (among those represented by the other divided lines), and yet returning alone (to his proper path)."
-Gospel_of_Thomas,scripture,"Math.pow(1.8, (p)) - 1.0",,,,-1,,,,read,,"Jesus said, ""Let him who seeks continue seeking until he
+The_Evil_Eye,scripture,"Math.pow(1.5, (p)) - 1.0",,,,,,-1,,read,,,"THERE be none of the affections which have been noted to fascinate or to bewitch, but love and envy; they both have vehement wishes, they frame themselves readily into imaginations and suggestions, and they come easily into the eye, especially upon the presence of the objects which are the points that conduce to fascination, if any such there be. We see likewise the Scripture calleth envy an evil eye."
+The_Fu_Hexagram,scripture,"Math.pow(1.4, (p)) - 1.0",,,,,,,-1,read,,,"The fourth SIX, divided, shows its subject moving right in the centre (among those represented by the other divided lines), and yet returning alone (to his proper path)."
+Gospel_of_Thomas,scripture,"Math.pow(1.8, (p)) - 1.0",,,,-1,,,,read,,,"Jesus said, ""Let him who seeks continue seeking until he
 finds. When he finds, he will become troubled. When he becomes
 troubled, he will be astonished, and he will rule over the All."""
-Hymns_of_the_Atharvaveda,scripture,"Math.pow(2, -(p)) - 0.5",,,1,,,,,read,,"Do thou, O Bowstring, bend thyself around us: make my body
+Hymns_of_the_Atharvaveda,scripture,"Math.pow(2, -(p)) - 0.5",,,1,,,,,read,,,"Do thou, O Bowstring, bend thyself around us: make my body
    stone.
   Firm in thy strength drive far away malignities and hateful
    things.
@@ -96,53 +96,53 @@ When, closely clinging round the wood, the bowstring sings
 As in its flight the arrow's point hangs between earth and
    firmament,
   So stand this Munja grass between ailment and dysenteric ill!"
-Three_Inca_Prayers,scripture,"Math.pow(1.5, (p)) - 1",,,-1,,,,,read,,"Whether male or female,
+Three_Inca_Prayers,scripture,"Math.pow(1.5, (p)) - 1",,,-1,,,,,read,,,"Whether male or female,
 at any rate commander of heat and reproduction,
 being one who,
 even with His spittle, can work sorcery,
 Where art Thou?"
-Jaina_Sutras,scripture,"Math.pow(1.9, (p)) - 1",,,,,,,-1,read,,"See! there are men who control themselves; others pretend only to be houseless, for one destroys this (body of a plant) by bad and injurious doings, and many other beings, besides, which he hurts by means of plants, through his doing acts relating to plants."
-charon,sinner,p == 0 ? 1 : 0,,,,,,,,fight,,"Charon the demon, with the eyes of glede,
+Jaina_Sutras,scripture,"Math.pow(1.9, (p)) - 1",,,,,,,-1,read,,,"See! there are men who control themselves; others pretend only to be houseless, for one destroys this (body of a plant) by bad and injurious doings, and many other beings, besides, which he hurts by means of plants, through his doing acts relating to plants."
+Charon,sinner,p == 0 ? 1 : 0,,,,,,,,fight,,,"Charon the demon, with the eyes of glede,
   Beckoning to them, collects them all together,
   Beats with his oar whoever lags behind."
-unbaptized_pagan,sinner,p == 1 ? 1 : 0,,,,,,,,baptize,,"That they sinned not; and if they merit had,
+unbaptized_pagan,sinner,p == 1 ? 1 : 0,,,,,,,,baptize,,the,"That they sinned not; and if they merit had,
   'Tis not enough, because they had not baptism
   Which is the portal of the Faith thou holdest;"
-adulterers,sinner,"prob = Math.pow(1.5, -p) - 0.5",,,-2,-1,,-1,,fight,,"Love, which in gentlest hearts will soonest bloom
+adulterers,sinner,"prob = Math.pow(1.5, -p) - 0.5",,,-2,-1,,-1,,fight,,the,"Love, which in gentlest hearts will soonest bloom
   seized my lover with passion for that sweet body
   from which I was torn unshriven to my doom."
-glutton,sinner,"Math.pow(2, -(p + 0.1)) - 0.5",-2,-1,,,-1,,,fight,,"So we passed onward o'er the filthy mixture
+glutton,sinner,"Math.pow(2, -(p + 0.1)) - 0.5",-2,-1,,,-1,,,fight,,the,"So we passed onward o'er the filthy mixture
   Of shadows and of rain with footsteps slow,
   Touching a little on the future life."
-pope,sinner,"prob = Math.pow(2, -(p - 0.1)) - 0.5",-1,-1,-1,-1,-1,-1,-1,fight,,"Clerks those were who no hairy covering
+Pope,sinner,"prob = Math.pow(2, -(p - 0.1)) - 0.5",-1,-1,-1,-1,-1,-1,-1,fight,,the,"Clerks those were who no hairy covering
   Have on the head, and Popes and Cardinals,
   In whom doth Avarice practise its excess."
-wrathful,sinner,"prob = Math.pow(1.5, (p)) - 1.0",,,,-1,,-1,-2,fight,,"They smote each other not alone with hands,
+wrathful,sinner,"prob = Math.pow(1.5, (p)) - 1.0",,,,-1,,-1,-2,fight,,the,"They smote each other not alone with hands,
   But with the head and with the breast and feet,
   Tearing each other piecemeal with their teeth."
-heretic,sinner,"prob = Math.pow(1.4, (p)) - 1.0",,-1,-1,-2,,,,fight,,"Their cemetery have upon this side
+heretic,sinner,"prob = Math.pow(1.4, (p)) - 1.0",,-1,-1,-2,,,,fight,,the,"Their cemetery have upon this side
   With Epicurus all his followers,
   Who with the body mortal make the soul;"
-robber,sinner,"prob = Math.pow(1.8, (p)) - 1.0",-1,,,-1,-2,,,fight,,"But fix thine eyes below; for draweth near
+robber,sinner,"prob = Math.pow(1.8, (p)) - 1.0",-1,,,-1,-2,,,fight,,the,"But fix thine eyes below; for draweth near
   The river of blood, within which boiling is
   Whoe'er by violence doth injure others."
-suicide,sinner,"prob = Math.pow(2, -(p)) - 0.5",,-1,,-2,-1,,,fight,,"When the exasperated soul abandons
+suicide,sinner,"prob = Math.pow(2, -(p)) - 0.5",,-1,,-2,-1,,,fight,,the,"When the exasperated soul abandons
   The body whence it rent itself away,
   Minos consigns it to the seventh abyss."
-sodomite,sinner,"prob = Math.pow(1.5, (p)) - 1",-1,,-2,1,,,,fight,,"Those who were going round were far the more,
+sodomite,sinner,"prob = Math.pow(1.5, (p)) - 1",-1,,-2,1,,,,fight,,the,"Those who were going round were far the more,
   And those were less who lay down to their torment,
   But had their tongues more loosed to lamentation."
-blasphemer,sinner,"prob = Math.pow(1.9, (p)) - 1",,,,-2,,-1,-1,fight,,"One who blasphemes the name of the Lord shall be put to death; the whole congregation shall stone the blasphemer. Aliens as well as citizens, when they blaspheme the Name, shall be put to death."
-bugle,special,,,,,,,,,play,,I have lost my bugle-horn.
-flower_twirl,special,prob = 0.05,,,,,,,,twirl,,"At the turning of a flower
+blasphemer,sinner,"prob = Math.pow(1.9, (p)) - 1",,,,-2,,-1,-1,fight,,the,"One who blasphemes the name of the Lord shall be put to death; the whole congregation shall stone the blasphemer. Aliens as well as citizens, when they blaspheme the Name, shall be put to death."
+bugle,special,prob = 0.05,,,,,,,,play,,the,I have lost my bugle-horn.
+flower_twirl,special,prob = 0.05,,,,,,,,twirl,,the,"At the turning of a flower
 His disguise was exposed.
 No one in heaven or earth can surpass
 Maha-Kashapa's wrinkled face."
-holy_water,special,prob = 0.05,,,,,,,,drink,1/moralityAdjust,"Then the priest was summoned, and he at once, having heard the story, said there was witchcraft in it; and he proceeded to pray, and to exorcise the evil spirit in the woman. Besides this he made her be placed in a hot bath, into which he poured some holy water."
-moon_shield,special,prob = 0.05,,,,,,,,touch,,Then the moon went up out of the shield into the sky and there it has remained ever since.
-precious_stones,special,prob = 0.05,,,,,,,,touch,,"The stones glittered green and crimson, and the apes devoured them with an insatiable hunger. I knew that I saw the Celtic Hell, and my own Hell, the Hell of the artist, and that all who sought after beautiful and wonderful things with too avid a thirst, lost peace and form and became shapeless and common."
-cosmic_tree,special,prob = 0.05,,,,,,,,touch,,"And when his head was put in the fork of the tree, the tree bore fruit. "
-black_lamb,animal,prob = 0.05,,-1,,,,1,,sacrifice,,"Neither was the body of the dead lamb found in the grave when they searched for it, though it had been laid by their own hands deep in the earth, and covered with clay."
-crane,animal,prob = 0.05,,,,,-1,1,,sacrifice,,"Instead, he tightened his grip, and so powerful were his claws that the crane's neck was severed. And the tree-God could not help exclaiming, 'Well done, crayfish!'"
-devil_cat,animal,prob = 0.05,1,,,,,,-1,sacrifice,,"Yet it is singular that the blood of the black cat is esteemed of wonderful power when mixed with herbs, for charms; and also of great efficacy in potions for the cure of disease; but three drops of f-he blood are sufficient, and it is generally obtained by nipping off a small piece of the tail."
-heavenly_goose,animal,prob = 0.025,,,1,,,,1,sacrifice,,"It is guarded by the moon, which, as a great white bird was supposed to rest at night upon the Earth, like a goose brooding over her egg."
+holy_water,special,prob = 0.05,,,,,,,,drink,1/moralityAdjust,the,"Then the priest was summoned, and he at once, having heard the story, said there was witchcraft in it; and he proceeded to pray, and to exorcise the evil spirit in the woman. Besides this he made her be placed in a hot bath, into which he poured some holy water."
+moon_shield,special,prob = 0.05,,,,,,,,touch,,the,Then the moon went up out of the shield into the sky and there it has remained ever since.
+precious_stones,special,prob = 0.05,,,,,,,,touch,,the,"The stones glittered green and crimson, and the apes devoured them with an insatiable hunger. I knew that I saw the Celtic Hell, and my own Hell, the Hell of the artist, and that all who sought after beautiful and wonderful things with too avid a thirst, lost peace and form and became shapeless and common."
+cosmic_tree,special,prob = 0.05,,,,,,,,touch,,the,"And when his head was put in the fork of the tree, the tree bore fruit. "
+black_lamb,animal,prob = 0.05,,-1,,,,1,,sacrifice,,the,"Neither was the body of the dead lamb found in the grave when they searched for it, though it had been laid by their own hands deep in the earth, and covered with clay."
+crane,animal,prob = 0.05,,,,,-1,1,,sacrifice,,the,"Instead, he tightened his grip, and so powerful were his claws that the crane's neck was severed. And the tree-God could not help exclaiming, 'Well done, crayfish!'"
+devil_cat,animal,prob = 0.05,1,,,,,,-1,sacrifice,,the,"Yet it is singular that the blood of the black cat is esteemed of wonderful power when mixed with herbs, for charms; and also of great efficacy in potions for the cure of disease; but three drops of f-he blood are sufficient, and it is generally obtained by nipping off a small piece of the tail."
+heavenly_goose,animal,prob = 0.025,,,1,,,,1,sacrifice,,the,"It is guarded by the moon, which, as a great white bird was supposed to rest at night upon the Earth, like a goose brooding over her egg."

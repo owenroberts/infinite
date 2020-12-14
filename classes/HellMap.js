@@ -22,13 +22,8 @@ class HellMap extends BSPMap {
 		
 		this.roomCount = this.nodes.filter(n => n.room).length;
 		this.cellCount = this.nodes.filter(n => n.room).map(n => n.room.w * n.room.h).reduce((s, n) => s + n);
-		
-		// debug see the rooms
-		this.nodes.forEach(n => {
-			// console.log('node', n.x, n.y, n.w, n.h);
-			if (n.room) console.log('room', n.room.x, n.room.y, n.room.w, n.room.h);
-		});
 
+		// this is really wall colors
 		const bgColors = [
 			'#ffffff',
 			'#F8F8F8',
@@ -63,7 +58,7 @@ class HellMap extends BSPMap {
 			'#101010',
 			'#080808'
 		];
-		// 0x080808 + 0x080808
+		// 0x080808 + 0x080808 ?
 		const bgColor = bgColors[Math.min(gme.lvl, bgColors.length - 1)];
 
 		this.walls.forEach(wall => {
@@ -80,8 +75,8 @@ class HellMap extends BSPMap {
 				});
 			}
 		});
-		// console.log('bgColor', bgColor);
 
+		console.log('wall color', bgColor); // would wacky colors be cool here?
 		
 		if (callback) callback();
 	}
@@ -121,8 +116,6 @@ class HellMap extends BSPMap {
 		if (gme.lvl > 0) this.addItems('scripture', MapItem);
 		if (gme.lvl > 1) this.addItems('animal', MapItem);
 		if (gme.lvl > 3) this.addItems('special', MapItem);
-
-
 	}
 
 	prob(f) {

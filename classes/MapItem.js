@@ -2,7 +2,6 @@ class MapItem extends HellItem {
 	constructor(...args) {
 		super(...args);
 		this.isColliding = false;
-		this.consoleMessage = `${this.actionString} ${this.label}`;
 		this.xKey = () => {
 			map.remove(this);
 			player.action(this);
@@ -23,7 +22,7 @@ class MapItem extends HellItem {
 	update(offset) {
 		super.update(offset);
 		if (this.collide(player) && !this.isColliding && !player.isColliding) {
-			ui.console.setMsg(`Press X to ${this.consoleMessage}`);
+			ui.console.setMsg(`Press X to ${this.actionString}`);
 			this.isColliding = true;
 			player.isColliding = true;
 			ui.console.xKey = () => {

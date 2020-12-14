@@ -68,6 +68,11 @@ function start() {
 	god.addAnimation(gme.anims.sprites.god);
 	gme.scenes.add(god, 'win', 'display');
 
+	const movementInstuctions = new Sprite(gme.width / 2 + 150, gme.height / 2 - 100)
+	movementInstuctions.addAnimation(gme.anims.ui.instructions_movement);
+	gme.scenes.instructions.addToDisplay(movementInstuctions);
+
+
 	ui = new Scene();
 	ui.metrics = {};
 
@@ -89,12 +94,6 @@ function start() {
 		else if (player.moralityScore > 0) moralityIcon.animation.state = 'good';
 		return player.moralityScore.toString();
 	});
-
-	// this is where all messages go now ... 
-	ui.metrics.hunger = new UIMetric(20, 28, () => {
-		return player.hungerString;
-	});
-	ui.metrics.hunger.letters = gme.anims.lettering.messages; // use letters or lettering?
 
 	// this is where all messages go now ... 
 	ui.console = new Text(leftAlign, 8, '', grafWrap * 2, gme.anims.lettering.messages);
@@ -122,8 +121,7 @@ function start() {
 }
 
 function startMusic(withMusic) {
-
-	gme.scene = 'message';
+	gme.scene = 'instructions';
 	if (withMusic) sound = new Sound();
 	ui.console.xKey = loadNextMap;
 	ui.console.zKey = undefined;
