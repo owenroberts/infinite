@@ -368,7 +368,7 @@ class Player extends Sprite {
 		console.time('load sfx');
 		let samples = new Tone.ToneAudioBuffers({
 			urls: urls,
-			baseUrl: "../audio/",
+			baseUrl: "./audio/",
 			onload: () => {
 				console.timeEnd('load sfx');
 				for (let url in urls) {
