@@ -687,6 +687,8 @@
 		- maybe option
 		- need some fuckin better way for toggle
 
+- archive zip fuckin dick https://kevdees.com/ignoring-git-and-hidden-files-when-archiving-on-macos-using-the-command-line/
+
 - post jam
 	- consider mortality reset 
 	- cat pilgrim?
