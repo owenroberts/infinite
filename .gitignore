@@ -10,3 +10,4 @@ node_modules/
 src_maps/
 sampler/
 tone/Tone.js.map
+audio/sfx_wavs/

@@ -21,16 +21,20 @@ class Player extends Sprite {
 		this.setCollider(25, 6, 78, 90);
 
 		this.input = { right: false, up: false, left: false, down: false };
-		this.target = new Cool.Vector(0, 0);
 
 		this.metricCount = 0;
+		this.metricCheck = 24 * 1; // ~ 1 seconds
 		this.died = false;
 		this.health = 100;
 
 		this.hunger = 0;
-		this.hungerRate = 0.005;
-		this.hungerLevel = 0;
-		this.hungerString = '';
+		this.hungerRate = 1;
+		this.hungerInterval = 300;
+		this.lastSpeedChange = this.hungerInterval;
+
+		this.soundEnabled = false;
+		this.stepCount = 0;
+		this.stepInterval = 32 - this.speed.x * 2;
 
 		this.morality = {
 			gluttony: 0,
@@ -54,6 +58,16 @@ class Player extends Sprite {
 		};
 	}
 
+	setSpeed(n) {
+		this.speed.x = +n;
+		this.speed.y = +n;
+		this.stepInterval = 32 - this.speed.x * 2;
+	}
+
+	getSpeed() {
+		return this.speed.x;
+	}
+
 	get moralityScore() {
 		return Object.values(this.morality).reduce((t, n) => t + n);		
 	}
@@ -63,8 +77,6 @@ class Player extends Sprite {
 	}
 
 	update() {
-		if (Math.abs(this.target.x) < this.speed.x) this.target.x = 0;
-		if (Math.abs(this.target.y) < this.speed.y) this.target.y = 0;
 		this.prevPosition = { x: this.mapPosition.x, y: this.mapPosition.y };
 		
 		let state = this.animation.stateName.includes('idle') ?
@@ -73,7 +85,7 @@ class Player extends Sprite {
 
 		let canMove = gme.currentSceneName == 'map';
 			
-		if (this.input.up || this.target.y < 0) {
+		if (this.input.up) {
 			if (this.mapPosition.y > gme.bounds.top && canMove) {
 				this.mapPosition.y -= this.speed.y;
 				this.hunger += this.hungerRate;
@@ -81,7 +93,7 @@ class Player extends Sprite {
 			state = 'right';
 			
 		}
-		if (this.input.down || this.target.y > 0) {
+		if (this.input.down) {
 			if (this.mapPosition.y < gme.bounds.bottom && canMove) {
 				this.mapPosition.y += this.speed.y;
 				this.hunger += this.hungerRate;
@@ -89,7 +101,7 @@ class Player extends Sprite {
 			state = 'left';
 			
 		}
-		if (this.input.right || this.target.x > 0) {
+		if (this.input.right) {
 			if (this.mapPosition.x < gme.bounds.right && canMove) {
 				this.mapPosition.x += this.speed.x;
 				this.hunger += this.hungerRate;
@@ -97,7 +109,7 @@ class Player extends Sprite {
 			state = 'right';
 		}
 
-		if (this.input.left || this.target.x < 0) {
+		if (this.input.left) {
 			if (this.mapPosition.x > gme.bounds.left && canMove) {
 				this.mapPosition.x -= this.speed.x;
 				this.hunger += this.hungerRate;
@@ -107,17 +119,24 @@ class Player extends Sprite {
 		this.animation.state = state;
 
 		if (!this.died && canMove) {
-			if (this.metricCount == 100) {
+			if (this.metricCount == this.metricCheck) {
 				this.checkHunger();
 				this.metricCount = 0;
 			}
 			this.metricCount++;
 		}
+
+		this.stepCount++;
+		if (state != 'idle' && this.soundEnabled && this.stepCount > this.stepInterval) {
+			const idx = Cool.randomInt(gme.lvl + 6).clamp(0, this.stepSamples.length - 1);
+			this.sfxPlayer.player(this.stepSamples[idx]).start();
+			this.stepCount = 0;
+		}
+
 	}
 
 	back() {
-		this.target = { x: 0, y: 0};
-		this.mapPosition = this.prevPosition;
+		this.mapPosition = this.prevPosition; // for collisions
 	}
 
 	spawn() {
@@ -132,14 +151,13 @@ class Player extends Sprite {
 	}
 
 	reborn() {
-		this.health = 100;
-		
+		// this.health = 100;
+		this.hunger = 0;
+		this.hungerLevel = 0;
+
 		ui.metrics.level.update();
 		this.died = false;
-		this.speed.x = 8;
-		this.speed.y = 8;
-		this.target.x = 0;
-		this.target.y = 0;
+		this.setSpeed(8);
 	}
 
 	checkMorality() {
@@ -169,32 +187,30 @@ class Player extends Sprite {
 	}
 
 	checkHunger() {
-		// console.log(player.hunger, this.hungerLevel)
-		if (Math.floor(this.hunger) > this.hungerLevel) {
-			this.hungerLevel = Math.floor(this.hunger);
-			if (this.hungerLevel > 2) {
-				this.speed.x -= 1;
-				this.speed.y -= 1;
-			}
-		} else if (this.hunger == 0) {
-			this.hungerLevel = 0;
+
+		let msg = '';
+
+		if (this.hunger > this.lastSpeedChange) {
+			this.lastSpeedChange += this.hungerInterval;
+			if (this.speed.x > 1) this.setSpeed(this.speed.x - 1);
 		}
-		
-		if (this.hungerLevel == 0) this.hungerString = '';
-		else if (this.hungerLevel == 1) this.hungerString = 'You feel a pang of hunger';
-		else if (this.hungerLevel == 2) this.hungerString = 'Was that sound your stomach?';
-		else if (this.hungerLevel == 3) this.hungerString = 'Your stomach growled';
-		else if (this.hungerLevel == 4) this.hungerString = 'Your stomach is twisting in pain';
-		else if (this.hungerLevel == 5) this.hungerString = 'You feel weak';
-		else if (this.hungerLevel == 6) this.hungerString = 'You feel light headed';
-		else if (this.hungerLevel == 7) this.hungerString = 'Your body is desparate for food';
-		else if (this.hungerLevel == 8) {
+
+		let hi = Math.floor(this.hunger / this.hungerInterval);
+		if (hi == 1) msg = 'You feel a pang of hunger';
+		else if (hi == 2) msg = 'Was that sound your stomach?';
+		else if (hi == 3) msg = 'Your stomach growled';
+		else if (hi == 4) msg = 'Your stomach is twisting in pain';
+		else if (hi == 5) msg = 'You feel weak';
+		else if (hi == 6) msg = 'You feel light headed';
+		else if (hi == 7) msg = 'Your body is desparate for food';
+		else if (hi == 8) {
+			this.playSFX('died');
 			gme.scene = 'message'; // set message before death
 			ui.message.set('You starved to death');
 			this.died = true;
 			this.checkMorality();
 		}
-		if (!this.died && this.hungerString && !ui.console.msg) ui.console.setMsg(this.hungerString);
+		if (!this.died && msg && !this.isColliding) ui.console.setMsg(msg);
 	}
 
 	action(item) {
@@ -214,8 +230,7 @@ class Player extends Sprite {
 			this.hunger = 0;
 			ui.message.add(`Your hunger hath abated`);
 			this.checkHunger();
-			this.speed.x = 8; // reset speed
-			this.speed.y = 8;
+			this.setSpeed(8); // reset speed
 		}
 		
 		for (const key in this.world) {
@@ -239,17 +254,13 @@ class Player extends Sprite {
 		if (item.special) {
 			let specials = item.special.split('&');
 			for (let i = 0; i < specials.length; i++) {
-				let [n, prop] = item.special.split('/');
+				let [n, prop] = specials[i].split('/');
 				if (prop.includes('m-')) {
 					prop = prop.split('-')[1];
 					this.morality[prop] += +n;
 				} else {
-					if (prop == 'speed') {
-						this.speed.x += +n;
-						this.speed.y += +n;
-					} else {
-						this[prop] += +n;
-					}
+					if (prop == 'speed') this.setSpeed(this.speed.x + +n);
+					else this[prop] += +n;
 				}
 				if (prop == 'adjust') prop = 'moral feeling';
 				ui.message.add(`You gained ${n} of ${prop}`);
@@ -270,5 +281,78 @@ class Player extends Sprite {
 
 			gme.ctx.globalAlpha = 1.0;
 		}
+	}
+
+	playSFX(type) {
+		if (this.soundEnabled) {
+			if (!this.sfxSamples.hasOwnProperty(type)) type = 'special';
+			console.log(type);
+			let sample = Cool.random(this.sfxSamples[type]);
+			this.sfxPlayer.player(sample).start();
+		}
+	}
+
+	soundSetup() {
+
+		const urls = {};
+		const sfx = {
+			'continue': 2,
+			'dead': 2,
+			'eat': 2,
+			'fight': 1,
+			'gate': 6,
+			'read': 6,
+			'sacrifice': 3,
+			'special': 2
+		};
+
+		this.sfxSamples = {};
+
+		for (const key in sfx) {
+			this.sfxSamples[key] = [];
+			for (let i = 1; i <= sfx[key]; i++) {
+				urls[`${key}-${i}`] = `sfx/${key}-${i}.mp3`;
+				this.sfxSamples[key].push(`${key}-${i}`);
+			}
+		}
+
+		this.stepSamples = [];
+		const steps = {
+			'step': 10,
+			'stones': 6,
+			'mud': 6,
+			'splash': 3
+		};
+		
+		for (const key in steps) {
+			for (let i = 1; i <= steps[key]; i++) {
+				urls[`${key}-${i}`] = `footsteps/${key}-${i}.mp3`;
+				this.stepSamples.push(`${key}-${i}`);
+			}
+		}
+
+		this.sfxPlayer = new Tone.Players({volume: -6}).toDestination();
+		// this.sfxPlayer.volume = -6;
+		console.time('load sfx');
+		let samples = new Tone.ToneAudioBuffers({
+			urls: urls,
+			baseUrl: "../audio/",
+			onload: () => {
+				console.timeEnd('load sfx');
+				for (let url in urls) {
+					this.sfxPlayer.add(url, samples.get(url));
+				}
+				this.soundEnabled = true;
+			}
+		});
+
+		/*
+			sounds (remember to stick this somewhere visible)
+			https://freesound.org/people/MWLANDI/sounds/85858/
+			https://freesound.org/people/MWLANDI/sounds/85857/
+			https://freesound.org/people/InspectorJ/sounds/329603/
+			https://freesound.org/people/InspectorJ/sounds/329602/
+			https://freesound.org/people/florianreichelt/sounds/459964/
+		*/
 	}
 }

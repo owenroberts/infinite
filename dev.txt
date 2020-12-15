@@ -626,6 +626,7 @@
 12.13.2020
 - final to do list
 	- add hunger back in -
+		- use level???
 	- determiners... -
 	- instructions -
 	- special and time out ? - 
@@ -642,9 +643,10 @@
 		- also using different frame rates would probably help
 		- ummm. shit what if we use the lines count approach, just calculate how many frames it should be and count them .... 
 		- holy fucking hellllll
-	- ui border
-	- cosmic tree color
+	- ui border - 
+	- cosmic tree color -
 		- all the special drawings are too big ... 
+		- does flower animate??
 	- sfx, footsteps and action sounds (by type?)
 		- https://freesound.org/people/MWLANDI/sounds/85858/
 		- https://freesound.org/people/InspectorJ/sounds/345560/
@@ -673,3 +675,13 @@
 	- lines - points saved with decimals again ... 
 		- also in w and h
 	- lines - delay in timeline scrubbing now
+	- lines - update animation fps lps etc stuff after jam
+	- lines game - update all sprites? most are just 1 frame
+		- maybe make a needs update bool
+	- lines - game anim - why do i have this???
+		- textures i think, creating states
+		- fix the update
+	- lines - toggle layers make everything else disappear ??
+		- then you cant see other colors ...
+		- maybe option
+		- need some fuckin better way for toggle

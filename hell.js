@@ -44,7 +44,7 @@ let map, cellSize = { w: 256, h: 256 };
 let ui;
 let grafWrap = 28, leftAlign = 6, centerAlign = grafWrap * 18, packY = 260; // global ui?
 
-const welcomeMessage = `Welcome to Infinite Hell. \nYou are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
+const welcomeMessage = `You are in ${gme.lvlName}. \nYou are morally neutral. \n\nYou must perform a moral act to find your way to Heaven. \n\nIf you sin, you will descend further into Hell.`;
 
 /* debugging */
 let mapAlpha = 0;
@@ -94,22 +94,28 @@ function start() {
 	});
 
 	// this is where all messages go now ... 
-	ui.console = new Text(leftAlign, 8, '', grafWrap * 2, gme.anims.lettering.messages);
+	ui.console = new Text(leftAlign, 4, '', grafWrap * 2, gme.anims.lettering.messages);
 	ui.addToDisplay(ui.console);
 	ui.console.xKey = undefined; // god damn it
 
-	ui.message = new HellMessage(6, 40, '', grafWrap, gme.anims.lettering.messages);
+	ui.message = new HellMessage(6, 64, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.set(welcomeMessage);
 	ui.message.continue.setMsg('Press X to begin');
 
+	const border = new Texture({ frame: 'randomIndex', animation: gme.anims.ui.border });
+	for (let x = 0; x < gme.width; x += gme.anims.ui.border.width) {
+		border.addLocation(x, 32);
+	}
+	ui.addToDisplay(border);
+
 	/* set up music ui */
-	const welcome = new Text(leftAlign, 40, 'Welcome to Infinite Hell', grafWrap, gme.anims.lettering.messages);
+	const welcome = new Text(leftAlign, 152, 'Welcome to Infinite Hell', grafWrap, gme.anims.lettering.messages);
 	gme.scenes.music.addToDisplay(welcome);
 
-	const yesSound = new Text(leftAlign, 80, 'Press X to start game with sound', grafWrap, gme.anims.lettering.messages);
+	const yesSound = new Text(leftAlign, 192, 'Press X to start game with sound', grafWrap, gme.anims.lettering.messages);
 	gme.scenes.music.addToDisplay(yesSound);
 
-	const noSound = new Text(leftAlign, 120, 'Press Z to start game silently', grafWrap, gme.anims.lettering.messages);
+	const noSound = new Text(leftAlign, 232, 'Press Z to start game silently', grafWrap, gme.anims.lettering.messages);
 	gme.scenes.music.addToDisplay(noSound);
 
 	ui.console.xKey = () => { startMusic(true) };
@@ -120,8 +126,14 @@ function start() {
 
 function startMusic(withMusic) {
 	gme.scene = 'instructions';
-	if (withMusic) sound = new Sound();
-	ui.console.xKey = loadNextMap;
+	if (withMusic) {
+		sound = new Sound();
+		player.soundSetup();
+	}
+	ui.console.xKey = function() {
+		player.playSFX('gate');
+		loadNextMap();
+	};
 	ui.console.zKey = undefined;
 }
 

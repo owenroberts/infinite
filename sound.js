@@ -307,12 +307,12 @@ function Sound() {
 		// };
 
 		// add ee and aa
-		console.time('load samples');
+		console.time('load choir samples');
 		choirSamples = new Tone.ToneAudioBuffers({
 			urls: urls,
 			baseUrl: "./audio/choir/",
 			onload: () => {
-				console.timeEnd('load samples');
+				console.timeEnd('load choir samples');
 				callback();
 			}
 		});

@@ -1,5 +1,6 @@
 {
 	"hell_icon": { "src": "drawings/ui/hell_icon_32.json" },
 	"morality_icon": { "src": "drawings/ui/morality_icon.json" },
-	"instructions_movement": { "src": "drawings/ui/instructions_movement.json" }
+	"instructions_movement": { "src": "drawings/ui/instructions_movement.json" },
+	"border": { "src": "drawings/ui/border.json" }
 }

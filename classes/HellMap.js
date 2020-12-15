@@ -113,10 +113,10 @@ class HellMap extends BSPMap {
 		this.cellCount -= 2; // subtract player, gate
 		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
 		this.addItems('food', MapItem);
-		this.addItems('special', MapItem);
+
 		if (gme.lvl > 0) this.addItems('scripture', MapItem);
 		if (gme.lvl > 1) this.addItems('animal', MapItem);
-		// if (gme.lvl > 3) this.addItems('special', MapItem);
+		if (gme.lvl > 3) this.addItems('special', MapItem);
 	}
 
 	prob(f) {
@@ -156,6 +156,7 @@ class HellMap extends BSPMap {
 				const node = nodes[i];
 				const c = node.room.getCell(type);
 				if (c) {
+					// console.log('item', itemData.label);
 					const item = new typeClass(
 						c.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
 						c.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
@@ -163,12 +164,12 @@ class HellMap extends BSPMap {
 						itemData,
 						type
 					);
+					item.animation.playStateCheck(); // play item frame anims/ that are not textures
 					this.items.add(item);
 					this.cellCount--;
 					break;
 				}
 			}
-			// crash?
 		}
 	}
 
@@ -185,6 +186,7 @@ class HellMap extends BSPMap {
 		for (let i = 0; i < this.walls.length; i++) {
 			this.walls[i].display();
 		}
+		// this.items.update();
 		this.items.display();
 	}
 

@@ -5,7 +5,7 @@ class Sinner extends MapItem {
 		this.fightString = `${this.dt ? ' ' + this.dt: ''} ${this.label}`;
 
 		this.xKey = () => {
-			
+			player.playSFX('fight');
 			let score = 0;
 			for (const moral in player.world) {
 				// compare sinner and moral
@@ -22,6 +22,7 @@ class Sinner extends MapItem {
 			player.morality.adjust += score; // this might be too much ... 
 			if (score > 0) map.remove(this);
 			ui.metrics.morality.update();
+			map.remove(this);
 		};
 	}
 
