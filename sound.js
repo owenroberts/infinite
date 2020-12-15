@@ -133,7 +133,7 @@ function Sound() {
 
 		mutations++;
 
-		console.log('mutations', mutations, 'tonic', tonic);
+		// console.log('mutations', mutations, 'tonic', tonic);
 		// console.log('harmonies', harmonyChoices);
 		// console.log('loopNum', loopNum);
 		// console.log('startIndex', startIndex);

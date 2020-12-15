@@ -1,8 +1,5 @@
 {
-	"messages": {
-		"src": "drawings/lettering/messages.json" 
-	},
-	"metrics": {
-		"src": "drawings/lettering/metrics.json"
-	}
+	"messages": { "src": "drawings/lettering/messages.json"  },
+	"console": { "src": "drawings/lettering/messages.json"  },
+	"metrics": { "src": "drawings/lettering/metrics.json" }
 }

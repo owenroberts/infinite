@@ -647,23 +647,24 @@
 	- cosmic tree color -
 		- all the special drawings are too big ... 
 		- does flower animate??
-	- sfx, footsteps and action sounds (by type?)
+	- sfx, footsteps and action sounds (by type?) - 
 		- https://freesound.org/people/MWLANDI/sounds/85858/
 		- https://freesound.org/people/InspectorJ/sounds/345560/
-	- texture glitch?
+	- texture glitch? - wow ...
 	- actually test and play the game
 		- look for - 
 		- bg color changing
 		- game mechanics changing
+			- have to rebalance books
+
 		- items added changing
 		- sound changing
 		- how many items get added?
 	- itch io stuff, icon, screen shots, description
 	- bugs?
 	- add more stuff ... 
-		- go through rest of literary references page
-	- punctuation?
-	- cat pilgrim?
+		- go through rest of literary references page -
+	- punctuation? - nah - 
 	- mini map
 
 - issues
@@ -685,3 +686,7 @@
 		- then you cant see other colors ...
 		- maybe option
 		- need some fuckin better way for toggle
+
+- post jam
+	- consider mortality reset 
+	- cat pilgrim?

@@ -3,7 +3,6 @@ class MapItem extends HellItem {
 		super(...args);
 		this.isColliding = false;
 		this.xKey = () => {
-			player.playSFX(this.action);
 			map.remove(this);
 			player.action(this);
 		};

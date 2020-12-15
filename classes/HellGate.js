@@ -5,10 +5,7 @@ class HellGate extends MapItem {
 		this.actionString = `Enter Judgement's Gate`;
 
 		this.xKey = () => {
-			player.playSFX('gate');
-			gme.scene = 'message'; // happens first?
-			player.died = true; // this is short cut for now
-			player.checkMorality();
+			player.enterGate();
 		};
 
 	}

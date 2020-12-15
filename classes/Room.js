@@ -30,8 +30,7 @@ class Room extends Area {
 			}
 		}
 
-		// console.log(this.texture.locations);
-		
+		// console.log(this.texture.locations.map(loc => loc.i));
 		// this.texture.addLocations(locations);
 
 		this.debug = true;

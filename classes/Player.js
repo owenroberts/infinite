@@ -158,6 +158,8 @@ class Player extends Sprite {
 		ui.metrics.level.update();
 		this.died = false;
 		this.setSpeed(8);
+
+		// reset morality???
 	}
 
 	checkMorality() {
@@ -192,7 +194,7 @@ class Player extends Sprite {
 
 		if (this.hunger > this.lastSpeedChange) {
 			this.lastSpeedChange += this.hungerInterval;
-			if (this.speed.x > 1) this.setSpeed(this.speed.x - 1);
+			// if (this.speed.x > 1) this.setSpeed(this.speed.x - 1);
 		}
 
 		let hi = Math.floor(this.hunger / this.hungerInterval);
@@ -213,18 +215,42 @@ class Player extends Sprite {
 		if (!this.died && msg && !this.isColliding) ui.console.setMsg(msg);
 	}
 
+	enterGate() {
+		this.playSFX('gate');
+		gme.scene = 'message'; // happens first?
+		this.died = true; // this is short cut for now
+		this.checkMorality();
+	}
+
+	fight(sinner) {
+		this.playSFX('fight');
+
+		let score = 0;
+		for (const moral in this.world) {
+			// compare each moral to sinner
+			const playerScore = this.morality[moral] + this.world[moral];
+			const comp = playerScore + sinner[moral];
+			score += comp > 0 ? 1 : -1;
+		}
+
+		gme.scene = 'message';
+		if (score == 0) ui.message.set(`You and ${sinner.fightString} are equals in sin.`);
+		else if (score < 0) ui.message.set(`You were defated by the sin of ${sinner.fightString}`);
+		else if (score > 0) ui.message.set(`You defeated ${sinner.fightString} with righteousness.`);
+
+		player.morality.adjust += score; // this might be too much ... 
+		ui.metrics.morality.update();
+		return score;
+	}
+
 	action(item) {
+		console.log(item);
+		this.playSFX(item.action);
 
 		gme.scene = 'message';
 
 		ui.message.set(`You ${item.actionString}`);
 		ui.message.add(item.source);
-		
-		// console.log(this.hunger, item.hunger, +item.hunger, this.hunger + +item.hunger);
-		// this.hunger = Math.max(0, this.hunger + +item.hunger);
-		// if (item.hunger > 0) ui.message.add(`Your hunger hath abated.`);
-		// this.hungerRate = Math.max(0.1, this.hungerRate + +item.hungerRate);
-		// simplify
 
 		if (item.type == 'food') {
 			this.hunger = 0;
@@ -234,27 +260,31 @@ class Player extends Sprite {
 		}
 		
 		for (const key in this.world) {
-			if (+item[key] != 0) {
+			if (+item[key] !== 0) {
+				console.log(item.type, item.label, key, item[key], this.world[key]);
 				if (item.type == 'food') {
 					// calculate based on formula
-					this.morality[key] += +item[key] + this.world[key]; // this is fucked
-					ui.message.add(+item[key] < 0 ? 'You hath sinned' : 'You hath acted morally');
+					let score = +item[key] + this.world[key]
+					console.log('score', score);
+					this.morality[key] += score; // this is fucked
+					ui.message.add(score < 0 ? 'You hath sinned' : 'You hath acted morally');
 				}
 
 				else if (item.type == 'scripture' || item.type == 'animal') {
-					console.log(item[key], this.world[key]);
 					this.world[key] += +item[key];
 					ui.message.add(+item[key] < 0 ? 
-						`You gain knowledge of ${key}` : 
+						`Your knowledge of ${key} is clouded` : 
 						`You are learned of ${key}` );
 				}
 			}
 		}
 
 		if (item.special) {
+			console.log(item.type, item.label, 'special');
 			let specials = item.special.split('&');
 			for (let i = 0; i < specials.length; i++) {
 				let [n, prop] = specials[i].split('/');
+				console.log(n, prop);
 				if (prop.includes('m-')) {
 					prop = prop.split('-')[1];
 					this.morality[prop] += +n;
@@ -286,7 +316,6 @@ class Player extends Sprite {
 	playSFX(type) {
 		if (this.soundEnabled) {
 			if (!this.sfxSamples.hasOwnProperty(type)) type = 'special';
-			console.log(type);
 			let sample = Cool.random(this.sfxSamples[type]);
 			this.sfxPlayer.player(sample).start();
 		}

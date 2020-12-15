@@ -4,7 +4,7 @@ class HellMap extends BSPMap {
 			w: Math.ceil(gme.width / 2 / cellSize.w),
 			h: Math.ceil(gme.height / 2 / cellSize.h)
 		};
-		super(size + buffer.w, size + buffer.h, size / 4, size / 2 - 1);
+		super(size + buffer.w * 2, size + buffer.h * 2, size / 4, size / 2 - 1);
 		this.size = 12;
 		this.buffer = buffer;
 
@@ -16,7 +16,8 @@ class HellMap extends BSPMap {
 		console.time('map');
 
 		let newSize = this.size + gme.lvl * 2;
-		this.updateSize(newSize + this.buffer.w, newSize + this.buffer.h, newSize / 4, newSize / 2 - 1);
+		console.log('new size', newSize);
+		this.updateSize(newSize + this.buffer.w * 2, newSize + this.buffer.h * 2, newSize / 4, newSize / 2 - 1);
 		
 		super.build(this.buffer, 6 + gme.lvl); // max nodes --  move up faster?
 		

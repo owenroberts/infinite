@@ -7,7 +7,6 @@ class HellMessage extends Text {
 	}
 
 	next() {
-		console.log('next');
 		if (this.list.length == 0) {
 			this.set('');
 			if (player.died) loadNextMap();
@@ -51,7 +50,6 @@ class HellMessage extends Text {
 			this.continue.setPosition(this.x, y);
 			this.continue.setMsg('Press X to continue');
 			ui.console.xKey = () => {
-				console.log('continue');
 				player.playSFX('continue');
 				this.next();
 			};
