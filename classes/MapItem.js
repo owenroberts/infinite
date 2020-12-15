@@ -34,6 +34,7 @@ class MapItem extends HellItem {
 			ui.console.setMsg('');
 			this.isColliding = false;
 			player.isColliding = false;
+			ui.console.xKey = undefined;
 		}
 	}
 }

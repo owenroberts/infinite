@@ -690,3 +690,6 @@
 - post jam
 	- consider mortality reset 
 	- cat pilgrim?
+	- randomness in fights, maybe others
+	- don't add books you've already read ...
+	- animals need to be more like trade offs ... 

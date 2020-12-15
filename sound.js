@@ -142,7 +142,7 @@ function Sound() {
 
 	function playTheme() {
 		Tone.Transport.bpm.value = player.speed.x * 16;
-		console.log('bpm', Tone.Transport.bpm.value);
+		// console.log('bpm', Tone.Transport.bpm.value);
 
 		loops.forEach(loop => loop.stop());
 		Tone.Transport.stop();

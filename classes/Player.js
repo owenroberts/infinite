@@ -128,11 +128,10 @@ class Player extends Sprite {
 
 		this.stepCount++;
 		if (state != 'idle' && this.soundEnabled && this.stepCount > this.stepInterval) {
-			const idx = Cool.randomInt(gme.lvl + 6).clamp(0, this.stepSamples.length - 1);
+			const idx = Cool.randomInt(gme.lvl + 10).clamp(0, this.stepSamples.length - 1);
 			this.sfxPlayer.player(this.stepSamples[idx]).start();
 			this.stepCount = 0;
 		}
-
 	}
 
 	back() {
@@ -194,7 +193,7 @@ class Player extends Sprite {
 
 		if (this.hunger > this.lastSpeedChange) {
 			this.lastSpeedChange += this.hungerInterval;
-			// if (this.speed.x > 1) this.setSpeed(this.speed.x - 1);
+			if (this.speed.x > 1) this.setSpeed(this.speed.x - 1);
 		}
 
 		let hi = Math.floor(this.hunger / this.hungerInterval);
@@ -229,8 +228,11 @@ class Player extends Sprite {
 		for (const moral in this.world) {
 			// compare each moral to sinner
 			const playerScore = this.morality[moral] + this.world[moral];
+			console.log(moral, playerScore, this.morality[moral], this.world[moral])
 			const comp = playerScore + sinner[moral];
-			score += comp > 0 ? 1 : -1;
+			console.log(comp);
+			if (comp > 0) score++;
+			else if (comp < 0) score--;
 		}
 
 		gme.scene = 'message';
@@ -244,7 +246,7 @@ class Player extends Sprite {
 	}
 
 	action(item) {
-		console.log(item);
+		// console.log(item);
 		this.playSFX(item.action);
 
 		gme.scene = 'message';
@@ -261,12 +263,13 @@ class Player extends Sprite {
 		
 		for (const key in this.world) {
 			if (+item[key] !== 0) {
-				console.log(item.type, item.label, key, item[key], this.world[key]);
+				// console.log(item.type, item.label, key, item[key], this.world[key]);
 				if (item.type == 'food') {
 					// calculate based on formula
 					let score = +item[key] + this.world[key]
-					console.log('score', score);
+					// console.log('score', score);
 					this.morality[key] += score; // this is fucked
+					// there's three possibilities ... 
 					ui.message.add(score < 0 ? 'You hath sinned' : 'You hath acted morally');
 				}
 
@@ -280,11 +283,11 @@ class Player extends Sprite {
 		}
 
 		if (item.special) {
-			console.log(item.type, item.label, 'special');
+			// console.log(item.type, item.label, 'special');
 			let specials = item.special.split('&');
 			for (let i = 0; i < specials.length; i++) {
 				let [n, prop] = specials[i].split('/');
-				console.log(n, prop);
+				// console.log(n, prop);
 				if (prop.includes('m-')) {
 					prop = prop.split('-')[1];
 					this.morality[prop] += +n;

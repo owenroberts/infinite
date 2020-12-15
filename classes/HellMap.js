@@ -15,7 +15,7 @@ class HellMap extends BSPMap {
 	build(callback) {
 		console.time('map');
 
-		let newSize = this.size + gme.lvl * 2;
+		let newSize = this.size + gme.lvl;
 		console.log('new size', newSize);
 		this.updateSize(newSize + this.buffer.w * 2, newSize + this.buffer.h * 2, newSize / 4, newSize / 2 - 1);
 		
@@ -26,41 +26,41 @@ class HellMap extends BSPMap {
 
 		// this is really wall colors
 		const bgColors = [
-			'#ffffff',
+			// '#ffffff',
 			'#F8F8F8',
-			'#F0F0F0',
+			// '#F0F0F0',
 			'#E8E8E8',
-			'#E0E0E0',
+			// '#E0E0E0',
 			'#D8D8D8',
-			'#D0D0D0',
+			// '#D0D0D0',
 			'#C8C8C8',
-			'#C0C0C0',
+			// '#C0C0C0',
 			'#B8B8B8',
-			'#B0B0B0',
+			// '#B0B0B0',
 			'#A8A8A8',
-			'#A0A0A0',
+			// '#A0A0A0',
 			'#989898',
-			'#909090',
+			// '#909090',
 			'#888888',
-			'#808080',
+			// '#808080',
 			'#787878',
-			'#707070',
+			// '#707070',
 			'#686868',
-			'#606060',
+			// '#606060',
 			'#585858',
-			'#505050',
+			// '#505050',
 			'#484848',
-			'#404040',
+			// '#404040',
 			'#383838',
-			'#303030',
+			// '#303030',
 			'#282828',
-			'#202020',
+			// '#202020',
 			'#181818',
-			'#101010',
+			// '#101010',
 			'#080808'
 		];
 		// 0x080808 + 0x080808 ?
-		const bgColor = bgColors[Math.min(gme.lvl, bgColors.length - 1)];
+		const bgColor = bgColors[Math.min(gme.lvl, bgColors.length - 1).clamp(0, bgColors.length - 1)];
 
 		this.walls.forEach(wall => {
 			wall.texture.animation.over = { c: bgColor };
@@ -114,10 +114,9 @@ class HellMap extends BSPMap {
 		this.cellCount -= 2; // subtract player, gate
 		this.addItems('sinner', Sinner, 1); // 1 sinner per level for now, adjust later
 		this.addItems('food', MapItem);
-
-		if (gme.lvl > 0) this.addItems('scripture', MapItem);
-		if (gme.lvl > 1) this.addItems('animal', MapItem);
-		if (gme.lvl > 3) this.addItems('special', MapItem);
+		if (gme.lvl > 0) this.addItems('scripture', MapItem, Cool.random([0, 1, 1, 2, 2, 3]));
+		if (gme.lvl > 2) this.addItems('animal', MapItem, Cool.random([0, 1, 1, 2]));
+		if (gme.lvl > 4) this.addItems('special', MapItem, Cool.random([0,0,1]));
 	}
 
 	prob(f) {
@@ -157,7 +156,9 @@ class HellMap extends BSPMap {
 				const node = nodes[i];
 				const c = node.room.getCell(type);
 				if (c) {
-					// console.log('item', itemData.label);
+					if (!itemData) {
+						console.log(type, count, this.cellCount);
+					}
 					const item = new typeClass(
 						c.x * cellSize.w + Cool.random(-cellSize.w/4, cellSize.w/4),
 						c.y * cellSize.h + Cool.random(-cellSize.h/4, cellSize.h/4),
