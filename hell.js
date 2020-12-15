@@ -262,3 +262,7 @@ function keyUp(key) {
 			break;
 	}
 }
+
+window.addEventListener("keydown", function(ev) {
+	if ([37, 38, 39, 40].includes(ev.which)) ev.preventDefault();
+}, false);
