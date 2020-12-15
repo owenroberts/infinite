@@ -146,3 +146,31 @@ black_lamb,animal,prob = 0.05,,-1,,,,1,,sacrifice,,the,"Neither was the body of 
 crane,animal,prob = 0.05,,,,,-1,1,,sacrifice,,the,"Instead, he tightened his grip, and so powerful were his claws that the crane's neck was severed. And the tree-God could not help exclaiming, 'Well done, crayfish!'"
 devil_cat,animal,prob = 0.05,1,,,,,,-1,sacrifice,,the,"Yet it is singular that the blood of the black cat is esteemed of wonderful power when mixed with herbs, for charms; and also of great efficacy in potions for the cure of disease; but three drops of f-he blood are sufficient, and it is generally obtained by nipping off a small piece of the tail."
 heavenly_goose,animal,prob = 0.025,,,1,,,,1,sacrifice,,the,"It is guarded by the moon, which, as a great white bird was supposed to rest at night upon the Earth, like a goose brooding over her egg."
+oreb,animal,prob = 0.025,,,,1,1,,,sacfrifice,,the,"Nor did Israel scape
+The infection, when their borrowed gold composed
+to worship
+The calf in Oreb; and the rebel king
+Doubled that sin in Bethel and in Dan"
+recorder,special,prob = 0.05,,,,,,,,play,1/m-adjust,the,"Anon they move
+In perfect phalanx to the Dorian mood
+Of flutes and soft recorders"
+serpent,animal,prob = 0.025,,,,-2,,,,sacrifice,2/speed,the,"The infernal Serpent; he it was whose guile,
+Stirred up with envy and revenge, deceived
+The mother of mankind, what time his pride
+Had cast him out from Heaven"
+eagle,animal,prob = 0.025,,1,,,,,-1,sacrifice,1/speed,the,"Corpse-swallower sits at the end of heaven,
+   A Jötun in eagle form;
+From his wings, they say, comes the wind which fares
+   Over all the dwellers of earth"
+brood_hen,animal,prob = 0.025,1,,,-1,,,,sacrifice,,the,"The devil changed himself into a brood-hen, and began to eat it."
+frog_skin,food,prob = 0.025,,,-1,1,,,,eat,,the,"This time the man stole silently into the house, seized the frog's skin in his hand and threw it into the fire. When the maiden saw this she entreated him, she wept--she said: ""Do not burn it, or thou shalt surely be destroyed."""
+dagon,animal,prob = 0.025,,1,,-1,,,,sacrifice,,the,"In his own temple, on the grunsel-edge,
+here he fell flat and shamed his worshipers:
+Dagon his name, sea-monster, upward man
+And downward fish"
+wretched,sinner,prob = 0.05,,,-1,-2,,,,fight,,the,"These wretched ones, who never were alive,
+went naked and were stung again, again
+by horseflies and by wasps that circled them.
+The insects streaked their faces with their blood,
+which, mingled with their tears, fell at their feet,
+where it was gathered up by sickening worms."
