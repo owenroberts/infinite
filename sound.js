@@ -155,7 +155,7 @@ function Sound() {
 	}
 
 	function playTheme() {
-		Tone.Transport.bpm.value = player.speed.x * 16; // player speed changes a lot, these guys dont...
+		// Tone.Transport.bpm.value = player.speed.x * 16; // player speed changes a lot, these guys dont...
 		// console.log('bpm', Tone.Transport.bpm.value);
 
 		loops.forEach(loop => loop.stop());
@@ -200,15 +200,14 @@ function Sound() {
 		let attack = Cool.random(attackStart.min, attackStart.max);
 		let counter = 1;
 		let durPlay = dur;
-		if (dur > 4 && dur < 33 && chance(0.25)) {
+		if (dur > 4 && dur < 32 && chance(0.25)) {
 			counter = 1 / dur;
 			durPlay /= 2;
 		}
 		const loop = new Tone.Loop((time) => {
 			// console.log(count, attack, dur, len, idx, delay);
-			const randomRest = chance(0.05);
-			const note = randomRest ? null : melody[Math.floor(count) % melody.length];
-			if (note) {
+			if (chance(0.95)) { // 5% chance of rest
+				const note = melody[Math.floor(count) % melody.length];
 				sampler.triggerAttackRelease(note, `${durPlay}n`, undefined, attack);
 			}
 			attack += Cool.random(attackJump.min, attackJump.max);
@@ -356,6 +355,10 @@ function Sound() {
 				callback();
 			}
 		});
+	}
+
+	this.setBPM = function(speed) {
+		Tone.Transport.bpm.value = speed * 8 + 64; // starts 128
 	}
 
 	this.play = function() {

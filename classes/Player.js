@@ -62,6 +62,10 @@ class Player extends Sprite {
 		this.speed.x = +n;
 		this.speed.y = +n;
 		this.stepInterval = 32 - this.speed.x * 2;
+		if (this.sfxPlayer) {
+			sound.setBPM(player.speed.x);
+		}
+
 	}
 
 	getSpeed() {
@@ -325,6 +329,8 @@ class Player extends Sprite {
 	}
 
 	soundSetup() {
+
+		sound.setBPM(player.speed.x);
 
 		const urls = {};
 		const sfx = {
