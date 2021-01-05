@@ -68,10 +68,10 @@ function Sound() {
 	let durs = [1];
 	let addDurs = [1, 4, 8];
 	let durJumps = [1];
-	let addDurJumps = [0.5, 2];
+	let addDurJumps = [0.5, 2, 4, 0.25];
 
 	let startDelays = [0, '1n', '2n', '4n', '8n', '1m', '2m'];
-	let longDelays = ['3m', '4m', '5m', '6m'];
+	let longDelays = ['3m', '4m'];
 	
 	let indexJump = { min: 0, max: 0 };
 	let attackStart = { min: 0.25, max: 0.75 };
@@ -95,40 +95,54 @@ function Sound() {
 		} else {
 			// its okay if they swap
 			if (chance(0.05)) loopNum.min += 1;
-			if (chance(0.01)) loopNum.max += 1;
+			if (chance(0.1)) loopNum.max += 1;
 		}
 
+		let ch = 0.35;
+
 		// random start index
-		if (chance(0.25) && mutations > 2 && startIndex.max < intervals.length) {
+		if (chance(ch) && mutations > 2 && startIndex.max < intervals.length) {
 			startIndex.max++;
 		}
 
 		if (mutations > 3) {
 
 			// add harmony parts
-			if (chance(0.25) && addHarmonyChoices.length > 0) {
+			if (chance(ch) && addHarmonyChoices.length > 0) {
 				harmonyChoices.push(addHarmonyChoices.pop());
 			}
 
-			if (chance(0.25)) {
+			if (chance(ch)) {
 				indexJump.min--;
 				// maybe += chance(0.5) ? 1 : -1;
 			}
 
-			if (chance(0.25)) {
+			if (chance(ch)) {
 				indexJump.max++;
 			}
 
-			if (chance(0.25) && addDurs.length > 0) durs.push(addDurs.pop());
-
-			if (chance(0.25)) lens.push(Cool.random(lens) * Cool.random([0.5, 2]));
-
-			if (chance(0.25)) {
-				let slice = intervals.slice(Cool.random(intervals.length), Cool.random(intervals.length));
-				intervals.push(...slice);
+			if (chance(ch) && addDurs.length > 0) {
+				durs.push(addDurs.pop());
 			}
 
-			if (chance(0.25)) intervals.shift();
+			if (chance(ch) && addDurJumps.length > 0) {
+				durJumps.push(addDurJumps.pop());
+			}
+
+			if (chance(ch) && longDelays.length > 0) {
+				startDelays.push(longDelays.pop());
+			}
+
+			if (chance(ch)) lens.push(Cool.random(lens) * Cool.random([0.25, 0.5, 1.5]));
+
+			if (chance(ch)) {
+				let index = Cool.random(intervals.length);
+				let slice = intervals.slice(index, index + Cool.random(5));
+				intervals.push(...slice);
+				// console.log('intervals', intervals);
+			}
+
+			if (chance(0.5) && intervals.length > 4) intervals.shift();
 		}
 
 		mutations++;
@@ -141,23 +155,25 @@ function Sound() {
 	}
 
 	function playTheme() {
-		Tone.Transport.bpm.value = player.speed.x * 16;
+		Tone.Transport.bpm.value = player.speed.x * 16; // player speed changes a lot, these guys dont...
 		// console.log('bpm', Tone.Transport.bpm.value);
 
 		loops.forEach(loop => loop.stop());
 		Tone.Transport.stop();
-		
 
+		// console.log('mutations num', mutations);
 		let num = Cool.randomInt(loopNum.min, loopNum.max); // number of loops
+		if (mutations == 1) num = 2; // harmony on second play through
 		// how many loops is too many loops?
 		let dur = Cool.random(durs); // start duration
 		let len = Cool.random(lens);
 		let idx = Cool.randomInt(startIndex.min, startIndex.max); // start index
 		let delay = mutations == 0 ? 0 : Cool.random(startDelays);
 
+		// console.log('num loops', num);
 		loops.push(makeLoop(dur, len, idx, delay, getMelody(tonic))); 
 		for (let i = 1; i < num; i++) {
-			let mel = (chance(0.5) || num == 2) ?
+			let mel = (chance(0.6) || num == 2) ?
 				getHarmony(tonic, Cool.random(harmonyChoices)) :
 				getMelody(tonic);
 
@@ -168,7 +184,9 @@ function Sound() {
 				if (chance(0.1)) delay += 't';
 				if (chance(0.25) && delay != 0) delay += '.';
 			}
-			loops.push(makeLoop(dur, 1, idx, delay, mel));
+			len = Cool.random(lens);
+			if (dur > 8) len *= 2;
+			loops.push(makeLoop(dur, len, idx, delay, mel));
 		}
 		
 		Tone.Transport.start('+0.1');
@@ -176,19 +194,26 @@ function Sound() {
 	}
 
 	function makeLoop(dur, len, idx, delay, melody) {
+		// console.log('loop length', melody.length * len, 'dur', `${dur}n`);
 		const sampler = getSampler();
 		let count = idx || 0;
 		let attack = Cool.random(attackStart.min, attackStart.max);
+		let counter = 1;
+		let durPlay = dur;
+		if (dur > 4 && dur < 33 && chance(0.25)) {
+			counter = 1 / dur;
+			durPlay /= 2;
+		}
 		const loop = new Tone.Loop((time) => {
 			// console.log(count, attack, dur, len, idx, delay);
-			const randomRest = false; // Cool.random(1) > 0.95;
-			const note = randomRest ? null : melody[count % melody.length];
+			const randomRest = chance(0.05);
+			const note = randomRest ? null : melody[Math.floor(count) % melody.length];
 			if (note) {
-				sampler.triggerAttackRelease(note, `${dur}n`, undefined, attack);
+				sampler.triggerAttackRelease(note, `${durPlay}n`, undefined, attack);
 			}
 			attack += Cool.random(attackJump.min, attackJump.max);
 			attack.clamp(0.1, 1);
-			count++;
+			count += counter;
 			if (count >= melody.length * len + idx) {
 				loop.stop();
 				if (loops.every(loop => { return loop.state == 'stopped'})) {
@@ -242,7 +267,10 @@ function Sound() {
 	}
 
 	function getSampler() {
-		const voice = 'U'; // Cool.random('AEIOU'.split(''));
+		// const voice = 'U'; // 
+		const voice = mutations < 3 ? 
+			'U' :
+			Cool.random('AEIOU'.split(''));
 		const samples = {};
 		for (let i = 0; i < noteNames.length; i++) {
 			const note = noteNames[i];
@@ -267,15 +295,27 @@ function Sound() {
 		const reverb = new Tone.Reverb({ decay: 5 }).toDestination();
 		sampler.connect(reverb);
 
-		if (mutations > 10) {
+		if (mutations > 8) {
 			let effect;
-			if (chance(0.25)) effect = new Tone.Distortion(0.1).toDestination();
-			else if (chance(0.25)) effect = new Tone.Chorus(4, 2.5, 0.5);
-			else if (chance(0.25)) effect = new Tone.BitCrusher(4).toDestination();
+			if (chance(0.25)) {
+				const dist = Cool.random(0.05, 0.2);
+				effect = new Tone.Distortion(dist).toDestination();
+				// console.log('Distortion', dist);
+			}
+			else if (chance(0.25)) {
+				effect = new Tone.Chorus(6, 2.5, 0.5);
+				// console.log('Chorus')
+			}
+			else if (chance(0.25)) {
+				const bits = Cool.random([4,8,12]);
+				effect = new Tone.BitCrusher(bits).toDestination();
+				// console.log('BitCrusher', bits);
+			}
 			else if (chance(0.25)) {
 				const freq = Cool.random(0.5, 1);
 				const depth = Cool.random(0.1, 1);
-				effect = new Tone.Tremolo(freq, depth).toDestination().start();
+				effect = new Tone.Tremolo(freq, depth).toDestination();
+				// console.log('Tremolo', freq, depth);
 			}
 			if (effect) sampler.connect(effect);
 		}
