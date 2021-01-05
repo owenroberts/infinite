@@ -16,8 +16,8 @@ function shuffle(array) {
 
 const gme = new HellGame({
 	dps: 24,
-	width: window.innerWidth,
-	height: window.innerHeight,
+	width: 1280,
+	height: 720,
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
@@ -175,22 +175,22 @@ function draw() {
 	ui.display();
 }
 
-function sizeCanvas() {
+// function sizeCanvas() {
 
-	gme.width = window.innerWidth;
-	gme.height = window.innerHeight;
-	gme.canvas.width = window.innerWidth * gme.dpr;
-	gme.canvas.height =  window.innerHeight * gme.dpr;
-	gme.ctx.scale(gme.dpr, gme.dpr);
-	gme.canvas.style.zoom = 1 / gme.dpr;
-	gme.ctx.miterLimit = 1;
-	gme.ctxStrokeColor = undefined;
+// 	gme.width = window.innerWidth;
+// 	gme.height = window.innerHeight;
+// 	gme.canvas.width = window.innerWidth * gme.dpr;
+// 	gme.canvas.height =  window.innerHeight * gme.dpr;
+// 	gme.ctx.scale(gme.dpr, gme.dpr);
+// 	gme.canvas.style.zoom = 1 / gme.dpr;
+// 	gme.ctx.miterLimit = 1;
+// 	gme.ctxStrokeColor = undefined;
 
-	player.position.x = gme.width/2;
-	player.position.y = gme.height/2;
+// 	player.position.x = gme.width/2;
+// 	player.position.y = gme.height/2;
 
-	// update ui?
-}
+// 	// update ui?
+// }
 
 /* remove key presses */
 function keyDown(key) {

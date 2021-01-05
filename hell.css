@@ -8,6 +8,8 @@ body {
 canvas { 
 	display: block; 
 	/*background-color: #2c2c2c;*/
+	margin: 0 auto;
+	margin-top: 1em;
 }
 
 #cursor {
