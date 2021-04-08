@@ -53,7 +53,6 @@ document.addEventListener('keydown', ev => {
 	if (ev.code == 'Equal') mapAlpha = Math.min(1, mapAlpha + 0.5);
 	else if (ev.code == 'Minus') mapAlpha = Math.max(0, mapAlpha - 0.5);
 	// else if (ev.code == 'Enter') ui.message.continue.onClick(); // to move message without mouse
-
 });
 
 function start() {
