@@ -26,5 +26,8 @@
 		"gulp-uglifycss": "^1.0.9",
 		"gulp-webserver": "^0.9.1",
 		"merge-stream": "^2.0.0"
+	},
+	"dependencies": {
+		"gulp-notify": "^3.2.0"
 	}
 }

@@ -21,7 +21,7 @@ const gme = new HellGame({
 	mixedColors: true,
 	checkRetina: true,
 	debug: true,
-	stats: false,
+	stats: true,
 	scenes: ['music', 'instructions', 'map', 'message', 'loading', 'win']
 });
 
@@ -95,7 +95,7 @@ function start() {
 	// this is where all messages go now ... 
 	ui.console = new Text(leftAlign, 4, '', grafWrap * 2, gme.anims.lettering.console);
 	ui.addToDisplay(ui.console);
-	ui.console.letters.over.c = '#9cf29b';
+	ui.console.letters.override.color = '#9cf29b';
 	ui.console.xKey = undefined; // god damn it
 
 	ui.message = new HellMessage(6, 64, '', grafWrap, gme.anims.lettering.messages);
