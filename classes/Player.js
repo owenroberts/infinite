@@ -6,11 +6,8 @@
 class Player extends Sprite {
 	constructor(animation, x, y, debug) {
 		super(Math.round(x), Math.round(y));
-		this.mapPosition = {
-			x: Math.round(x),
-			y: Math.round(y)
-		};
-		this.prevPosition = { x: this.mapPosition.x, y: this.mapPosition.y };
+		this.mapPosition = new Cool.Vector(Math.round(x), Math.round(y));
+		this.prevPosition = this.mapPosition.clone();
 		this.center = true; /* need better name */
 
 		this.debug = debug || false;
@@ -80,18 +77,21 @@ class Player extends Sprite {
 		this.input[key] = state;
 	}
 
-	update() {
-		this.prevPosition = { x: this.mapPosition.x, y: this.mapPosition.y };
+	update(time) {
+		this.prevPosition = this.mapPosition.clone();
 		
 		let state = this.animation.stateName.includes('idle') ?
 			this.animation.stateName :
 			Cool.random(['idle']);
 
 		let canMove = gme.currentSceneName == 'map';
+
+		const speed = new Cool.Vector();
 			
 		if (this.input.up) {
 			if (this.mapPosition.y > gme.bounds.top && canMove) {
-				this.mapPosition.y -= this.speed.y;
+				speed.y = -this.speed.y;
+				if (this.input.left || this.input.right) speed.y *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'right';
@@ -99,7 +99,8 @@ class Player extends Sprite {
 		}
 		if (this.input.down) {
 			if (this.mapPosition.y < gme.bounds.bottom && canMove) {
-				this.mapPosition.y += this.speed.y;
+				speed.y = this.speed.y;
+				if (this.input.left || this.input.right) speed.y *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'left';
@@ -107,7 +108,8 @@ class Player extends Sprite {
 		}
 		if (this.input.right) {
 			if (this.mapPosition.x < gme.bounds.right && canMove) {
-				this.mapPosition.x += this.speed.x;
+				speed.x = this.speed.x;
+				if (this.input.left || this.input.right) speed.x *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'right';
@@ -115,11 +117,14 @@ class Player extends Sprite {
 
 		if (this.input.left) {
 			if (this.mapPosition.x > gme.bounds.left && canMove) {
-				this.mapPosition.x -= this.speed.x;
+				speed.x = -this.speed.x;
+				if (this.input.left || this.input.right) speed.x *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'left';
 		}
+
+		this.mapPosition.add(speed.multiply(time));
 		this.animation.state = state;
 
 		if (!this.died && canMove) {
@@ -139,7 +144,7 @@ class Player extends Sprite {
 	}
 
 	back() {
-		this.mapPosition = this.prevPosition; // for collisions
+		this.mapPosition = this.prevPosition.clone(); // for collisions
 	}
 
 	spawn() {

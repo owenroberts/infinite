@@ -159,8 +159,8 @@ function buildMap() {
 	});
 }
 
-function update() {
-	player.update();
+function update(timeElapsed) {
+	player.update(timeElapsed / gme.dps);
 	gme.scenes.current.update();
 }
 
