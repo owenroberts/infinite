@@ -45,6 +45,7 @@ class HellMessage extends Text {
 		super.setMsg(msg);
 
 		if (msg) {
+
 			const returns = msg.match(/[\n\r]/g);
 			const y = this.y + (this.breaks.length + 2 + (returns ? returns.length : 0)) * 35;
 			this.continue.setPosition(this.x, y);

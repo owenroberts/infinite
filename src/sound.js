@@ -1,3 +1,5 @@
+// proto version of doodoo https://github.com/owenroberts/doodoo
+
 // https://www.guitarland.com/MusicTheoryWithToneJS/PlayMajorScale.html
 // http://www.myriad-online.com/resources/docs/manual/english/gregorien.htm
 

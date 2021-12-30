@@ -1,6 +1,45 @@
 // Tone.context.resume();
 window.random = Cool.random; /* for p5 based map */
 
+const gme = new HellGame({
+	dps: 24,
+	width: 960,
+	height: 720,
+	zoom: 1.25,
+	multiColor: true,
+	checkRetina: true,
+	// debug: true,
+	// stats: true,
+	scenes: ['music', 'instructions', 'map', 'message', 'loading', 'win'],
+	events: ['keyboard']
+});
+
+// iframe fix -- fucking itch bullshit
+const title = document.getElementById('title');
+function loadingAnimation() {
+	let t = '~' + title.textContent + '~';
+	title.textContent = t;
+}
+
+let loadingInterval;
+if (window.parent !== window) {
+	console.log('iframe detected');
+
+	title.style.display = 'none';
+	const startButton = document.createElement('button');
+	startButton.textContent = 'start infinite hell';
+	document.getElementById('splash').appendChild(startButton);
+	startButton.onclick = function() {
+		startButton.remove();
+		title.style.display = 'block';
+		loadingInterval = setInterval(loadingAnimation, 1000 / 12);
+		andLoad();
+	}
+} else {
+	loadingInterval = setInterval(loadingAnimation, 1000 / 12);
+	andLoad();
+}
+
 // https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
 	let currentIndex = array.length, temporaryValue, randomIndex;
@@ -14,24 +53,16 @@ function shuffle(array) {
 	return array;
 }
 
-const gme = new HellGame({
-	dps: 24,
-	width: 1280,
-	height: 720,
-	mixedColors: true,
-	checkRetina: true,
-	debug: true,
-	stats: true,
-	scenes: ['music', 'instructions', 'map', 'message', 'loading', 'win']
-});
 
-gme.load({ 
-	ui: 'data/ui.json', 
-	sprites: 'data/sprites.json', 
-	textures: 'data/textures.json',
-	items: 'data/items.csv',
-	lettering: 'data/lettering.json'
-});
+function andLoad() {
+	gme.load({ 
+		ui: 'data/ui.json', 
+		sprites: 'data/sprites.json', 
+		textures: 'data/textures.json',
+		items: 'data/items.csv',
+		lettering: 'data/lettering.json'
+	});
+}
 
 
 // global sinner for keeping track of sinner when giving an item
@@ -55,17 +86,18 @@ document.addEventListener('keydown', ev => {
 	// else if (ev.code == 'Enter') ui.message.continue.onClick(); // to move message without mouse
 });
 
-function start() {
-	
-	map = new HellMap(12);
-	player = new Player(gme.anims.sprites.player, gme.width / 2, gme.height / 2);
+gme.start = function() {
+	document.getElementById('splash').remove();
 
-	god = new Sprite(256, gme.height / 2);
+	map = new HellMap(12);
+	player = new Player(gme.anims.sprites.player, gme.view.halfWidth, gme.view.halfHeight);
+
+	god = new Sprite(256, gme.view.halfHeight);
 	god.center = true;
 	god.addAnimation(gme.anims.sprites.god);
 	gme.scenes.add(god, 'win', 'display');
 
-	const movementInstuctions = new Sprite(gme.width / 2 + 150, gme.height / 2 - 100)
+	const movementInstuctions = new Sprite(gme.view.halfWidth + 150, gme.view.halfHeight - 100)
 	movementInstuctions.addAnimation(gme.anims.ui.instructions_movement);
 	gme.scenes.instructions.addToDisplay(movementInstuctions);
 
@@ -74,14 +106,14 @@ function start() {
 	ui.metrics = {};
 
 	// display current level
-	const levelIcon = new UI({ x: -180, y: 22, animation: gme.anims.ui.hell_icon });
+	const levelIcon = new UI({ x: -150, y: 22, animation: gme.anims.ui.hell_icon });
 	ui.addToDisplay(levelIcon);
 	
 	ui.metrics.level = new UIMetric(levelIcon.x + 40, 8, () => {
 		return gme.lvl.toString();
 	});
 
-	const moralityIcon = new UI({ x: -90, y: 22, animation: gme.anims.ui.morality_icon });
+	const moralityIcon = new UI({ x: -60, y: 22, animation: gme.anims.ui.morality_icon });
 	moralityIcon.animation.state = 'neutral';
 	ui.addToDisplay(moralityIcon);
 	
@@ -100,11 +132,11 @@ function start() {
 
 	ui.message = new HellMessage(6, 64, '', grafWrap, gme.anims.lettering.messages);
 	ui.message.set(welcomeMessage);
-	ui.message.continue.setMsg('Press X to begin');
+	// ui.message.continue.setMsg('Press X to begin');
 
 	const border = new Texture({ frame: 'randomIndex', animation: gme.anims.ui.border });
 	for (let x = 0; x < gme.width; x += gme.anims.ui.border.width) {
-		border.addLocation(x, 32);
+		border.addLocation(x, 42);
 	}
 	ui.addToDisplay(border);
 
@@ -113,6 +145,7 @@ function start() {
 	gme.scenes.music.addToDisplay(welcome);
 
 	const yesSound = new Text(leftAlign, 192, 'Press X to start game with sound', grafWrap, gme.anims.lettering.messages);
+	// yesSound.letters.override.color = '#9cf29b';
 	gme.scenes.music.addToDisplay(yesSound);
 
 	const noSound = new Text(leftAlign, 232, 'Press Z to start game silently', grafWrap, gme.anims.lettering.messages);
@@ -122,10 +155,11 @@ function start() {
 	ui.console.zKey = () => { startMusic(false) };
 
 	gme.scene = 'music';
-}
+};
 
 function startMusic(withMusic) {
 	gme.scene = 'instructions';
+
 	if (withMusic) {
 		sound = new Sound();
 		player.soundSetup();
@@ -135,12 +169,13 @@ function startMusic(withMusic) {
 		loadNextMap();
 	};
 	ui.console.zKey = undefined;
+	ui.console.setMsg('Press X to begin');
 }
 
 function loadNextMap() {
 	gme.scene = 'loading';
 	ui.message.set(`Building ${gme.lvlName} ...`);
-	setTimeout(buildMap, 250);
+	setTimeout(buildMap, 250); // wait a second but its actually fast
 }
 
 function buildMap() {
@@ -152,61 +187,45 @@ function buildMap() {
 		player.spawn();
 		map.addAllMapItems();
 		// add items after 
-		gme.setBounds('top', gme.height / 2);
-		gme.setBounds('left', gme.width / 2);
-		gme.setBounds('right', map.cols * cellSize.w - gme.width / 2);
-		gme.setBounds('bottom', map.rows * cellSize.h - gme.height / 2);
+		gme.setBounds('top', gme.view.halfHeight);
+		gme.setBounds('left', gme.view.halfWidth);
+		gme.setBounds('right', map.cols * cellSize.w - gme.view.halfWidth);
+		gme.setBounds('bottom', map.rows * cellSize.h - gme.view.halfHeight);
 	});
 }
 
-function update(timeElapsed) {
+gme.update = function(timeElapsed) {
 	player.update(timeElapsed / gme.dps);
 	gme.scenes.current.update();
-}
+};
 
-function draw() {
+gme.draw = function() {
 	gme.scenes.current.display();
 	player.display();
 
 	// ui background
 	gme.ctx.fillStyle = '#2c2c2c';
-	gme.ctx.fillRect(0, 0, gme.width, 40);
+	gme.ctx.fillRect(0, 0, gme.view.width, 50);
 	ui.display();
-}
+};
 
-// function sizeCanvas() {
-
-// 	gme.width = window.innerWidth;
-// 	gme.height = window.innerHeight;
-// 	gme.canvas.width = window.innerWidth * gme.dpr;
-// 	gme.canvas.height =  window.innerHeight * gme.dpr;
-// 	gme.ctx.scale(gme.dpr, gme.dpr);
-// 	gme.canvas.style.zoom = 1 / gme.dpr;
-// 	gme.ctx.miterLimit = 1;
-// 	gme.ctxStrokeColor = undefined;
-
-// 	player.position.x = gme.width/2;
-// 	player.position.y = gme.height/2;
-
-// 	// update ui?
-// }
 
 /* remove key presses */
-function keyDown(key) {
+gme.keyDown = function(key) {
 	switch (key) {
-		// case 'a':
+		case 'a':
 		case 'left':
 			player.inputKey('left', true);
 			break;
-		// case 'w':
+		case 'w':
 		case 'up':
 			player.inputKey('up', true);
 			break;
-		// case 'd':
+		case 'd':
 		case 'right':
 			player.inputKey('right', true);
 			break;
-		// case 's':
+		case 's':
 		case 'down':
 			player.inputKey('down', true);
 			break;
@@ -219,23 +238,23 @@ function keyDown(key) {
 			ui.console.zKeyDown = true;
 			break;
 	}
-}
+};
 
-function keyUp(key) {
+gme.keyUp = function(key) {
 	switch (key) {
-		// case 'a':
+		case 'a':
 		case 'left':
 			player.inputKey('left', false);
 			break;
-		// case 'w':
+		case 'w':
 		case 'up':
 			player.inputKey('up', false);
 			break;
-		// case 'd':
+		case 'd':
 		case 'right':
 			player.inputKey('right', false);
 			break;
-		// case 's':
+		case 's':
 		case 'down':
 			player.inputKey('down', false);
 			break;
@@ -244,9 +263,10 @@ function keyUp(key) {
 			if (ui.console.xKeyDown && ui.console.xKey) {
 				const temp = ui.console.xKey; // is this nuts?
 				ui.console.xKey = undefined;
-				temp();
+				
 				ui.console.setMsg('');
 				ui.console.xKeyDown = false;
+				temp(); // might fuck things up ??
 			}
 			break;
 
@@ -254,14 +274,11 @@ function keyUp(key) {
 			if (ui.console.zKeyDown && ui.console.zKey) {
 				const temp = ui.console.zKey; // is this nuts?
 				ui.console.zKey = undefined;
-				temp();
+				
 				ui.console.setMsg('');
 				ui.console.zKeyDown = false;
+				temp(); // might fuck things up ??
 			}
 			break;
 	}
-}
-
-window.addEventListener("keydown", function(ev) {
-	if ([37, 38, 39, 40].includes(ev.which)) ev.preventDefault();
-}, false);
+};

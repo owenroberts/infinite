@@ -3,7 +3,7 @@
 	position is where it draws on screen (doesn't change if player is centered)
 */
 
-class Player extends Sprite {
+class Player extends ColliderSprite {
 	constructor(animation, x, y, debug) {
 		super(Math.round(x), Math.round(y));
 		this.mapPosition = new Cool.Vector(Math.round(x), Math.round(y));

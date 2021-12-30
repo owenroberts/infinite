@@ -1,8 +1,8 @@
 class HellMap extends BSPMap {
 	constructor(size) {
 		const buffer = {
-			w: Math.ceil(gme.width / 2 / cellSize.w),
-			h: Math.ceil(gme.height / 2 / cellSize.h)
+			w: Math.ceil(gme.view.halfWidth / cellSize.w),
+			h: Math.ceil(gme.view.halfHeight / cellSize.h)
 		};
 		super(size + buffer.w * 2, size + buffer.h * 2, size / 4, size / 2 - 1);
 		this.size = 12;
@@ -16,7 +16,7 @@ class HellMap extends BSPMap {
 		console.time('map');
 
 		let newSize = this.size + gme.lvl;
-		console.log('new size', newSize);
+		// console.log('new size', newSize);
 		this.updateSize(newSize + this.buffer.w * 2, newSize + this.buffer.h * 2, newSize / 4, newSize / 2 - 1);
 		
 		super.build(this.buffer, 6 + gme.lvl); // max nodes --  move up faster?
@@ -194,7 +194,10 @@ class HellMap extends BSPMap {
 
 	update() {
 
-		const offset = new Cool.Vector(-player.mapPosition.x + gme.width / 2, -player.mapPosition.y + gme.height / 2);
+		const offset = new Cool.Vector(
+			-player.mapPosition.x + gme.width / 2, 
+			-player.mapPosition.y + gme.height / 2
+		);
 
 		// this.nodes[0].update(offset);
 		for (let i = 0; i < this.nodes.length; i++) {
