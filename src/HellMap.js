@@ -194,10 +194,10 @@ class HellMap extends BSPMap {
 
 	update() {
 
-		const offset = new Cool.Vector(
-			-player.mapPosition.x + gme.width / 2, 
-			-player.mapPosition.y + gme.height / 2
-		);
+		const offset = [
+			-player.mapPosition[0] + gme.view.halfWidth, 
+			-player.mapPosition[1] + gme.view.halfHeight
+		];
 
 		// this.nodes[0].update(offset);
 		for (let i = 0; i < this.nodes.length; i++) {

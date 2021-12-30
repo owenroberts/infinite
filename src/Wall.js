@@ -39,8 +39,8 @@ class Wall extends ColliderSprite {
 	}
 
 	update(offset) {
-		this.position[0] = this.origin[0] + offset.x;
-		this.position[1] = this.origin[1] + offset.y;
+		this.position[0] = this.origin[0] + offset[0];
+		this.position[1] = this.origin[1] + offset[1];
 		this.texture.update(offset);
 	}
 }

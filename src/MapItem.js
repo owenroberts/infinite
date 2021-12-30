@@ -14,13 +14,14 @@ class MapItem extends HellItem {
 		if (mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha;
 			gme.ctx.fillStyle = this.c;
-			gme.ctx.fillRect(this.origin.x / cellSize.w * mapCellSize, this.origin.y / cellSize.h * mapCellSize, 8, 8);
+			gme.ctx.fillRect(this.origin[0] / cellSize.w * mapCellSize, 50 + this.origin[1] / cellSize.h * mapCellSize, 8, 8);
 			gme.ctx.globalAlpha = 1.0;
 		}
 	}
 
 	update(offset) {
 		super.update(offset);
+		
 		if (this.collide(player) && !this.isColliding && !player.isColliding) {
 			ui.console.setMsg(`Press X to ${this.actionString}`);
 			this.isColliding = true;

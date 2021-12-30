@@ -6,12 +6,12 @@
 class Player extends ColliderSprite {
 	constructor(animation, x, y, debug) {
 		super(Math.round(x), Math.round(y));
-		this.mapPosition = new Cool.Vector(Math.round(x), Math.round(y));
-		this.prevPosition = this.mapPosition.clone();
+		this.mapPosition = [Math.round(x), Math.round(y)];
+		this.prevPosition = [Math.round(x), Math.round(y)];;
 		this.center = true; /* need better name */
 
 		this.debug = debug || false;
-		this.speed = new Cool.Vector(8, 8);
+		this.speed = [8, 8];
 
 		this.addAnimation(animation);
 		this.animation.state = 'idle';
@@ -31,7 +31,7 @@ class Player extends ColliderSprite {
 
 		this.soundEnabled = false;
 		this.stepCount = 0;
-		this.stepInterval = 32 - this.speed.x * 2;
+		this.stepInterval = 32 - this.speed[0] * 2;
 
 		this.morality = {
 			gluttony: 0,
@@ -56,17 +56,17 @@ class Player extends ColliderSprite {
 	}
 
 	setSpeed(n) {
-		this.speed.x = +n;
-		this.speed.y = +n;
-		this.stepInterval = 32 - this.speed.x * 2;
+		this.speed[0] = +n;
+		this.speed[1] = +n;
+		this.stepInterval = 32 - this.speed[0] * 2;
 		if (this.sfxPlayer) {
-			sound.setBPM(player.speed.x);
+			sound.setBPM(player.speed[0]);
 		}
 
 	}
 
 	getSpeed() {
-		return this.speed.x;
+		return this.speed[0];
 	}
 
 	get moralityScore() {
@@ -78,7 +78,7 @@ class Player extends ColliderSprite {
 	}
 
 	update(time) {
-		this.prevPosition = this.mapPosition.clone();
+		this.prevPosition = [...this.mapPosition];
 		
 		let state = this.animation.stateName.includes('idle') ?
 			this.animation.stateName :
@@ -86,45 +86,50 @@ class Player extends ColliderSprite {
 
 		let canMove = gme.currentSceneName == 'map';
 
-		const speed = new Cool.Vector();
+		const speed = [0, 0];
 			
 		if (this.input.up) {
-			if (this.mapPosition.y > gme.bounds.top && canMove) {
-				speed.y = -this.speed.y;
-				if (this.input.left || this.input.right) speed.y *= 0.71;
+			if (this.mapPosition[1] > gme.bounds.top && canMove) {
+				speed[1] = -this.speed[1];
+				if (this.input.left || this.input.right) speed[1] *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'right';
 			
 		}
 		if (this.input.down) {
-			if (this.mapPosition.y < gme.bounds.bottom && canMove) {
-				speed.y = this.speed.y;
-				if (this.input.left || this.input.right) speed.y *= 0.71;
+			if (this.mapPosition[1] < gme.bounds.bottom && canMove) {
+				speed[1] = this.speed[1];
+				if (this.input.left || this.input.right) speed[1] *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'left';
 			
 		}
 		if (this.input.right) {
-			if (this.mapPosition.x < gme.bounds.right && canMove) {
-				speed.x = this.speed.x;
-				if (this.input.left || this.input.right) speed.x *= 0.71;
+			if (this.mapPosition[0] < gme.bounds.right && canMove) {
+				speed[0] = this.speed[0];
+				if (this.input.left || this.input.right) speed[0] *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'right';
 		}
 
 		if (this.input.left) {
-			if (this.mapPosition.x > gme.bounds.left && canMove) {
-				speed.x = -this.speed.x;
-				if (this.input.left || this.input.right) speed.x *= 0.71;
+			if (this.mapPosition[0] > gme.bounds.left && canMove) {
+				speed[0] = -this.speed[0];
+				if (this.input.left || this.input.right) speed[0] *= 0.71;
 				this.hunger += this.hungerRate;
 			}
 			state = 'left';
 		}
 
-		this.mapPosition.add(speed.multiply(time));
+		speed[0] *= time;
+		speed[1] *= time;
+
+		this.mapPosition[0] += speed[0];
+		this.mapPosition[1] += speed[1];
+
 		this.animation.state = state;
 
 		if (!this.died && canMove) {
@@ -144,7 +149,7 @@ class Player extends ColliderSprite {
 	}
 
 	back() {
-		this.mapPosition = this.prevPosition.clone(); // for collisions
+		this.mapPosition = [...this.prevPosition]; // for collisions
 	}
 
 	spawn() {
@@ -154,8 +159,8 @@ class Player extends ColliderSprite {
 			location = nodes[i].room.getCell('player');
 			if (location) break;
 		}
-		this.mapPosition.x = location.x * cellSize.w; 
-		this.mapPosition.y = location.y * cellSize.h;
+		this.mapPosition[0] = location.x * cellSize.w; 
+		this.mapPosition[1] = location.y * cellSize.h;
 	}
 
 	reborn() {
@@ -202,7 +207,7 @@ class Player extends ColliderSprite {
 
 		if (this.hunger > this.lastSpeedChange) {
 			this.lastSpeedChange += this.hungerInterval;
-			if (this.speed.x > 1) this.setSpeed(this.speed.x - 1);
+			if (this.speed[0] > 1) this.setSpeed(this.speed[0] - 1);
 		}
 
 		let hi = Math.floor(this.hunger / this.hungerInterval);
@@ -301,7 +306,7 @@ class Player extends ColliderSprite {
 					prop = prop.split('-')[1];
 					this.morality[prop] += +n;
 				} else {
-					if (prop == 'speed') this.setSpeed(this.speed.x + +n);
+					if (prop == 'speed') this.setSpeed(this.speed[0] + +n);
 					else this[prop] += +n;
 				}
 				if (prop == 'adjust') prop = 'moral feeling';
@@ -319,7 +324,7 @@ class Player extends ColliderSprite {
 		if (mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha;
 			gme.ctx.fillStyle = 'blue';
-			gme.ctx.fillRect(this.mapPosition.x / cellSize.w * mapCellSize, this.mapPosition.y / cellSize.h * mapCellSize, 8, 8);
+			gme.ctx.fillRect(this.mapPosition[0] / cellSize.w * mapCellSize, 50 + this.mapPosition[0] / cellSize.h * mapCellSize, 8, 8);
 
 			gme.ctx.globalAlpha = 1.0;
 		}
@@ -335,7 +340,7 @@ class Player extends ColliderSprite {
 
 	soundSetup() {
 
-		sound.setBPM(player.speed.x);
+		sound.setBPM(player.speed[0]);
 
 		const urls = {};
 		const sfx = {

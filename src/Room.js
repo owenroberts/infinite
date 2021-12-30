@@ -38,7 +38,7 @@ class Room extends Area {
 	}
 
 	addTextureAnimation() {
-		this.texture.animation = gme.anims.textures.dirt;
+		this.texture.addAnimation(gme.anims.textures.dirt);
 	}
 
 	getCell(label) {
@@ -62,11 +62,11 @@ class Room extends Area {
 		if (this.debug && mapAlpha > 0) {
 			gme.ctx.globalAlpha = mapAlpha/2;
 			gme.ctx.fillStyle = this.c;
-			gme.ctx.fillRect(this.x * mapCellSize, this.y * mapCellSize, this.w * mapCellSize, this.h * mapCellSize);
+			gme.ctx.fillRect(this.x * mapCellSize, 50 + this.y * mapCellSize, this.w * mapCellSize, this.h * mapCellSize);
 
 			gme.ctx.fillStyle = 'white';
 			gme.ctx.font = `${mapCellSize/2}px sans-serif`;
-			gme.ctx.fillText(`${this.x},${this.y}`, this.x * mapCellSize, this.y * mapCellSize + 10);
+			gme.ctx.fillText(`${this.x},${this.y}`, this.x * mapCellSize, 50 + this.y * mapCellSize + 10);
 			gme.ctx.globalAlpha = 1.0;
 		}
 	}
