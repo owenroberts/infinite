@@ -2,10 +2,13 @@ class Wall extends ColliderSprite {
 	constructor(x, y, debug) {
 		// super(x * cellSize.w, y * cellSize.h, cellSize.w, cellSize.h);
 		super(x * cellSize.w, y * cellSize.h);
-		this.setCollider(x * cellSize.w, y * cellSize.h, cellSize.w, cellSize.h);
+		this.halfWidth = Math.round(cellSize.w / 2);
+		this.halfHeight = Math.round(cellSize.h / 2);
+		this.size = [cellSize.w, cellSize.h];
+		this.setCollider(0, 0, cellSize.w, cellSize.h);
 
 		this.center = true;
-		this.debug = true;
+		this.debug = false;
 		this.origin = [x, y];
 		// this.origin = { x: x, y: y };
 
@@ -31,6 +34,8 @@ class Wall extends ColliderSprite {
 				Cool.random(indexes)
 			);
 		}
+
+		console.log(this);
 	}
 
 	display() {

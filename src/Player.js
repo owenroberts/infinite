@@ -7,7 +7,7 @@ class Player extends ColliderSprite {
 	constructor(animation, x, y, debug) {
 		super(Math.round(x), Math.round(y));
 		this.mapPosition = [Math.round(x), Math.round(y)];
-		this.prevPosition = [Math.round(x), Math.round(y)];;
+		this.prevPosition = [Math.round(x), Math.round(y)];
 		this.center = true; /* need better name */
 
 		this.debug = debug || false;
@@ -62,7 +62,6 @@ class Player extends ColliderSprite {
 		if (this.sfxPlayer) {
 			sound.setBPM(player.speed[0]);
 		}
-
 	}
 
 	getSpeed() {
@@ -242,9 +241,9 @@ class Player extends ColliderSprite {
 		for (const moral in this.world) {
 			// compare each moral to sinner
 			const playerScore = this.morality[moral] + this.world[moral];
-			console.log(moral, playerScore, this.morality[moral], this.world[moral])
+			// console.log(moral, playerScore, this.morality[moral], this.world[moral])
 			const comp = playerScore + sinner[moral];
-			console.log(comp);
+			// console.log(comp);
 			if (comp > 0) score++;
 			else if (comp < 0) score--;
 		}

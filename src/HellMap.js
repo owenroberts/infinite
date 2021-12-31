@@ -1,3 +1,8 @@
+/*
+	handles generation of map as well as updating player position to map components
+	and collisions fuck 
+*/
+
 class HellMap extends BSPMap {
 	constructor(size) {
 		const buffer = {
@@ -5,7 +10,7 @@ class HellMap extends BSPMap {
 			h: Math.ceil(gme.view.halfHeight / cellSize.h)
 		};
 		super(size + buffer.w * 2, size + buffer.h * 2, size / 4, size / 2 - 1);
-		this.size = 12;
+		this.size = size;
 		this.buffer = buffer;
 
 		gme.scenes.map.add(this);
@@ -212,10 +217,13 @@ class HellMap extends BSPMap {
 			this.walls[i].update(offset);
 		}
 
+		// can i fucking optimize this ... ??
 		let wallCollision = false;
 		for (let i = 0; i < map.walls.length; i++) {
 			const wall = map.walls[i];
-			if (wall.collide(player)) wallCollision = true;
+			if (wall.collide(player)) {
+				wallCollision = true;
+			}
 		}
 		if (wallCollision) player.back();
 
