@@ -35,7 +35,6 @@ class Wall extends ColliderSprite {
 			);
 		}
 
-		console.log(this);
 	}
 
 	display() {
